@@ -1,0 +1,14 @@
+UTC 2026-11-13T05:33:21+00:00
+# python3 scripts/cli_evidence.py robustness
+fragmented PING frame: send 1 byte, then 2 bytes, then 5 bytes
+  robust: OK PONG pid=2189
+  unsafe: BrokenPipeError: [Errno 32] Broken pipe
+
+idle connection: send no bytes; timeout=500 ms; inspect after 1.2 s
+  robust: active workers=0; children=[]
+  unsafe: active workers=1; children=[(2195, 'S')]
+
+completed PING client: inspect child state after 300 ms
+  robust: zombies=0; children=[]
+  unsafe: zombies=1; children=[(2201, 'Z')]
+All temporary server processes have been stopped.

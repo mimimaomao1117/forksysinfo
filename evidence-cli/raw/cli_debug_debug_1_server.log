@@ -1,0 +1,10 @@
+2026-11-13T05:38:34.092 INFO pid=2458 role=server READY host=127.0.0.1 port=19241 robust=1 timeout_ms=700 max_clients=64 compiled_debug=1
+2026-11-13T05:38:34.093 DEBUG pid=2458 role=server DEBUG_BUILD runtime_debug=on
+2026-11-13T05:38:34.153 INFO pid=2458 role=server FORK child=2460 active=1 peer=127.0.0.1:60532
+2026-11-13T05:38:34.154 DEBUG pid=2460 role=worker FRAME_RX bytes=4
+2026-11-13T05:38:34.155 DEBUG pid=2460 role=worker COMMAND bytes=4
+2026-11-13T05:38:34.155 DEBUG pid=2460 role=worker FRAME_TX bytes=16
+2026-11-13T05:38:34.156 DEBUG pid=2460 role=worker PEER_EOF
+2026-11-13T05:38:34.157 INFO pid=2460 role=worker CHILD_DONE
+2026-11-13T05:38:34.158 INFO pid=2458 role=server REAP child=2460 active=0 status=0
+2026-11-13T05:38:34.165 INFO pid=2458 role=server STOPPED active=0

@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="820" viewBox="0 0 1400 820" role="img" aria-label="ForkSysInfo process structure and dynamic linking">
+<defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto-start-reverse" markerUnits="strokeWidth"><path d="M0,0 L9,4.5 L0,9 z" fill="#252525"/></marker></defs>
+<rect width="1400" height="820" fill="white"/>
+<text x="35" y="42" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700" text-anchor="start" fill="#181818">Process structure and dynamic linking</text>
+<rect x="490" y="80" width="875" height="470" fill="white" stroke="#777777" stroke-width="1.5"/>
+<text x="515" y="116" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" text-anchor="start" fill="#181818">Linux server</text>
+<text x="35" y="116" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" text-anchor="start" fill="#181818">C clients</text>
+<text x="350" y="137" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start" fill="#181818">TCP sockets</text>
+<rect x="35" y="150" width="260" height="85" fill="white" stroke="#252525" stroke-width="2"/>
+<text x="165" y="183" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" text-anchor="middle" fill="#181818">C client 1</text>
+<text x="165" y="214" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#181818">request / response</text>
+<rect x="540" y="150" width="330" height="85" fill="white" stroke="#252525" stroke-width="2"/>
+<text x="705" y="181" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" text-anchor="middle" fill="#181818">Child process 1</text>
+<text x="705" y="210" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#181818">Closes listening socket</text>
+<line x1="302" y1="197" x2="532" y2="197" stroke="#252525" stroke-width="2" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+<text x="417" y="177" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="400" text-anchor="middle" fill="#181818">Connection 1</text>
+<line x1="940" y1="193" x2="879" y2="193" stroke="#252525" stroke-width="2" marker-end="url(#arrow)" stroke-dasharray="8 6"/>
+<rect x="35" y="275" width="260" height="85" fill="white" stroke="#252525" stroke-width="2"/>
+<text x="165" y="308" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" text-anchor="middle" fill="#181818">C client 2</text>
+<text x="165" y="339" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#181818">request / response</text>
+<rect x="540" y="275" width="330" height="85" fill="white" stroke="#252525" stroke-width="2"/>
+<text x="705" y="306" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" text-anchor="middle" fill="#181818">Child process 2</text>
+<text x="705" y="335" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#181818">Closes listening socket</text>
+<line x1="302" y1="322" x2="532" y2="322" stroke="#252525" stroke-width="2" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+<text x="417" y="302" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="400" text-anchor="middle" fill="#181818">Connection 2</text>
+<line x1="940" y1="318" x2="879" y2="318" stroke="#252525" stroke-width="2" marker-end="url(#arrow)" stroke-dasharray="8 6"/>
+<rect x="35" y="400" width="260" height="85" fill="white" stroke="#252525" stroke-width="2"/>
+<text x="165" y="433" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" text-anchor="middle" fill="#181818">C client 12</text>
+<text x="165" y="464" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#181818">request / response</text>
+<rect x="540" y="400" width="330" height="85" fill="white" stroke="#252525" stroke-width="2"/>
+<text x="705" y="431" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" text-anchor="middle" fill="#181818">Child process 12</text>
+<text x="705" y="460" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#181818">Closes listening socket</text>
+<line x1="302" y1="447" x2="532" y2="447" stroke="#252525" stroke-width="2" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+<text x="417" y="427" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="400" text-anchor="middle" fill="#181818">Connection 12</text>
+<line x1="940" y1="443" x2="879" y2="443" stroke="#252525" stroke-width="2" marker-end="url(#arrow)" stroke-dasharray="8 6"/>
+<text x="165" y="384" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="400" text-anchor="middle" fill="#181818">...</text>
+<text x="705" y="384" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="400" text-anchor="middle" fill="#181818">...</text>
+<rect x="1010" y="150" width="330" height="220" fill="white" stroke="#252525" stroke-width="2"/>
+<text x="1175" y="184" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" text-anchor="middle" fill="#181818">Parent process</text>
+<text x="1175" y="220" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#181818">listen() / accept() / fork()</text>
+<text x="1175" y="253" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#181818">Closes accepted socket</text>
+<text x="1175" y="286" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#181818">Keeps listening socket</text>
+<text x="1175" y="319" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#181818">Reaps completed children</text>
+<text x="1175" y="349" font-family="Consolas, monospace" font-size="20" font-weight="400" text-anchor="middle" fill="#181818">waitpid(..., WNOHANG)</text>
+<line x1="1010" y1="242" x2="940" y2="242" stroke="#252525" stroke-width="2" stroke-dasharray="8 6"/>
+<line x1="940" y1="193" x2="940" y2="443" stroke="#252525" stroke-width="2" stroke-dasharray="8 6"/>
+<text x="936" y="166" font-family="Consolas, monospace" font-size="19" font-weight="400" text-anchor="middle" fill="#181818">fork()</text>
+<text x="515" y="524" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="start" fill="#181818">Each child serves one connected socket in its own process.</text>
+<text x="35" y="584" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="400" text-anchor="start" fill="#181818">Solid arrows: TCP data after accept() and fork().   Dashed arrows: child creation.</text>
+<line x1="35" y1="612" x2="1365" y2="612" stroke="#252525" stroke-width="1"/>
+<text x="35" y="649" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" text-anchor="start" fill="#181818">Shared utility library</text>
+<rect x="35" y="672" width="315" height="62" fill="white" stroke="#252525" stroke-width="2"/>
+<text x="192.5" y="710" font-family="Arial, Helvetica, sans-serif" font-size="23" font-weight="700" text-anchor="middle" fill="#181818">Client executable</text>
+<rect x="555" y="665" width="330" height="80" fill="#f5f5f5" stroke="#252525" stroke-width="2"/>
+<text x="720" y="695" font-family="Consolas, monospace" font-size="26" font-weight="700" text-anchor="middle" fill="#181818">libnetsys.so</text>
+<text x="720" y="725" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#181818">I/O / logging / validation</text>
+<rect x="1050" y="672" width="315" height="62" fill="white" stroke="#252525" stroke-width="2"/>
+<text x="1207.5" y="710" font-family="Arial, Helvetica, sans-serif" font-size="23" font-weight="700" text-anchor="middle" fill="#181818">Server executable</text>
+<line x1="359" y1="703" x2="545" y2="703" stroke="#252525" stroke-width="2" marker-end="url(#arrow)"/>
+<line x1="1041" y1="703" x2="895" y2="703" stroke="#252525" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="452" y="687" font-family="Consolas, monospace" font-size="19" font-weight="400" text-anchor="middle" fill="#181818">DT_NEEDED</text>
+<text x="968" y="687" font-family="Consolas, monospace" font-size="19" font-weight="400" text-anchor="middle" fill="#181818">DT_NEEDED</text>
+<text x="35" y="785" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="400" text-anchor="start" fill="#181818">ELF dynamic linking: the same .so file is mapped separately in each process.</text>
+</svg>

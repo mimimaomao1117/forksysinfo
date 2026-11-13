@@ -1,0 +1,303 @@
+{
+  "build": {
+    "recorded_utc": "2026-11-13T05:31:17.741648+00:00",
+    "passed": true,
+    "detail": {
+      "debug_build": true,
+      "release_build": true
+    },
+    "transcript": "evidence-cli/raw/console_build.txt"
+  },
+  "sysinfo": {
+    "recorded_utc": "2026-11-13T05:31:57.977925+00:00",
+    "passed": true,
+    "detail": {
+      "parent_pid": 2123,
+      "responses": [
+        "OK SYSINFO\nhostname=localhost\nsysname=Linux\nrelease=6.12.117-0-virt\nmachine=x86_64\npid=2125\nuptime_seconds=334\nram_total_bytes=1546407936\nram_free_bytes=1320095744\n",
+        "OK PONG pid=2127\n",
+        "OK hello from the command line\n"
+      ]
+    },
+    "transcript": "evidence-cli/raw/console_sysinfo.txt"
+  },
+  "concurrency": {
+    "recorded_utc": "2026-11-13T05:33:18.339369+00:00",
+    "passed": true,
+    "detail": {
+      "parent_pid": 2152,
+      "simultaneous_children": [
+        {
+          "pid": 2155,
+          "ppid": 2152,
+          "state": "S",
+          "command": "server"
+        },
+        {
+          "pid": 2156,
+          "ppid": 2152,
+          "state": "S",
+          "command": "server"
+        },
+        {
+          "pid": 2159,
+          "ppid": 2152,
+          "state": "S",
+          "command": "server"
+        },
+        {
+          "pid": 2161,
+          "ppid": 2152,
+          "state": "S",
+          "command": "server"
+        },
+        {
+          "pid": 2163,
+          "ppid": 2152,
+          "state": "S",
+          "command": "server"
+        },
+        {
+          "pid": 2164,
+          "ppid": 2152,
+          "state": "S",
+          "command": "server"
+        },
+        {
+          "pid": 2167,
+          "ppid": 2152,
+          "state": "S",
+          "command": "server"
+        },
+        {
+          "pid": 2169,
+          "ppid": 2152,
+          "state": "S",
+          "command": "server"
+        },
+        {
+          "pid": 2170,
+          "ppid": 2152,
+          "state": "S",
+          "command": "server"
+        },
+        {
+          "pid": 2173,
+          "ppid": 2152,
+          "state": "S",
+          "command": "server"
+        },
+        {
+          "pid": 2174,
+          "ppid": 2152,
+          "state": "S",
+          "command": "server"
+        },
+        {
+          "pid": 2176,
+          "ppid": 2152,
+          "state": "S",
+          "command": "server"
+        }
+      ],
+      "simultaneous_child_count": 12,
+      "elapsed_seconds": 3.175,
+      "sleep_ms": 3000,
+      "serial_lower_bound_seconds": 36,
+      "clients": [
+        {
+          "client": 1,
+          "pid": 2153,
+          "response": "OK SLEPT 3000 pid=2155",
+          "exit_code": 0
+        },
+        {
+          "client": 2,
+          "pid": 2154,
+          "response": "OK SLEPT 3000 pid=2156",
+          "exit_code": 0
+        },
+        {
+          "client": 3,
+          "pid": 2157,
+          "response": "OK SLEPT 3000 pid=2159",
+          "exit_code": 0
+        },
+        {
+          "client": 4,
+          "pid": 2158,
+          "response": "OK SLEPT 3000 pid=2161",
+          "exit_code": 0
+        },
+        {
+          "client": 5,
+          "pid": 2160,
+          "response": "OK SLEPT 3000 pid=2163",
+          "exit_code": 0
+        },
+        {
+          "client": 6,
+          "pid": 2162,
+          "response": "OK SLEPT 3000 pid=2164",
+          "exit_code": 0
+        },
+        {
+          "client": 7,
+          "pid": 2165,
+          "response": "OK SLEPT 3000 pid=2167",
+          "exit_code": 0
+        },
+        {
+          "client": 8,
+          "pid": 2166,
+          "response": "OK SLEPT 3000 pid=2170",
+          "exit_code": 0
+        },
+        {
+          "client": 9,
+          "pid": 2168,
+          "response": "OK SLEPT 3000 pid=2169",
+          "exit_code": 0
+        },
+        {
+          "client": 10,
+          "pid": 2171,
+          "response": "OK SLEPT 3000 pid=2173",
+          "exit_code": 0
+        },
+        {
+          "client": 11,
+          "pid": 2172,
+          "response": "OK SLEPT 3000 pid=2174",
+          "exit_code": 0
+        },
+        {
+          "client": 12,
+          "pid": 2175,
+          "response": "OK SLEPT 3000 pid=2176",
+          "exit_code": 0
+        }
+      ]
+    },
+    "transcript": "evidence-cli/raw/console_concurrency.txt"
+  },
+  "robustness": {
+    "recorded_utc": "2026-11-13T05:33:25.352539+00:00",
+    "passed": true,
+    "detail": {
+      "fragmented_header": [
+        {
+          "mode": "robust",
+          "response": "OK PONG pid=2189"
+        },
+        {
+          "mode": "unsafe",
+          "response": "BrokenPipeError: [Errno 32] Broken pipe"
+        }
+      ],
+      "idle_timeout": [
+        {
+          "mode": "robust",
+          "active_workers": 0,
+          "children": [],
+          "timeout_ms": 500
+        },
+        {
+          "mode": "unsafe",
+          "active_workers": 1,
+          "children": [
+            {
+              "pid": 2195,
+              "ppid": 2194,
+              "state": "S",
+              "command": "server"
+            }
+          ],
+          "timeout_ms": 500
+        }
+      ],
+      "zombie_reaping": [
+        {
+          "mode": "robust",
+          "zombies": 0,
+          "children": [],
+          "response": "OK PONG pid=2198"
+        },
+        {
+          "mode": "unsafe",
+          "zombies": 1,
+          "children": [
+            {
+              "pid": 2201,
+              "ppid": 2199,
+              "state": "Z",
+              "command": "server"
+            }
+          ],
+          "response": "OK PONG pid=2201"
+        }
+      ]
+    },
+    "transcript": "evidence-cli/raw/console_robustness.txt"
+  },
+  "debug-library": {
+    "recorded_utc": "2026-11-13T05:38:34.483367+00:00",
+    "passed": true,
+    "detail": {
+      "debug_matrix": [
+        {
+          "compile_debug": 1,
+          "runtime_debug": false,
+          "debug_line_count": 0
+        },
+        {
+          "compile_debug": 1,
+          "runtime_debug": true,
+          "debug_line_count": 8
+        },
+        {
+          "compile_debug": 0,
+          "runtime_debug": false,
+          "debug_line_count": 0
+        },
+        {
+          "compile_debug": 0,
+          "runtime_debug": true,
+          "debug_line_count": 0
+        }
+      ]
+    },
+    "transcript": "evidence-cli/raw/console_debug-library.txt"
+  },
+  "suite": {
+    "recorded_utc": "2026-11-13T05:34:07.458688+00:00",
+    "passed": true,
+    "detail": {
+      "pass_count": 11,
+      "test_count": 11,
+      "results": "evidence-cli/results.json"
+    },
+    "transcript": "evidence-cli/raw/console_suite.txt"
+  },
+  "tshark": {
+    "recorded_utc": "2026-11-13T05:38:41.559057+00:00",
+    "passed": true,
+    "detail": {
+      "pcap": "evidence-cli/loopback.pcap",
+      "stream": 0,
+      "version_output": "TShark (Wireshark) 4.4.7 (Git commit e8a60fa2ff17).\n",
+      "table_output": "frame.number  tcp.srcport  tcp.dstport  tcp.flags   tcp.seq   tcp.ack   tcp.len\n1             55766        19090        0x0002      0         0         0\n2             19090        55766        0x0012      0         1         0\n3             55766        19090        0x0010      1         1         0\n4             55766        19090        0x0018      1         1         11\n5             19090        55766        0x0010      1         12        0\n6             19090        55766        0x0018      1         12        167\n7             55766        19090        0x0010      12        168       0\n8             55766        19090        0x0011      12        168       0\n9             19090        55766        0x0011      168       13        0\n10            55766        19090        0x0010      13        169       0\n"
+    },
+    "transcript": "evidence-cli/raw/console_tshark.txt"
+  },
+  "tshark-hex": {
+    "recorded_utc": "2026-11-13T05:35:41.381783+00:00",
+    "passed": true,
+    "detail": {
+      "pcap": "evidence-cli/loopback.pcap",
+      "display_filter": "tcp.len == 8 && tcp.dstport == 19090",
+      "payload_hex": "0000000450494e47"
+    },
+    "transcript": "evidence-cli/raw/console_tshark-hex.txt"
+  }
+}

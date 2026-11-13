@@ -1,9 +1,24 @@
-# ForkSysInfo 影片與執行畫面
+# Figures and recordings
 
-公開專案：[mimimaomao1117/forksysinfo](https://github.com/mimimaomao1117/forksysinfo)。文件更新日期為 2026 年 11 月 13 日。
+Public project: [mimimaomao1117/forksysinfo](https://github.com/mimimaomao1117/forksysinfo).
 
-[兩分鐘 MP4](ForkSysInfo_2min.mp4) 為 120 秒的繁體中文旁白實測證據解說，附[字幕](ForkSysInfo_2min.zh-TW.srt)與[旁白逐字稿](ForkSysInfo_2min_transcript.txt)。影片末段的 START_DEMO.cmd 屬於桌面完整套件；GitHub 下載版請依[專案 README](../README.md)使用原生 Linux 或 Docker。
+The [English PDF report](../report/ForkSysInfo_Report.pdf) uses the current [native command-line screenshots](cli/):
 
-`00_summary.png` 至 `05_packets.png` 是原始實測 log 檢視器的畫面擷取，可與 `evidence/` 內的 JSON、log 及 PCAP 核對。`06_live_console.png` 是安裝後 Linux 6.12.117 環境直接執行 C 程式的虛擬機終端畫面。第一次參考實測使用 Linux 6.12.51；兩組環境的證據分別保存在 `evidence/` 與 `evidence-recheck/`。
+| File | Recorded command-line output |
+|---|---|
+| `cli/01_build.png` | Debug and release builds |
+| `cli/02_sysinfo.png` | Live SYSINFO, PING and ECHO requests |
+| `cli/03_concurrency.png` | Twelve worker processes and twelve C client responses |
+| `cli/04_robustness.png` | Fragmented request, idle timeout and zombie comparisons |
+| `cli/05_debug_library.png` | Debug controls, ldd and ELF RUNPATH |
+| `cli/06_tshark.png` | TShark version and the first TCP stream |
+| `cli/07_packets_hex.png` | Packet hex and the PING payload |
+| `cli/08_tests.png` | Complete integration test run |
 
-本次文件更新補充公開下載與重現方式，錄製影片、字幕、原始截圖及原始實測紀錄均保留原有內容。完整技術說明見[PDF 報告](../report/ForkSysInfo_Report.pdf)及[報告文字版](../docs/REPORT.md)。
+These PNGs were captured directly from the QEMU Linux framebuffer. The full, uncropped files are retained here; the PDF omits unused blank space below some output. Raw transcripts and measurements are in `../evidence-cli/`.
+
+The architecture and framing diagrams are available as editable SVG and rendered PNG files in [diagrams/](diagrams/): `architecture.svg`, `architecture.png`, `protocol.svg`, and `protocol.png`.
+
+The older `00_summary.png` through `06_live_console.png` and the [120-second video](ForkSysInfo_2min.mp4) remain as reference material from the earlier runs. The video retains its original Traditional Chinese narration, [SRT subtitles](ForkSysInfo_2min.zh-TW.srt), and [transcript](ForkSysInfo_2min_transcript.txt). The revised report is in English.
+
+The video's Windows launcher belongs to the complete desktop bundle. A plain GitHub clone does not include `portable-linux/`; use the Linux or Docker instructions in the [project README](../README.md).

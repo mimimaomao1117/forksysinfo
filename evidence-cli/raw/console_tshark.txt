@@ -1,0 +1,16 @@
+UTC 2026-11-13T05:38:37+00:00
+# python3 scripts/cli_evidence.py tshark
+# tshark --version | head -n1
+TShark (Wireshark) 4.4.7 (Git commit e8a60fa2ff17).
+# tshark -r evidence-cli/loopback.pcap -Y 'tcp.stream == 0' -T fields -E header=y -e frame.number -e tcp.srcport -e tcp.dstport -e tcp.flags -e tcp.seq -e tcp.ack -e tcp.len | awk '{printf "%-13s %-12s %-12s %-11s %-9s %-9s %s\n", $1, $2, $3, $4, $5, $6, $7}'
+frame.number  tcp.srcport  tcp.dstport  tcp.flags   tcp.seq   tcp.ack   tcp.len
+1             55766        19090        0x0002      0         0         0
+2             19090        55766        0x0012      0         1         0
+3             55766        19090        0x0010      1         1         0
+4             55766        19090        0x0018      1         1         11
+5             19090        55766        0x0010      1         12        0
+6             19090        55766        0x0018      1         12        167
+7             55766        19090        0x0010      12        168       0
+8             55766        19090        0x0011      12        168       0
+9             19090        55766        0x0011      168       13        0
+10            55766        19090        0x0010      13        169       0

@@ -1,0 +1,50 @@
+2026-11-13T05:33:58.086 INFO pid=2275 role=server READY host=127.0.0.1 port=19091 robust=1 timeout_ms=700 max_clients=64 compiled_debug=1
+2026-11-13T05:33:58.134 INFO pid=2275 role=server FORK child=2277 active=1 peer=127.0.0.1:46694
+2026-11-13T05:33:58.140 INFO pid=2277 role=worker CHILD_DONE
+2026-11-13T05:33:58.142 INFO pid=2275 role=server REAP child=2277 active=0 status=0
+2026-11-13T05:33:58.157 INFO pid=2275 role=server FORK child=2279 active=1 peer=127.0.0.1:46706
+2026-11-13T05:33:58.166 INFO pid=2279 role=worker CHILD_DONE
+2026-11-13T05:33:58.168 INFO pid=2275 role=server REAP child=2279 active=0 status=0
+2026-11-13T05:33:58.178 INFO pid=2275 role=server FORK child=2281 active=1 peer=127.0.0.1:46718
+2026-11-13T05:33:58.182 INFO pid=2281 role=worker CHILD_DONE
+2026-11-13T05:33:58.184 INFO pid=2275 role=server REAP child=2281 active=0 status=0
+2026-11-13T05:33:58.201 INFO pid=2275 role=server FORK child=2283 active=1 peer=127.0.0.1:46722
+2026-11-13T05:33:58.254 INFO pid=2283 role=worker CHILD_DONE
+2026-11-13T05:33:58.256 INFO pid=2275 role=server REAP child=2283 active=0 status=0
+2026-11-13T05:33:58.289 INFO pid=2275 role=server FORK child=2284 active=1 peer=127.0.0.1:46726
+2026-11-13T05:33:58.294 INFO pid=2284 role=worker CHILD_DONE
+2026-11-13T05:33:58.296 INFO pid=2275 role=server REAP child=2284 active=0 status=0
+2026-11-13T05:33:58.298 INFO pid=2275 role=server FORK child=2285 active=1 peer=127.0.0.1:46736
+2026-11-13T05:33:58.298 WARN pid=2285 role=worker FRAME_READ_ERROR errno=90 Message too large
+2026-11-13T05:33:58.299 INFO pid=2285 role=worker CHILD_DONE
+2026-11-13T05:33:58.303 INFO pid=2275 role=server REAP child=2285 active=0 status=0
+2026-11-13T05:33:58.305 INFO pid=2275 role=server FORK child=2286 active=1 peer=127.0.0.1:46750
+2026-11-13T05:33:58.305 WARN pid=2286 role=worker FRAME_READ_ERROR errno=90 Message too large
+2026-11-13T05:33:58.306 INFO pid=2286 role=worker CHILD_DONE
+2026-11-13T05:33:58.310 INFO pid=2275 role=server REAP child=2286 active=0 status=0
+2026-11-13T05:33:58.311 INFO pid=2275 role=server FORK child=2287 active=1 peer=127.0.0.1:46754
+2026-11-13T05:33:58.312 WARN pid=2287 role=worker FRAME_READ_ERROR errno=90 Message too large
+2026-11-13T05:33:58.312 INFO pid=2287 role=worker CHILD_DONE
+2026-11-13T05:33:58.315 INFO pid=2275 role=server REAP child=2287 active=0 status=0
+2026-11-13T05:33:58.318 INFO pid=2275 role=server FORK child=2288 active=1 peer=127.0.0.1:46768
+2026-11-13T05:33:58.319 WARN pid=2288 role=worker FRAME_READ_ERROR errno=104 Connection reset by peer
+2026-11-13T05:33:58.320 INFO pid=2288 role=worker CHILD_DONE
+2026-11-13T05:33:58.323 INFO pid=2275 role=server REAP child=2288 active=0 status=0
+2026-11-13T05:33:58.324 INFO pid=2275 role=server FORK child=2289 active=1 peer=127.0.0.1:46770
+2026-11-13T05:33:58.328 INFO pid=2289 role=worker CHILD_DONE
+2026-11-13T05:33:58.330 INFO pid=2275 role=server REAP child=2289 active=0 status=0
+2026-11-13T05:33:58.331 INFO pid=2275 role=server FORK child=2290 active=1 peer=127.0.0.1:46778
+2026-11-13T05:33:58.334 INFO pid=2290 role=worker CHILD_DONE
+2026-11-13T05:33:58.336 INFO pid=2275 role=server REAP child=2290 active=0 status=0
+2026-11-13T05:33:58.339 INFO pid=2275 role=server FORK child=2291 active=1 peer=127.0.0.1:46790
+2026-11-13T05:33:58.339 WARN pid=2291 role=worker FRAME_READ_ERROR errno=71 Protocol error
+2026-11-13T05:33:58.340 INFO pid=2291 role=worker CHILD_DONE
+2026-11-13T05:33:58.346 INFO pid=2275 role=server REAP child=2291 active=0 status=0
+2026-11-13T05:33:58.348 INFO pid=2275 role=server FORK child=2292 active=1 peer=127.0.0.1:46800
+2026-11-13T05:33:58.453 WARN pid=2292 role=worker FRAME_WRITE_ERROR errno=104 Connection reset by peer
+2026-11-13T05:33:58.454 INFO pid=2292 role=worker CHILD_DONE
+2026-11-13T05:33:58.457 INFO pid=2275 role=server REAP child=2292 active=0 status=0
+2026-11-13T05:33:58.565 INFO pid=2275 role=server FORK child=2294 active=1 peer=127.0.0.1:46810
+2026-11-13T05:33:58.572 INFO pid=2294 role=worker CHILD_DONE
+2026-11-13T05:33:58.574 INFO pid=2275 role=server REAP child=2294 active=0 status=0
+2026-11-13T05:33:58.589 INFO pid=2275 role=server STOPPED active=0

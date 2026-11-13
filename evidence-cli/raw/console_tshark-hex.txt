@@ -1,0 +1,11 @@
+UTC 2026-11-13T05:35:37+00:00
+# python3 scripts/cli_evidence.py tshark-hex
+# tshark -r evidence-cli/loopback.pcap -Y 'tcp.len == 8 && tcp.dstport == 19090' -x
+0000  00 00 00 00 00 00 00 00 00 00 00 00 08 00 45 00   ..............E.
+0010  00 3c 33 e7 40 00 40 06 08 d3 7f 00 00 01 7f 00   .<3.@.@.........
+0020  00 01 d9 e2 4a 92 64 95 51 f9 7f 27 a9 f2 80 18   ....J.d.Q..'....
+0030  02 00 fe 30 00 00 01 01 08 0a c9 2c bf 29 48 9b   ...0.......,.)H.
+0040  6d c4 00 00 00 04 50 49 4e 47                     m.....PING
+
+# tshark -r evidence-cli/loopback.pcap -Y 'tcp.len == 8 && tcp.dstport == 19090' -T fields -e tcp.payload
+0000000450494e47

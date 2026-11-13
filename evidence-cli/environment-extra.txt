@@ -1,0 +1,9 @@
+Linux localhost 6.12.117-0-virt #1-Alpine SMP PREEMPT_DYNAMIC 2026-11-11 03:12:20 x86_64 Linux
+gcc (Alpine 14.2.0) 14.2.0
+GNU Make 4.4.1
+Python 3.12.16
+tcpdump version 4.99.5
+TShark (Wireshark) 4.4.7 (Git commit e8a60fa2ff17).
+2
+BOOT_IMAGE=vmlinuz-virt noapic console=ttyS0,115200 console=tty0 root=UUID=e9acbf11-bbb9-456c-baed-535b774e695c modules=sd-mod,usb-storage,ext4 quiet rootfstype=ext4 initrd=initramfs-virt
+Fri Nov 13 05:40:03 UTC 2026

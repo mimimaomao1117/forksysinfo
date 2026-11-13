@@ -1,0 +1,33 @@
+UTC 2026-11-13T05:33:15+00:00
+# python3 scripts/cli_evidence.py concurrency
+server parent PID=2152; client count=12; SLEEP=3000 ms
+client command (12 subprocesses): ./build/debug/client --port 19210 SLEEP 3000
+# ps -o pid,ppid,stat,comm --ppid 2152
+  PID  PPID STAT COMMAND
+ 2155  2152 S    server
+ 2156  2152 S    server
+ 2159  2152 S    server
+ 2161  2152 S    server
+ 2163  2152 S    server
+ 2164  2152 S    server
+ 2167  2152 S    server
+ 2169  2152 S    server
+ 2170  2152 S    server
+ 2173  2152 S    server
+ 2174  2152 S    server
+ 2176  2152 S    server
+client responses:
+01  OK SLEPT 3000 pid=2155
+02  OK SLEPT 3000 pid=2156
+03  OK SLEPT 3000 pid=2159
+04  OK SLEPT 3000 pid=2161
+05  OK SLEPT 3000 pid=2163
+06  OK SLEPT 3000 pid=2164
+07  OK SLEPT 3000 pid=2167
+08  OK SLEPT 3000 pid=2170
+09  OK SLEPT 3000 pid=2169
+10  OK SLEPT 3000 pid=2173
+11  OK SLEPT 3000 pid=2174
+12  OK SLEPT 3000 pid=2176
+observed 12 workers at one time; elapsed=3.175 s
+serial SLEEP lower bound: 12 x 3 = 36 s

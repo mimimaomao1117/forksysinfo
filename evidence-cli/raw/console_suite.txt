@@ -1,0 +1,14 @@
+UTC 2026-11-13T05:33:45+00:00
+# python3 scripts/cli_evidence.py suite
+PASS Linux environment and required tools
+PASS Build debug and release
+PASS Normal features and abnormal conditions
+PASS Twelve simultaneous C clients and fork children
+PASS Robustness comparison fragmented header
+PASS Robustness comparison idle timeout
+PASS Robustness comparison zombie reaping
+PASS Bounded admission control
+PASS Compile time and runtime debug matrix
+PASS Dynamic shared library linkage
+PASS Real loopback tcpdump capture and frame analysis
+11/11 passed; evidence: /root/ForkSysInfo/evidence-cli

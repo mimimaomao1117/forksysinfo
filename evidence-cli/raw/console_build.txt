@@ -1,0 +1,16 @@
+UTC 2026-11-13T05:30:58+00:00
+# python3 scripts/cli_evidence.py build
+# uname -srmo
+Linux 6.12.117-0-virt x86_64 Linux
+# make -B DEBUG=1 all
+mkdir -p build/debug
+cc -Iinclude -DENABLE_DEBUG=1 -std=c11 -Wall -Wextra -Wpedantic -Werror -O0 -g3 -fPIC -c src/netsys.c -o build/debug/netsys.o
+cc -shared  -Wl,-soname,libnetsys.so build/debug/netsys.o -o build/debug/libnetsys.so
+cc -Iinclude -DENABLE_DEBUG=1 -std=c11 -Wall -Wextra -Wpedantic -Werror -O0 -g3 src/server.c -Lbuild/debug -lnetsys -Wl,-rpath,'$ORIGIN'  -o build/debug/server
+cc -Iinclude -DENABLE_DEBUG=1 -std=c11 -Wall -Wextra -Wpedantic -Werror -O0 -g3 src/client.c -Lbuild/debug -lnetsys -Wl,-rpath,'$ORIGIN'  -o build/debug/client
+# make -B DEBUG=0 all
+mkdir -p build/release
+cc -Iinclude -DENABLE_DEBUG=0 -std=c11 -Wall -Wextra -Wpedantic -Werror -O2 -fPIC -c src/netsys.c -o build/release/netsys.o
+cc -shared  -Wl,-soname,libnetsys.so build/release/netsys.o -o build/release/libnetsys.so
+cc -Iinclude -DENABLE_DEBUG=0 -std=c11 -Wall -Wextra -Wpedantic -Werror -O2 src/server.c -Lbuild/release -lnetsys -Wl,-rpath,'$ORIGIN'  -o build/release/server
+cc -Iinclude -DENABLE_DEBUG=0 -std=c11 -Wall -Wextra -Wpedantic -Werror -O2 src/client.c -Lbuild/release -lnetsys -Wl,-rpath,'$ORIGIN'  -o build/release/client

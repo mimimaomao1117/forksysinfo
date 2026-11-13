@@ -1,0 +1,113 @@
+  PID  PPID STAT COMMAND         COMMAND
+    2     0 S    kthreadd        [kthreadd]
+   15     2 I     \_ rcu_tasks_k  \_ [rcu_tasks_kthread]
+   13     2 I<    \_ kworker/R-m  \_ [kworker/R-mm_percpu_wq]
+   10     2 I<    \_ kworker/0:0  \_ [kworker/0:0H-events_highpri]
+   18     2 I     \_ rcu_preempt  \_ [rcu_preempt]
+   19     2 S     \_ rcu_exp_par  \_ [rcu_exp_par_gp_kthread_worker/0]
+   20     2 S     \_ rcu_exp_gp_  \_ [rcu_exp_gp_kthread_worker]
+   21     2 S     \_ migration/0  \_ [migration/0]
+   22     2 S     \_ cpuhp/0      \_ [cpuhp/0]
+   23     2 S     \_ cpuhp/1      \_ [cpuhp/1]
+   24     2 S     \_ migration/1  \_ [migration/1]
+   25     2 S     \_ ksoftirqd/1  \_ [ksoftirqd/1]
+   26     2 I     \_ kworker/1:0  \_ [kworker/1:0-events]
+   14     2 I     \_ kworker/u8:  \_ [kworker/u8:1-events_unbound]
+   28     2 S     \_ kdevtmpfs    \_ [kdevtmpfs]
+   29     2 I<    \_ kworker/R-i  \_ [kworker/R-inet_frag_wq]
+   30     2 S     \_ kauditd      \_ [kauditd]
+   31     2 S     \_ oom_reaper   \_ [oom_reaper]
+   32     2 I<    \_ kworker/R-w  \_ [kworker/R-writeback]
+   33     2 S     \_ kcompactd0   \_ [kcompactd0]
+   34     2 SN    \_ ksmd         \_ [ksmd]
+   35     2 SN    \_ khugepaged   \_ [khugepaged]
+   36     2 I<    \_ kworker/R-k  \_ [kworker/R-kintegrityd]
+   37     2 I<    \_ kworker/R-k  \_ [kworker/R-kblockd]
+   38     2 I<    \_ kworker/R-b  \_ [kworker/R-blkcg_punt_bio]
+   39     2 S     \_ irq/9-acpi   \_ [irq/9-acpi]
+   41     2 I     \_ kworker/u8:  \_ [kworker/u8:2-writeback]
+   42     2 I<    \_ kworker/R-a  \_ [kworker/R-ata_sff]
+   43     2 I<    \_ kworker/R-m  \_ [kworker/R-md]
+   16     2 I     \_ rcu_tasks_t  \_ [rcu_tasks_trace_kthread]
+   45     2 S     \_ watchdogd    \_ [watchdogd]
+   46     2 I<    \_ kworker/R-q  \_ [kworker/R-quota_events_unbound]
+   52     2 S     \_ kswapd0      \_ [kswapd0]
+   53     2 I<    \_ kworker/0:1  \_ [kworker/0:1H-kblockd]
+   64     2 I<    \_ kworker/R-k  \_ [kworker/R-kthrotld]
+  136     2 S     \_ scsi_eh_0    \_ [scsi_eh_0]
+  137     2 I<    \_ kworker/R-s  \_ [kworker/R-scsi_tmf_0]
+  139     2 S     \_ scsi_eh_1    \_ [scsi_eh_1]
+  142     2 I<    \_ kworker/R-s  \_ [kworker/R-scsi_tmf_1]
+  144     2 S     \_ scsi_eh_2    \_ [scsi_eh_2]
+  147     2 I<    \_ kworker/R-s  \_ [kworker/R-scsi_tmf_2]
+  149     2 S     \_ scsi_eh_3    \_ [scsi_eh_3]
+  152     2 I<    \_ kworker/R-s  \_ [kworker/R-scsi_tmf_3]
+  154     2 S     \_ scsi_eh_4    \_ [scsi_eh_4]
+  157     2 I<    \_ kworker/R-s  \_ [kworker/R-scsi_tmf_4]
+  161     2 S     \_ scsi_eh_5    \_ [scsi_eh_5]
+  162     2 I<    \_ kworker/R-s  \_ [kworker/R-scsi_tmf_5]
+  168     2 I     \_ kworker/u8:  \_ [kworker/u8:6-events_unbound]
+  170     2 I     \_ kworker/u8:  \_ [kworker/u8:8-events_unbound]
+  202     2 I<    \_ kworker/R-m  \_ [kworker/R-mld]
+  205     2 I<    \_ kworker/R-i  \_ [kworker/R-ipv6_addrconf]
+  206     2 I<    \_ kworker/R-k  \_ [kworker/R-kstrp]
+  474     2 I<    \_ kworker/u9:  \_ [kworker/u9:0]
+  475     2 I<    \_ kworker/1:1  \_ [kworker/1:1H-kblockd]
+  539     2 I     \_ kworker/0:2  \_ [kworker/0:2-events]
+    7     2 I<    \_ kworker/R-s  \_ [kworker/R-slub_flushwq]
+    6     2 I<    \_ kworker/R-s  \_ [kworker/R-sync_wq]
+    8     2 I<    \_ kworker/R-n  \_ [kworker/R-netns]
+    4     2 I<    \_ kworker/R-k  \_ [kworker/R-kvfree_rcu_reclaim]
+    3     2 S     \_ pool_workqu  \_ [pool_workqueue_release]
+    5     2 I<    \_ kworker/R-r  \_ [kworker/R-rcu_gp]
+    9     2 I     \_ kworker/0:0  \_ [kworker/0:0-events]
+   17     2 S     \_ ksoftirqd/0  \_ [ksoftirqd/0]
+   27     2 I<    \_ kworker/1:0  \_ [kworker/1:0H-events_highpri]
+   44     2 I<    \_ kworker/R-m  \_ [kworker/R-md_bitmap]
+  860     2 I     \_ kworker/1:2  \_ [kworker/1:2-events]
+ 1682     2 S     \_ jbd2/vda1-8  \_ [jbd2/vda1-8]
+ 1120     2 I<    \_ kworker/R-e  \_ [kworker/R-ext4-rsv-conversion]
+ 1119     2 S     \_ jbd2/vda3-8  \_ [jbd2/vda3-8]
+ 1469     2 I<    \_ kworker/R-t  \_ [kworker/R-ttm]
+ 1683     2 I<    \_ kworker/R-e  \_ [kworker/R-ext4-rsv-conversion]
+ 2183     2 I     \_ kworker/0:1  \_ [kworker/0:1]
+    1     0 Ss   init            /sbin/init
+ 2004     1 Ss+  getty           /sbin/getty 38400 tty2
+ 2008     1 Ss+  getty           /sbin/getty 38400 tty3
+ 2016     1 Ss+  getty           /sbin/getty 38400 tty5
+ 1996     1 S    sshd            sshd: /usr/sbin/sshd [listener] 0 of 10-100 startups
+ 2227  1996 Ss    \_ sshd-sessio  \_ sshd-session: root [priv]
+ 2229  2227 S         \_ sshd-se      \_ sshd-session: root@notty
+ 2230  2229 Ss            \_ pyt          \_ python3 scripts/cli_evidence.py suite
+ 2297  2230 Ss               ser              \_ /root/ForkSysInfo/build/debug/server --host 127.0.0.1 --port 19092 --timeout-ms 6000 --max-clients 64
+ 2309  2297 S                ser              |   \_ /root/ForkSysInfo/build/debug/server --host 127.0.0.1 --port 19092 --timeout-ms 6000 --max-clients 64
+ 2308  2297 S                ser              |   \_ /root/ForkSysInfo/build/debug/server --host 127.0.0.1 --port 19092 --timeout-ms 6000 --max-clients 64
+ 2306  2297 S                ser              |   \_ /root/ForkSysInfo/build/debug/server --host 127.0.0.1 --port 19092 --timeout-ms 6000 --max-clients 64
+ 2312  2297 S                ser              |   \_ /root/ForkSysInfo/build/debug/server --host 127.0.0.1 --port 19092 --timeout-ms 6000 --max-clients 64
+ 2314  2297 S                ser              |   \_ /root/ForkSysInfo/build/debug/server --host 127.0.0.1 --port 19092 --timeout-ms 6000 --max-clients 64
+ 2316  2297 S                ser              |   \_ /root/ForkSysInfo/build/debug/server --host 127.0.0.1 --port 19092 --timeout-ms 6000 --max-clients 64
+ 2303  2297 S                ser              |   \_ /root/ForkSysInfo/build/debug/server --host 127.0.0.1 --port 19092 --timeout-ms 6000 --max-clients 64
+ 2317  2297 S                ser              |   \_ /root/ForkSysInfo/build/debug/server --host 127.0.0.1 --port 19092 --timeout-ms 6000 --max-clients 64
+ 2300  2297 S                ser              |   \_ /root/ForkSysInfo/build/debug/server --host 127.0.0.1 --port 19092 --timeout-ms 6000 --max-clients 64
+ 2302  2297 S                ser              |   \_ /root/ForkSysInfo/build/debug/server --host 127.0.0.1 --port 19092 --timeout-ms 6000 --max-clients 64
+ 2321  2297 S                ser              |   \_ /root/ForkSysInfo/build/debug/server --host 127.0.0.1 --port 19092 --timeout-ms 6000 --max-clients 64
+ 2320  2297 S                ser              |   \_ /root/ForkSysInfo/build/debug/server --host 127.0.0.1 --port 19092 --timeout-ms 6000 --max-clients 64
+ 2298  2230 S                cli              \_ /root/ForkSysInfo/build/debug/client --host 127.0.0.1 --port 19092 --timeout-ms 7000 SLEEP 2000
+ 2299  2230 S                cli              \_ /root/ForkSysInfo/build/debug/client --host 127.0.0.1 --port 19092 --timeout-ms 7000 SLEEP 2000
+ 2301  2230 S                cli              \_ /root/ForkSysInfo/build/debug/client --host 127.0.0.1 --port 19092 --timeout-ms 7000 SLEEP 2000
+ 2318  2230 S                cli              \_ /root/ForkSysInfo/build/debug/client --host 127.0.0.1 --port 19092 --timeout-ms 7000 SLEEP 2000
+ 2319  2230 S                cli              \_ /root/ForkSysInfo/build/debug/client --host 127.0.0.1 --port 19092 --timeout-ms 7000 SLEEP 2000
+ 2305  2230 S                cli              \_ /root/ForkSysInfo/build/debug/client --host 127.0.0.1 --port 19092 --timeout-ms 7000 SLEEP 2000
+ 2304  2230 S                cli              \_ /root/ForkSysInfo/build/debug/client --host 127.0.0.1 --port 19092 --timeout-ms 7000 SLEEP 2000
+ 2307  2230 S                cli              \_ /root/ForkSysInfo/build/debug/client --host 127.0.0.1 --port 19092 --timeout-ms 7000 SLEEP 2000
+ 2311  2230 S                cli              \_ /root/ForkSysInfo/build/debug/client --host 127.0.0.1 --port 19092 --timeout-ms 7000 SLEEP 2000
+ 2323  2230 R                ps               \_ ps -eo pid,ppid,stat,comm,args --forest
+ 2310  2230 S                cli              \_ /root/ForkSysInfo/build/debug/client --host 127.0.0.1 --port 19092 --timeout-ms 7000 SLEEP 2000
+ 2315  2230 S                cli              \_ /root/ForkSysInfo/build/debug/client --host 127.0.0.1 --port 19092 --timeout-ms 7000 SLEEP 2000
+ 2313  2230 S                cli              \_ /root/ForkSysInfo/build/debug/client --host 127.0.0.1 --port 19092 --timeout-ms 7000 SLEEP 2000
+ 1875     1 Ss   udhcpc          /sbin/udhcpc -b -R -p /var/run/udhcpc.eth0.pid -i eth0 -x hostname:localhost
+ 1965     1 Ss   syslogd         /sbin/syslogd -t -n
+ 2020     1 Ss+  getty           /sbin/getty 38400 tty6
+ 2011     1 Ss+  getty           /sbin/getty 38400 tty4
+ 2003     1 Ss+  getty           /sbin/getty 38400 tty1
+ 2024     1 Ss+  getty           /sbin/getty -L 0 ttyS0 vt100

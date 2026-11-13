@@ -1,0 +1,39 @@
+TCP ephemeral port 55766 request
+length=7 header=00 00 00 07
+SYSINFO
+
+TCP ephemeral port 55766 response
+length=163 header=00 00 00 a3
+OK SYSINFO
+hostname=localhost
+sysname=Linux
+release=6.12.117-0-virt
+machine=x86_64
+pid=2361
+uptime_seconds=462
+ram_total_bytes=1546407936
+ram_free_bytes=1328762880
+
+TCP ephemeral port 55778 request
+length=4 header=00 00 00 04
+PING
+
+TCP ephemeral port 55778 response
+length=16 header=00 00 00 10
+OK PONG pid=2363
+
+TCP ephemeral port 55786 request
+length=24 header=00 00 00 18
+ECHO packet-capture-demo
+
+TCP ephemeral port 55786 response
+length=22 header=00 00 00 16
+OK packet-capture-demo
+
+TCP ephemeral port 55792 request
+length=8 header=00 00 00 08
+SLEEP 50
+
+TCP ephemeral port 55792 response
+length=20 header=00 00 00 14
+OK SLEPT 50 pid=2367

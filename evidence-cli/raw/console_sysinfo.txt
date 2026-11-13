@@ -1,0 +1,18 @@
+UTC 2026-11-13T05:31:57+00:00
+# python3 scripts/cli_evidence.py sysinfo
+server: build/debug/server --host 127.0.0.1 --port 19200 --timeout-ms 2000 --max-clients 64
+server parent PID=2123
+# ./build/debug/client --port 19200 SYSINFO
+OK SYSINFO
+hostname=localhost
+sysname=Linux
+release=6.12.117-0-virt
+machine=x86_64
+pid=2125
+uptime_seconds=334
+ram_total_bytes=1546407936
+ram_free_bytes=1320095744
+# ./build/debug/client --port 19200 PING
+OK PONG pid=2127
+# ./build/debug/client --port 19200 ECHO 'hello from the command line'
+OK hello from the command line

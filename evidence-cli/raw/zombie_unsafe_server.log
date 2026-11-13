@@ -1,0 +1,5 @@
+2026-11-13T05:34:04.527 INFO pid=2335 role=server READY host=127.0.0.1 port=19098 robust=0 timeout_ms=700 max_clients=64 compiled_debug=1
+2026-11-13T05:34:04.527 WARN pid=2335 role=server UNSAFE_TEACHING_MODE partial_read_recovery=off idle_deadline=off child_reaping=off
+2026-11-13T05:34:04.578 INFO pid=2335 role=server FORK child=2337 active=1 peer=127.0.0.1:35310
+2026-11-13T05:34:04.584 INFO pid=2337 role=worker CHILD_DONE
+2026-11-13T05:34:04.908 INFO pid=2335 role=server STOPPED active=0

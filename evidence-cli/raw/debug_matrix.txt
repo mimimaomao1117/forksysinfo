@@ -1,0 +1,31 @@
+{"compile_debug": 1, "runtime_debug": false, "debug_line_count": 0}
+2026-11-13T05:34:05.084 INFO pid=2341 role=server READY host=127.0.0.1 port=19100 robust=1 timeout_ms=700 max_clients=64 compiled_debug=1
+2026-11-13T05:34:05.130 INFO pid=2341 role=server FORK child=2343 active=1 peer=127.0.0.1:56400
+2026-11-13T05:34:05.137 INFO pid=2343 role=worker CHILD_DONE
+2026-11-13T05:34:05.139 INFO pid=2341 role=server REAP child=2343 active=0 status=0
+2026-11-13T05:34:05.142 INFO pid=2341 role=server STOPPED active=0
+
+{"compile_debug": 1, "runtime_debug": true, "debug_line_count": 8}
+2026-11-13T05:34:05.167 INFO pid=2344 role=server READY host=127.0.0.1 port=19101 robust=1 timeout_ms=700 max_clients=64 compiled_debug=1
+2026-11-13T05:34:05.169 DEBUG pid=2344 role=server DEBUG_BUILD runtime_debug=on
+2026-11-13T05:34:05.223 INFO pid=2344 role=server FORK child=2346 active=1 peer=127.0.0.1:54390
+2026-11-13T05:34:05.225 DEBUG pid=2346 role=worker FRAME_RX bytes=4
+2026-11-13T05:34:05.225 DEBUG pid=2346 role=worker COMMAND bytes=4
+2026-11-13T05:34:05.226 DEBUG pid=2346 role=worker FRAME_TX bytes=16
+2026-11-13T05:34:05.226 DEBUG pid=2346 role=worker PEER_EOF
+2026-11-13T05:34:05.227 INFO pid=2346 role=worker CHILD_DONE
+2026-11-13T05:34:05.229 INFO pid=2344 role=server REAP child=2346 active=0 status=0
+2026-11-13T05:34:05.233 INFO pid=2344 role=server STOPPED active=0
+2026-11-13T05:34:05.219 DEBUG pid=2345 role=client CONNECT host=127.0.0.1 port=19101 timeout_ms=5000
+2026-11-13T05:34:05.225 DEBUG pid=2345 role=client FRAME_TX bytes=4
+2026-11-13T05:34:05.226 DEBUG pid=2345 role=client FRAME_RX bytes=16
+
+{"compile_debug": 0, "runtime_debug": false, "debug_line_count": 0}
+2026-11-13T05:34:05.264 INFO pid=2347 role=server READY host=127.0.0.1 port=19102 robust=1 timeout_ms=700 max_clients=64 compiled_debug=0
+2026-11-13T05:34:05.316 INFO pid=2347 role=server FORK child=2349 active=1 peer=127.0.0.1:39704
+2026-11-13T05:34:05.330 INFO pid=2347 role=server STOPPED active=0
+
+{"compile_debug": 0, "runtime_debug": true, "debug_line_count": 0}
+2026-11-13T05:34:05.353 INFO pid=2350 role=server READY host=127.0.0.1 port=19103 robust=1 timeout_ms=700 max_clients=64 compiled_debug=0
+2026-11-13T05:34:05.400 INFO pid=2350 role=server FORK child=2352 active=1 peer=127.0.0.1:49528
+2026-11-13T05:34:05.408 INFO pid=2350 role=server STOPPED active=0

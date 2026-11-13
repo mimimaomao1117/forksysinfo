@@ -1,0 +1,94 @@
+{
+  "capture": "QEMU native VGA framebuffer",
+  "image_content": "Unmodified full console captures",
+  "screenshots": [
+    {
+      "file": "media/cli/01_build.png",
+      "sha256": "ec9196a217e81c0b624681ce1155b277d969a76c326ffefde293b2b71f95b21c",
+      "size": [
+        1280,
+        960
+      ],
+      "mode": "build",
+      "recorded_utc": "2026-11-13T05:31:17.741648+00:00",
+      "transcript": "evidence-cli/raw/console_build.txt"
+    },
+    {
+      "file": "media/cli/02_sysinfo.png",
+      "sha256": "e8aa0bb869fa8c5b9568cc0a7ab27018656ade7d58ad25a6e8d072d6849633d9",
+      "size": [
+        1280,
+        960
+      ],
+      "mode": "sysinfo",
+      "recorded_utc": "2026-11-13T05:31:57.977925+00:00",
+      "transcript": "evidence-cli/raw/console_sysinfo.txt"
+    },
+    {
+      "file": "media/cli/03_concurrency.png",
+      "sha256": "c25d133417bc0c1bdb7c5c35ecc1a540f48117217d287074c0d9614076ad460a",
+      "size": [
+        1280,
+        960
+      ],
+      "mode": "concurrency",
+      "recorded_utc": "2026-11-13T05:33:18.339369+00:00",
+      "transcript": "evidence-cli/raw/console_concurrency.txt"
+    },
+    {
+      "file": "media/cli/04_robustness.png",
+      "sha256": "42ace9e665a76809f437eca42045b8a44a40a7f5582b7887d3859687d9160616",
+      "size": [
+        1280,
+        960
+      ],
+      "mode": "robustness",
+      "recorded_utc": "2026-11-13T05:33:25.352539+00:00",
+      "transcript": "evidence-cli/raw/console_robustness.txt"
+    },
+    {
+      "file": "media/cli/05_debug_library.png",
+      "sha256": "f2344c0cd54ac6432ad96e627320c82ad0a0b4441d1fb9b6dbd11569f164237c",
+      "size": [
+        1280,
+        960
+      ],
+      "mode": "debug-library",
+      "recorded_utc": "2026-11-13T05:38:34.483367+00:00",
+      "transcript": "evidence-cli/raw/console_debug-library.txt"
+    },
+    {
+      "file": "media/cli/06_tshark.png",
+      "sha256": "ad14d27a3c5947c10045bb39e024c78fef95cd5638ed34e6d5a05da7467a46b2",
+      "size": [
+        1280,
+        960
+      ],
+      "mode": "tshark",
+      "recorded_utc": "2026-11-13T05:38:41.559057+00:00",
+      "transcript": "evidence-cli/raw/console_tshark.txt"
+    },
+    {
+      "file": "media/cli/07_packets_hex.png",
+      "sha256": "5cc978d28a7e197057921efba9e182b3e4b6c99300de92d9d83900ca108f7bf8",
+      "size": [
+        1280,
+        960
+      ],
+      "mode": "tshark-hex",
+      "recorded_utc": "2026-11-13T05:35:41.381783+00:00",
+      "transcript": "evidence-cli/raw/console_tshark-hex.txt"
+    },
+    {
+      "file": "media/cli/08_tests.png",
+      "sha256": "07f825edda811f29d03a09afe716f63a5b9a17639890a345d6e1593d283311fc",
+      "size": [
+        1280,
+        960
+      ],
+      "mode": "suite",
+      "recorded_utc": "2026-11-13T05:34:07.458688+00:00",
+      "transcript": "evidence-cli/raw/console_suite.txt"
+    }
+  ]
+}

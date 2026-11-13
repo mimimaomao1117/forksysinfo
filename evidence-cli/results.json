@@ -1,0 +1,496 @@
+{
+  "tests": [
+    {
+      "name": "Linux environment and required tools",
+      "passed": true,
+      "detail": "Linux toolchain and tcpdump present; versions recorded",
+      "seconds": 0.168
+    },
+    {
+      "name": "Build debug and release",
+      "passed": true,
+      "detail": "DEBUG=1 and DEBUG=0 built successfully",
+      "seconds": 12.054
+    },
+    {
+      "name": "Normal features and abnormal conditions",
+      "passed": true,
+      "detail": "SYSINFO PING ECHO SLEEP; bad command/argument/length, partial EOF, occupied port, refused connection",
+      "seconds": 0.551
+    },
+    {
+      "name": "Twelve simultaneous C clients and fork children",
+      "passed": true,
+      "detail": {
+        "simultaneous_children": 12,
+        "wall_seconds": 2.151,
+        "serial_seconds": 24
+      },
+      "seconds": 2.221
+    },
+    {
+      "name": "Robustness comparison fragmented header",
+      "passed": true,
+      "detail": [
+        {
+          "mode": "robust",
+          "fragments": [
+            1,
+            2,
+            5
+          ],
+          "response": "OK PONG pid=2325"
+        },
+        {
+          "mode": "unsafe",
+          "fragments": [
+            1,
+            2,
+            5
+          ],
+          "response": "BrokenPipeError: [Errno 32] Broken pipe"
+        }
+      ],
+      "seconds": 0.659
+    },
+    {
+      "name": "Robustness comparison idle timeout",
+      "passed": true,
+      "detail": [
+        {
+          "mode": "robust",
+          "timeout_ms": 500,
+          "observed_after_seconds": 1.208,
+          "before": [
+            {
+              "pid": 2329,
+              "ppid": 2328,
+              "state": "S",
+              "command": "server"
+            }
+          ],
+          "after": [],
+          "active_children": 0
+        },
+        {
+          "mode": "unsafe",
+          "timeout_ms": 500,
+          "observed_after_seconds": 1.215,
+          "before": [
+            {
+              "pid": 2331,
+              "ppid": 2330,
+              "state": "S",
+              "command": "server"
+            }
+          ],
+          "after": [
+            {
+              "pid": 2331,
+              "ppid": 2330,
+              "state": "S",
+              "command": "server"
+            }
+          ],
+          "active_children": 1
+        }
+      ],
+      "seconds": 2.567
+    },
+    {
+      "name": "Robustness comparison zombie reaping",
+      "passed": true,
+      "detail": [
+        {
+          "mode": "robust",
+          "parent_pid": 2332,
+          "children": [],
+          "zombie_count": 0,
+          "client_output": "OK PONG pid=2334"
+        },
+        {
+          "mode": "unsafe",
+          "parent_pid": 2335,
+          "children": [
+            {
+              "pid": 2337,
+              "ppid": 2335,
+              "state": "Z",
+              "command": "server"
+            }
+          ],
+          "zombie_count": 1,
+          "client_output": "OK PONG pid=2337"
+        }
+      ],
+      "seconds": 0.801
+    },
+    {
+      "name": "Bounded admission control",
+      "passed": true,
+      "detail": {
+        "max_clients": 2,
+        "third_client": "ERR SERVER_BUSY",
+        "children": [
+          {
+            "pid": 2339,
+            "ppid": 2338,
+            "state": "S",
+            "command": "server"
+          },
+          {
+            "pid": 2340,
+            "ppid": 2338,
+            "state": "S",
+            "command": "server"
+          }
+        ]
+      },
+      "seconds": 0.117
+    },
+    {
+      "name": "Compile time and runtime debug matrix",
+      "passed": true,
+      "detail": [
+        {
+          "compile_debug": 1,
+          "runtime_debug": false,
+          "debug_line_count": 0
+        },
+        {
+          "compile_debug": 1,
+          "runtime_debug": true,
+          "debug_line_count": 8
+        },
+        {
+          "compile_debug": 0,
+          "runtime_debug": false,
+          "debug_line_count": 0
+        },
+        {
+          "compile_debug": 0,
+          "runtime_debug": true,
+          "debug_line_count": 0
+        }
+      ],
+      "seconds": 0.35
+    },
+    {
+      "name": "Dynamic shared library linkage",
+      "passed": true,
+      "detail": "Both server and client have DT_NEEDED libnetsys.so and ORIGIN runtime search path",
+      "seconds": 0.127
+    },
+    {
+      "name": "Real loopback tcpdump capture and frame analysis",
+      "passed": true,
+      "detail": {
+        "link_type": 1,
+        "packet_count": 40,
+        "pcap_bytes": 3664,
+        "syn_packets": 8,
+        "fin_packets": 8,
+        "rst_packets": 0,
+        "data_packets": 8,
+        "connections": 4
+      },
+      "seconds": 1.818
+    }
+  ],
+  "robustness": {
+    "fragmented_header": [
+      {
+        "mode": "robust",
+        "fragments": [
+          1,
+          2,
+          5
+        ],
+        "response": "OK PONG pid=2325"
+      },
+      {
+        "mode": "unsafe",
+        "fragments": [
+          1,
+          2,
+          5
+        ],
+        "response": "BrokenPipeError: [Errno 32] Broken pipe"
+      }
+    ],
+    "idle_timeout": [
+      {
+        "mode": "robust",
+        "timeout_ms": 500,
+        "observed_after_seconds": 1.208,
+        "before": [
+          {
+            "pid": 2329,
+            "ppid": 2328,
+            "state": "S",
+            "command": "server"
+          }
+        ],
+        "after": [],
+        "active_children": 0
+      },
+      {
+        "mode": "unsafe",
+        "timeout_ms": 500,
+        "observed_after_seconds": 1.215,
+        "before": [
+          {
+            "pid": 2331,
+            "ppid": 2330,
+            "state": "S",
+            "command": "server"
+          }
+        ],
+        "after": [
+          {
+            "pid": 2331,
+            "ppid": 2330,
+            "state": "S",
+            "command": "server"
+          }
+        ],
+        "active_children": 1
+      }
+    ],
+    "zombie_reaping": [
+      {
+        "mode": "robust",
+        "parent_pid": 2332,
+        "children": [],
+        "zombie_count": 0,
+        "client_output": "OK PONG pid=2334"
+      },
+      {
+        "mode": "unsafe",
+        "parent_pid": 2335,
+        "children": [
+          {
+            "pid": 2337,
+            "ppid": 2335,
+            "state": "Z",
+            "command": "server"
+          }
+        ],
+        "zombie_count": 1,
+        "client_output": "OK PONG pid=2337"
+      }
+    ]
+  },
+  "concurrency": {
+    "client_count": 12,
+    "sleep_ms": 2000,
+    "parent_pid": 2297,
+    "simultaneous_child_count": 12,
+    "simultaneous_children": [
+      {
+        "pid": 2300,
+        "ppid": 2297,
+        "state": "S",
+        "command": "server"
+      },
+      {
+        "pid": 2302,
+        "ppid": 2297,
+        "state": "S",
+        "command": "server"
+      },
+      {
+        "pid": 2303,
+        "ppid": 2297,
+        "state": "S",
+        "command": "server"
+      },
+      {
+        "pid": 2306,
+        "ppid": 2297,
+        "state": "S",
+        "command": "server"
+      },
+      {
+        "pid": 2308,
+        "ppid": 2297,
+        "state": "S",
+        "command": "server"
+      },
+      {
+        "pid": 2309,
+        "ppid": 2297,
+        "state": "S",
+        "command": "server"
+      },
+      {
+        "pid": 2312,
+        "ppid": 2297,
+        "state": "S",
+        "command": "server"
+      },
+      {
+        "pid": 2314,
+        "ppid": 2297,
+        "state": "S",
+        "command": "server"
+      },
+      {
+        "pid": 2316,
+        "ppid": 2297,
+        "state": "S",
+        "command": "server"
+      },
+      {
+        "pid": 2317,
+        "ppid": 2297,
+        "state": "S",
+        "command": "server"
+      },
+      {
+        "pid": 2320,
+        "ppid": 2297,
+        "state": "S",
+        "command": "server"
+      },
+      {
+        "pid": 2321,
+        "ppid": 2297,
+        "state": "S",
+        "command": "server"
+      }
+    ],
+    "elapsed_seconds": 2.151,
+    "serial_sleep_seconds": 24.0,
+    "clients": [
+      {
+        "client_index": 1,
+        "client_pid": 2298,
+        "exit_code": 0,
+        "stdout": "OK SLEPT 2000 pid=2300\n",
+        "stderr": ""
+      },
+      {
+        "client_index": 2,
+        "client_pid": 2299,
+        "exit_code": 0,
+        "stdout": "OK SLEPT 2000 pid=2302\n",
+        "stderr": ""
+      },
+      {
+        "client_index": 3,
+        "client_pid": 2301,
+        "exit_code": 0,
+        "stdout": "OK SLEPT 2000 pid=2303\n",
+        "stderr": ""
+      },
+      {
+        "client_index": 4,
+        "client_pid": 2304,
+        "exit_code": 0,
+        "stdout": "OK SLEPT 2000 pid=2306\n",
+        "stderr": ""
+      },
+      {
+        "client_index": 5,
+        "client_pid": 2305,
+        "exit_code": 0,
+        "stdout": "OK SLEPT 2000 pid=2308\n",
+        "stderr": ""
+      },
+      {
+        "client_index": 6,
+        "client_pid": 2307,
+        "exit_code": 0,
+        "stdout": "OK SLEPT 2000 pid=2309\n",
+        "stderr": ""
+      },
+      {
+        "client_index": 7,
+        "client_pid": 2310,
+        "exit_code": 0,
+        "stdout": "OK SLEPT 2000 pid=2312\n",
+        "stderr": ""
+      },
+      {
+        "client_index": 8,
+        "client_pid": 2311,
+        "exit_code": 0,
+        "stdout": "OK SLEPT 2000 pid=2314\n",
+        "stderr": ""
+      },
+      {
+        "client_index": 9,
+        "client_pid": 2313,
+        "exit_code": 0,
+        "stdout": "OK SLEPT 2000 pid=2316\n",
+        "stderr": ""
+      },
+      {
+        "client_index": 10,
+        "client_pid": 2315,
+        "exit_code": 0,
+        "stdout": "OK SLEPT 2000 pid=2317\n",
+        "stderr": ""
+      },
+      {
+        "client_index": 11,
+        "client_pid": 2318,
+        "exit_code": 0,
+        "stdout": "OK SLEPT 2000 pid=2320\n",
+        "stderr": ""
+      },
+      {
+        "client_index": 12,
+        "client_pid": 2319,
+        "exit_code": 0,
+        "stdout": "OK SLEPT 2000 pid=2321\n",
+        "stderr": ""
+      }
+    ]
+  },
+  "packet_capture": {
+    "link_type": 1,
+    "packet_count": 40,
+    "pcap_bytes": 3664,
+    "syn_packets": 8,
+    "fin_packets": 8,
+    "rst_packets": 0,
+    "data_packets": 8,
+    "connections": 4
+  },
+  "started_utc": "2026-11-13T05:33:45.838726+00:00",
+  "capture_skipped": false,
+  "environment": {
+    "platform": "Linux localhost 6.12.117-0-virt #1-Alpine SMP PREEMPT_DYNAMIC 2026-11-11 03:12:20 x86_64 Linux",
+    "python": "3.12.16 (main, Oct 27 2026, 12:41:55) [GCC 14.2.0]",
+    "uid": 0,
+    "utc": "2026-11-13T05:33:46.004814+00:00"
+  },
+  "passed": true,
+  "pass_count": 11,
+  "test_count": 11,
+  "debug_matrix": [
+    {
+      "compile_debug": 1,
+      "runtime_debug": false,
+      "debug_line_count": 0
+    },
+    {
+      "compile_debug": 1,
+      "runtime_debug": true,
+      "debug_line_count": 8
+    },
+    {
+      "compile_debug": 0,
+      "runtime_debug": false,
+      "debug_line_count": 0
+    },
+    {
+      "compile_debug": 0,
+      "runtime_debug": true,
+      "debug_line_count": 0
+    }
+  ],
+  "finished_utc": "2026-11-13T05:34:07.429493+00:00"
+}

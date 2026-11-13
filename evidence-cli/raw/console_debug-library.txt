@@ -1,0 +1,15 @@
+UTC 2026-11-13T05:38:33+00:00
+# python3 scripts/cli_evidence.py debug-library
+compile DEBUG / runtime --debug / observed DEBUG log lines
+  1             False             0
+  1             True              8
+  0             False             0
+  0             True              0
+
+# ldd build/debug/server | grep libnetsys
+	libnetsys.so => build/debug/libnetsys.so (0x7fb7f213d000)
+# ldd build/debug/client | grep libnetsys
+	libnetsys.so => build/debug/libnetsys.so (0x7f17025dd000)
+# readelf -d build/debug/server | grep -E 'NEEDED.*libnetsys|RUNPATH'
+ 0x0000000000000001 (NEEDED)             Shared library: [libnetsys.so]
+ 0x000000000000001d (RUNPATH)            Library runpath: [$ORIGIN]

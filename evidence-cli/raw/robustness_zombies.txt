@@ -1,0 +1,23 @@
+[
+  {
+    "mode": "robust",
+    "parent_pid": 2332,
+    "children": [],
+    "zombie_count": 0,
+    "client_output": "OK PONG pid=2334"
+  },
+  {
+    "mode": "unsafe",
+    "parent_pid": 2335,
+    "children": [
+      {
+        "pid": 2337,
+        "ppid": 2335,
+        "state": "Z",
+        "command": "server"
+      }
+    ],
+    "zombie_count": 1,
+    "client_output": "OK PONG pid=2337"
+  }
+]

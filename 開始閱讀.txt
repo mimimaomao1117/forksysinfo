@@ -6,11 +6,11 @@ https://github.com/mimimaomao1117/forksysinfo
 任何人都可瀏覽、clone 或下載原始碼。
 
 一 先閱讀與觀看
-   報告：report/ForkSysInfo_Report.pdf
+   英文報告：report/ForkSysInfo_Report.pdf（16 頁，含實際命令列截圖及清楚的架構圖）
    文字報告：docs/REPORT.md
    影片：media/ForkSysInfo_2min.mp4
    展示講稿：docs/DEMO_SCRIPT.md
-   影片精確 120 秒，含繁體中文旁白與字幕。
+   影片精確 120 秒，保留原有繁體中文旁白與字幕；新版報告及圖說為英文。
 
 二 從 GitHub 取得專案
    GitHub 版收錄完整 C 原始碼、測試、文件、PDF、影片、截圖與封包證據。
@@ -60,3 +60,7 @@ https://github.com/mimimaomao1117/forksysinfo
    portable-linux/   桌面套件的離線 QEMU 與 Linux 磁碟
 
 重新執行的 PID、記憶體與耗時會改變，應以當次結果為準。
+
+新版報告截圖：media/cli/（8 張實際 Linux Console 畫面）
+架構及協定圖：media/diagrams/（英文 SVG 與 PNG）
+補拍測試資料：evidence-cli/；三秒併發示範實測 3.175 秒。

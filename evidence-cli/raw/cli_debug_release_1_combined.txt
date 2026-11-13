@@ -1,0 +1,3 @@
+2026-11-13T05:38:34.278 INFO pid=2464 role=server READY host=127.0.0.1 port=19243 robust=1 timeout_ms=700 max_clients=64 compiled_debug=0
+2026-11-13T05:38:34.335 INFO pid=2464 role=server FORK child=2466 active=1 peer=127.0.0.1:55836
+2026-11-13T05:38:34.345 INFO pid=2464 role=server STOPPED active=0

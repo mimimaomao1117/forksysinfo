@@ -1,213 +1,168 @@
-# ForkSysInfo 系統設計與執行驗證報告
+# ForkSysInfo TCP Client Server Lab Report
 
-本專案以 C 語言實作 TCP 用戶端與伺服器。伺服器透過 `fork()` 為每條連線建立獨立子行程，不使用執行緒。雙方動態連結共同的 `libnetsys.so`，並提供編譯時及執行時兩層 debug 控制。系統資訊查詢是主要功能，另外提供 PING、ECHO、SLEEP 與 QUIT，以利驗證協定、併發和連線生命週期。
+Repository: https://github.com/mimimaomao1117/forksysinfo
 
-公開儲存庫為 [mimimaomao1117/forksysinfo](https://github.com/mimimaomao1117/forksysinfo)，不需登入即可瀏覽及下載。文件更新日期為 2026 年 11 月 13 日。GitHub 版提供完整原始碼、測試、報告、影片、截圖與封包證據；桌面完整套件另附可攜式 Linux 環境。以下測量數值引用原始實測紀錄，文件更新不代表重新量測。
+Date: November 13 2026
 
-本次執行平台為 Windows 本機上由 QEMU 軟體模擬的 Linux 環境；Docker 與原生 Linux 是可選的重現方式。SYSINFO 顯示 Linux 環境所見的核心、主機名稱及記憶體等資訊，不代表 Windows 工作管理員的數值。
+## 1 Test environment and features
 
-2026 年 11 月 13 日 11 時 50 分 56 秒至 11 時 51 分 05 秒（UTC+8）的 11 項整合驗證全部通過。環境紀錄為 Linux `6.12.51-0-virt`、GCC 14.2.0、GNU Make 4.4.1、Python 3.12.16 與 tcpdump 4.99.5。原始 log 採 UTC 時間，故對應 03:50:56 至 03:51:05；兩者為同一次實測。
+This project implements a TCP system information service in C. The server uses `fork()` to create one child for each connection. No threads are used. The client and server both dynamically link `libnetsys.so`.
 
-## 1 系統架構
+The program was tested in Linux under QEMU on the Windows computer used for this assignment. This command-line run uses Linux 6.12.117-0-virt, GCC 14.2.0, GNU Make 4.4.1, Python 3.12.16, tcpdump 4.99.5 and TShark 4.4.7. The screenshots are direct captures of the Linux virtual console, and their output is saved in `evidence-cli/`. Earlier records remain separately in `evidence/` and `evidence-recheck/`.
 
-父行程建立 TCP listening socket，執行 `bind()`、`listen()`，接著在接收迴圈中 `accept()`。每成功接受一條連線，父行程呼叫 `fork()`。子行程關閉 listening socket，處理該連線的請求並結束；父行程關閉已交給子行程的 connected socket，立即繼續接受其他連線。雙方分別關閉不再使用的描述符，避免其他行程仍持有 socket 而延後 EOF。
+SYSINFO returns the Linux hostname, kernel, architecture, worker PID, uptime and memory information. PING checks the connection, ECHO returns text, SLEEP simulates work, and QUIT closes a session. SYSINFO reports what the Linux guest sees.
 
-```text
-C client 1 ── TCP ── child process 1
-C client 2 ── TCP ── child process 2
-      ...                 ...
-C client 12 ─ TCP ── child process 12
-                         ↑ fork
-                 parent listening process
+## 2 Server design and message format
 
-client → libnetsys.so ← server
-```
+The parent creates the listening socket and calls `accept()`. After each accepted connection, it calls `fork()`. The child handles that connection while the parent immediately returns to accepting more clients. The parent closes its copy of the connected socket, and the child closes its copy of the listening socket. The parent collects completed children with `waitpid(..., WNOHANG)`.
 
-父行程管理子行程的數量與回收，並處理中斷或終止訊號。預設的用戶端數量上限為 64，超過上限時拒絕新增工作，避免無限制建立行程。預設綁定 `127.0.0.1`，讓展示與封包擷取都在同一台電腦完成。
+![Parent process and child processes for separate client connections](../media/diagrams/architecture.png)
 
-伺服器子行程支援在同一條連線處理多個 frame，直到收到 QUIT、EOF 或錯誤。命令列 client 每次執行只送一個請求，收到一個回應後關閉連線。兩者的生命週期設計不同，但使用同一個 framing 協定。
+A child can process several requests on one TCP connection. It exits after QUIT, EOF or a frame error. The command-line client sends one request, prints one reply and then closes its connection.
 
-`fork()` 讓各連線有獨立位址空間，單一子行程的連線錯誤不會直接結束父行程。代價是每條連線需要額外的行程資源，因此必須限制數量、設定逾時，並回收已結束的子行程。[1][2]
+TCP is a byte stream. One send does not necessarily correspond to one receive. Each application message therefore begins with a 4-byte unsigned length in network byte order, followed by 1 to 4096 payload bytes. The terminating C NUL is not sent. A PING request is `00 00 00 04 50 49 4e 47`.
 
-## 2 應用層協定
+![Application frame fields and the complete PING request](../media/diagrams/protocol.png)
 
-TCP 提供有序的位元組串流，不會保留應用程式每次 `send()` 的邊界。因此一次傳送可能由多次接收取得，多次傳送也可能由一次接收取得。[3] 本專案採用長度前綴，明確界定每個 frame。
+The main source files are:
 
-| 欄位 | 大小 | 意義 |
-|---|---:|---|
-| payload length | 4 bytes | unsigned 32-bit，network byte order |
-| payload | 1 至 4096 bytes | 文字命令或回應，不包含結尾 NUL |
+- `src/server.c`: `main()` accepts and forks; `serve_client()` runs the session; `handle_command()` selects the operation; `system_info()` calls uname, sysinfo and gethostname.
+- `src/client.c`: parses the options, connects, sends one request and displays the response.
+- `src/netsys.c`: implements shared framing, socket setup, deadlines, numeric validation and logging. `include/netsys.h` declares the interface and debug macro.
+- `Makefile`: builds the shared library and both executables in separate debug and release directories.
 
-例如 `PING` 的應用層資料是 `00 00 00 04 50 49 4e 47`。前 4 bytes 的數值為 4，後 4 bytes 是 ASCII 命令。程式不假設這 8 bytes 一定出現在同一個 TCP 封包中。
+## 3 Build and system information request
 
-| 命令 | 功能 | 回應內容 |
-|---|---|---|
-| `SYSINFO` | 查詢伺服器所見的系統資訊 | uname、hostname、pid、uptime、RAM |
-| `PING` | 確認應用程式可回應 | `OK PONG` 與子行程 PID |
-| `ECHO text` | 回傳文字 | `OK` 與原始文字 |
-| `SLEEP ms` | 模擬較長的工作 | 完成等待後回傳耗時設定與 PID |
-| `QUIT` | 結束連線 | 結束回應 |
-
-成功回應以 `OK` 開頭；可回覆的命令錯誤以 `ERR` 開頭。錯誤的長度、提早關閉或無法繼續解碼的 frame 會結束該連線。長度在讀取 payload 前先檢查，不依照未驗證的長度配置任意大小記憶體。
-
-文字 payload 中的內嵌 NUL 也會被拒絕，避免 C 字串在中間結束，導致實際收到的 frame 與命令解析內容不同。SLEEP 只接受 0 到 10000 毫秒的整數。這些限制在比較模式中仍保留。
-
-## 3 共用動態函式庫與原始碼
-
-`include/` 宣告共同介面，`src/` 提供伺服器、用戶端及函式庫實作。共同的封包處理、數值檢查、時間與 log 功能集中在 `libnetsys.so`，避免雙方各維護一份相同程式。所有完整原始檔隨專案繳交，並可由 Makefile 重建。
-
-| 原始檔與函式 | 主要責任 |
-|---|---|
-| `include/netsys.h` | 宣告協定常數、共享 API 與 `NET_DEBUG` 巨集 |
-| `src/netsys.c` 的 `net_recv_frame()`、`net_send_frame()` | 接收與傳送長度前綴 frame，處理完整 I/O 與期限 |
-| `src/netsys.c` 的 `net_connect()`、`net_listen()` | 建立 IPv4 連線及 listening socket |
-| `src/netsys.c` 的 `net_parse_long()`、`net_log()` | 檢查數值範圍與產生帶有行程資訊的 log |
-| `src/server.c` 的 `system_info()`、`handle_command()` | 取得 Linux 資訊，執行各項命令 |
-| `src/server.c` 的 `serve_client()` | 子行程的持續收送迴圈與連線結束處理 |
-| `src/server.c` 的 `reap_children()` | 以 `waitpid(-1, ..., WNOHANG)` 回收完成的子行程 |
-| `src/server.c` 的 `main()` | 解析選項、accept、fork、限制連線數及關閉清理 |
-| `src/client.c` 的 `main()` | 解析命令列、連線、發出單次請求並顯示回應 |
-
-動態函式庫以位置獨立程式碼建置，再以 shared library 方式連結。client 與 server 的 ELF 動態資訊會列出 `libnetsys.so` 相依性；`ldd` 顯示執行時實際載入的路徑。執行檔的 RUNPATH 使用 `$ORIGIN`，讓它們在自己的目錄中找到函式庫。這使 debug 與 release 可同時存在，不需要修改全域函式庫搜尋路徑。
-
-Makefile 將 debug 與 release 的目標分別放入 `build/debug/` 和 `build/release/`。`make DEBUG=1` 建立前者；`make DEBUG=0` 建立後者。這個設計避免切換編譯旗標時誤用先前的 `.o` 檔案。[5]
-
-## 4 兩層 debug 控制
-
-第一層由 Makefile 傳入編譯期旗標。關閉時，debug 巨集不產生輸出呼叫；第二層由執行期 `--debug` 決定是否輸出仍存在於程式中的 debug 訊息。編譯期關閉後，執行期旗標無法把已移除的程式碼恢復。
-
-| 編譯設定 | 執行旗標 | 實測 debug 行數 |
-|---|---|---:|
-| `DEBUG=1` | 無 `--debug` | 0 |
-| `DEBUG=1` | 有 `--debug` | 8 |
-| `DEBUG=0` | 無 `--debug` | 0 |
-| `DEBUG=0` | 有 `--debug` | 0 |
-
-一般錯誤、啟動與重要生命週期訊息仍會保留，方便在關閉 debug 的版本診斷連線失敗。
-
-上表統計單次 PING 交易的 client 與 server log。8 行包含連線、frame 傳送與接收、命令處理及 EOF 等 debug 記錄；不是要求所有操作固定產生 8 行。
-
-## 5 健全性機制
-
-正常模式使用完整接收與傳送迴圈，處理 partial I/O、`EINTR` 和提早斷線。frame 的接收以單調時鐘計算截止時間，避免對方每隔一小段時間只傳一個 byte，就無限延長資源占用。固定長度界限與命令參數檢查則限制不合法輸入。
-
-程式抑制 `SIGPIPE` 導致的突然終止，將對方關閉後的寫入錯誤當作一般錯誤處理。父行程回收子行程，避免 zombie；連線數量有上限；伺服器結束時會清理仍存在的子行程。連線拒絕、埠號占用與系統呼叫失敗均以非零結束碼或明確 log 呈現。
-
-socket 使用 nonblocking I/O 並搭配 `poll()` 等待 readiness。父行程的 `SIGCHLD` handler 只負責打斷等待，不在 handler 裡執行格式化輸出或修改複雜資料；回收工作在一般控制流程中完成。父行程最長每 100 毫秒重新檢查一次，避免完成的子行程長期留存。接收錯誤在可回傳時會送出 `ERR TIMEOUT`、`ERR BAD_LENGTH` 或 `ERR BAD_FRAME` 後關閉。
-
-建立子行程時，程式暫時阻擋 SIGTERM 與 SIGINT。子行程先把終止 handler 改回預設值，再解除阻擋；父行程先記錄新 PID，再解除阻擋。這避免在 fork 前後立刻關閉伺服器時，子行程沿用父行程只設定旗標的 handler，卻仍停在接收迴圈中，造成關閉程序無法結束。
-
-為比較效果，`--unsafe` 僅關閉下表中的三項機制。固定緩衝區與最大長度限制仍然保留，因此這個模式不是任意記憶體破壞範例，也不是正式部署模式。
-
-| 情境 | 正常模式 | `--unsafe` 比較模式 |
-|---|---|---|
-| 4-byte header 被分段傳送 | 迴圈讀滿後正確解析 | 單次接收取得不足 4 bytes，請求失敗 |
-| 接受連線後完全不傳資料 | 到截止時間後結束子行程 | 子行程繼續等待，占用資源 |
-| 用戶端完成並離開 | 父行程呼叫 `waitpid()` 回收 | 子行程留在 zombie 狀態，直到清理 |
-
-上述差異必須看實際結果，不能只憑原始碼判斷。測試使用相同的命令、等待時間與觀察方式，分別執行正常模式及比較模式，再保存真實 log 與 `/proc` 行程狀態。[2]
-
-三組實際執行結果如下。PID 屬於本次執行，重跑時會不同。
-
-| 執行案例 | 正常模式實測 | 比較模式實測 |
-|---|---|---|
-| PING frame 分成 1、2、5 bytes 傳送 | `OK PONG pid=2114` | 連線已被關閉，測試端後續寫入出現 `BrokenPipeError` |
-| 連線後不傳資料，期限設為 500 ms | 1.207 秒後觀察，PID 2118 已被回收，存活子行程 0 個 | 1.219 秒後仍有 PID 2120，狀態 S，存活子行程 1 個 |
-| PING 完成並關閉 client | 子行程 PID 2123 已被回收，zombie 0 個 | PID 2126 留在 Z 狀態，zombie 1 個 |
-
-閒置案例是在約 1.2 秒後取樣，不代表逾時設定是 1.2 秒；真正的 deadline 設定為 500 毫秒。分段案例的 1、2、5 bytes 合計包含 4-byte header 與 4-byte PING，其中第一段只有 1 byte，足以暴露單次接收的錯誤假設。測試結束時仍會清理比較模式的行程。
-
-## 6 同時服務至少十個用戶端的證明
-
-驗證程式同時啟動 12 個 C client，要求伺服器執行 SLEEP 工作。在所有工作尚未完成的重疊期間，擷取父子行程關係、子行程 PID 與 TCP 連線狀態，再檢查 12 個 client 均收到成功回應。
-
-僅有 12 行成功輸出不足以證明同時服務，因為依序執行也能得到相同輸出。本次在父行程 PID 2082 下，同時觀察到 12 個子行程：2085、2087、2089、2091、2093、2094、2097、2098、2101、2103、2104、2106。它們在快照中均為 S 狀態，對應各自仍在執行的 SLEEP 工作。
-
-12 個 C client 都收到 `OK SLEPT 2000`，結束碼均為 0，總耗時為 2.141 秒。若完全依序執行，僅等待工作本身的下限就是 12 × 2 = 24 秒。這個 24 秒是理論下限，並非另外量測出的循序版本時間。主要證據是同時存在的 12 個不同子行程與 TCP 連線，耗時是輔助證據。`ss` 在同一主機會列出每條連線的兩端，不能把 24 個 loopback endpoint 誤算為 24 個 client。
-
-## 7 封包擷取與分析
-
-測試使用 `tcpdump` 在 `lo` 介面擷取指定測試埠號的流量，將二進位封包保存為 `.pcap`。讀檔命令再輸出時間、來源與目的埠號、TCP flags、序號和 payload。這是同一台 Linux 主機上的 loopback 通訊，符合使用 tcpdump 的條件。[4]
+The Makefile enables `-Wall -Wextra -Wpedantic -Werror`, so a compiler warning fails the build.
 
 ```bash
-tcpdump -i lo -U -w evidence/loopback.pcap 'tcp port 19090'
-tcpdump -nn -tttt -r evidence/loopback.pcap
-tcpdump -nn -X -r evidence/loopback.pcap
+make DEBUG=1
+make DEBUG=0
 ```
 
-分析重點包括三向交握的 SYN、SYN ACK、ACK；應用層 request 與 response；長度前綴與命令文字；以及關閉時的 FIN 或異常時的 RST。TCP segment 與應用層 frame 不是一對一關係，分析 payload 時必須依序號重組同一方向的串流，並依 4-byte 長度解碼。
+![Building debug and release executables in the Linux command line](../media/cli/01_build.png)
 
-本次 `loopback.pcap` 為 3663 bytes，包含 4 條 TCP 連線、40 個封包，其中 8 個含應用資料、8 個帶 SYN flag、8 個帶 FIN flag，沒有 RST。SYN 計數包含 4 個 SYN 與 4 個 SYN ACK，因此代表 4 條連線。4 個請求分別為 SYSINFO、PING、ECHO 與 SLEEP 50；四個請求與四個回應共形成 8 個已解碼的應用層 frame。
+Start the server in one terminal and run the client in another:
 
-以第一條連線為例，client 端為 `127.0.0.1:57382`，server 端為 `127.0.0.1:19090`。封包 1 至 3 是三向交握；封包 4 的 TCP payload 為 11 bytes，其中 4 bytes 的 `00 00 00 07` 表示後面 7 bytes 為 SYSINFO。封包 6 的 payload 為 166 bytes，由 4-byte 長度 `00 00 00 a2` 與 162-byte 回應組成。伺服器對 client 資料的 ACK 從 847142362 增加至 847142373，正好涵蓋 11 bytes；回應方向也可用相同方式檢查 166 bytes。封包 8、9、10 顯示 FIN ACK、FIN ACK 與最後 ACK 的正常關閉。
+```bash
+./build/debug/server --port 9090 --debug
+./build/debug/client --port 9090 SYSINFO
+./build/debug/client --port 9090 ECHO "Hello from C"
+```
 
-SYSINFO 回應記錄主機名稱 `localhost`、Linux release `6.12.51-0-virt`、架構 `x86_64`、子行程 PID 2150、uptime 210 秒及 RAM 資訊。另一條 PING 連線的請求 header 為 `00 00 00 04`，回應為 `OK PONG pid=2152`，與應用程式的長度前綴規格一致。
+The PID in a SYSINFO response belongs to the child handling that connection. A new client connection normally receives a different worker PID. SLEEP accepts an integer from 0 to 10000 milliseconds.
 
-loopback 的封包時間非常接近，且可能受到核心 segmentation 或 checksum offload 的呈現方式影響。不能僅因擷取工具顯示 checksum 提示，就斷言應用程式資料毀損。原始 pcap 可用 Wireshark 開啟，以 Follow TCP Stream 交叉檢查。
+![Actual client requests and system information responses](../media/cli/02_sysinfo.png)
 
-## 8 執行證據與重現方式
+## 4 Shared library and debug controls
 
-公開原始碼可由儲存庫頁面下載 ZIP，或使用以下指令取得。在原生 Ubuntu 或 Debian 中，server 與 client 可由一般使用者執行；完整驗證會使用 tcpdump 擷取封包，因此以下測試指令使用 sudo。
+The shared code is compiled with `-fPIC` and linked as `libnetsys.so`. Both executables use `-lnetsys`. Their RUNPATH contains `$ORIGIN`, so they find the library beside the executable without changing the system library path.
+
+```bash
+ldd build/debug/client
+ldd build/debug/server
+readelf -d build/debug/server
+```
+
+The compile-time `ENABLE_DEBUG` macro determines whether debug calls exist in the binary. The runtime `--debug` option controls whether those calls print anything. Startup, lifecycle and error messages remain available.
+
+| Build setting | Runtime option | Debug output |
+|---|---|---|
+| DEBUG=1 | No --debug | No |
+| DEBUG=1 | With --debug | Yes |
+| DEBUG=0 | No --debug | No |
+| DEBUG=0 | With --debug | No |
+
+The command-line PING test produced 0, 8, 0 and 0 debug lines for these four combinations. Eight is the combined client and server count for that transaction, rather than a fixed count for every command. Separate `build/debug/` and `build/release/` directories prevent objects compiled with different settings from being mixed.
+
+![Debug combinations and dynamic library linkage checks](../media/cli/05_debug_library.png)
+
+## 5 Twelve concurrent clients
+
+The standalone command-line test launches 12 C clients together on port 19210. Each requests SLEEP 3000. While the requests overlap, ps and ss record the worker processes and established TCP connections. The test then checks every client's exit status and reply.
+
+```bash
+python3 scripts/cli_evidence.py concurrency
+```
+
+The snapshot shows 12 distinct workers under parent PID 2152. All clients received `OK SLEPT 3000` and exited with status 0. Total elapsed time was 3.175 seconds. Sequential waiting alone would take at least 12 times 3 seconds, or 36 seconds. The overlapping workers are the main concurrency proof; twelve successful lines alone would also be possible with sequential execution.
+
+![Twelve worker processes and their client responses](../media/cli/03_concurrency.png)
+
+On loopback, ss can display both endpoints of each connection. Twenty-four endpoints therefore do not mean twenty-four clients.
+
+## 6 Abnormal conditions and paired tests
+
+Normal mode handles partial I/O, EINTR, EOF, read and write deadlines, and SIGPIPE. It checks frame lengths and command arguments before using them. A frame deadline uses a monotonic clock and is not restarted whenever another byte arrives. The parent defaults to a limit of 64 workers and cleans up remaining children when it shuts down.
+
+For comparison, `--unsafe` disables complete receive loops, receive deadlines and normal child reaping. Buffer limits remain enabled. Each paired test uses the same input, and the test harness cleans up both modes afterwards.
+
+| Test | Normal mode | --unsafe mode |
+|---|---|---|
+| Send the PING frame in 1, 2 and 5-byte fragments | Reads the full frame and replies | Short header causes the connection to fail |
+| Connect without sending data; deadline 500 ms | Worker exits after the deadline | Worker keeps waiting |
+| Complete PING and close the client | Parent reaps the worker | Worker remains in state Z |
+
+In the command-line run, fragmented PING returned `OK PONG pid=2189` normally; a later write in unsafe mode reported Broken pipe. After 1.2 seconds, the idle worker counts were 0 and 1. The unsafe worker remained in state S. After completing PING, the zombie counts were 0 and 1, with unsafe worker PID 2201 in state Z. The 1.2 seconds was the observation time, while the configured deadline was 500 ms.
+
+![Command-line results for fragmentation timeout and zombie tests](../media/cli/04_robustness.png)
+
+Other checks cover length 0, 4097 and UINT32_MAX, embedded NUL, truncated payload, invalid commands and SLEEP arguments, peer reset, occupied port and refused connection. An admission test sets the worker limit to 2 and checks that the third connection receives SERVER_BUSY.
+
+## 7 Packet capture and analysis
+
+Tcpdump captures traffic on the Linux loopback interface. TShark reads the saved PCAP to show TCP flags, sequence and acknowledgment numbers, and payload bytes.
+
+```bash
+tcpdump -i lo -nn -s 0 -U \
+  -w evidence-cli/loopback.pcap 'tcp port 19090'
+tshark -r evidence-cli/loopback.pcap -Y 'tcp.stream == 0'
+tshark -r evidence-cli/loopback.pcap \
+  -Y 'tcp.len == 8 && tcp.dstport == 19090' -x
+```
+
+![TShark output showing handshake data transfer and connection close](../media/cli/06_tshark.png)
+
+The fresh `evidence-cli/loopback.pcap` is 3664 bytes and contains 4 connections and 40 packets. Eight packets carry application data, and no RST is present. Eight SYN flags include four SYN requests and four SYN ACK replies. Eight FIN flags represent the normal closing of the four connections. The requests are SYSINFO, PING, ECHO and SLEEP 50.
+
+For TCP stream 0, frames 1 to 3 are the handshake. Frame 4 carries an 11-byte SYSINFO request: a 4-byte prefix and 7-byte command. Frame 6 carries 167 bytes: the prefix `00 00 00 a3` and a 163-byte system information response. Frames 8 to 10 close this connection with FIN ACK, FIN ACK and the final ACK.
+
+PING begins with `00 00 00 04`, followed by `50 49 4e 47`. SYSINFO begins with `00 00 00 07`. TCP segments and application frames need not have matching boundaries. Reassembly must follow direction and sequence numbers before the application length is decoded. ACK advancement covers both the 4-byte prefix and payload; SYN and FIN each consume one additional sequence number.
+
+![Hexadecimal payload and application length prefixes](../media/cli/07_packets_hex.png)
+
+## 8 Reproduction and classroom demonstration
+
+The public repository includes source, tests, reports, video, screenshots and reference packet records. Git excludes `build/`, `portable-linux/` and `runs/`. On Ubuntu or Debian:
 
 ```bash
 sudo apt-get update
-sudo apt-get install -y build-essential python3 tcpdump iproute2 binutils procps git
+sudo apt-get install -y build-essential python3 tcpdump tshark iproute2 binutils procps git
 git clone https://github.com/mimimaomao1117/forksysinfo.git
 cd forksysinfo
-make DEBUG=1
-make DEBUG=0
 sudo bash scripts/run_all.sh
 ```
 
-在已設定擷取權限的 Docker 容器或桌面離線 VM 中，使用 `bash scripts/run_all.sh`。腳本會重新建置兩種版本並執行驗證。重跑會更新該工作目錄的 `evidence/`，其中包含環境資訊、執行 log、結果 JSON、併發快照、debug 輸出與 pcap；若需保留本機參考紀錄，請先另存副本。隨附執行截圖來自實際原始 log 檢視器；120 秒影片採繁體中文旁白講解實測證據，並非未剪輯的全程桌面錄影。
+The complete test needs capture permission, which is why the command uses sudo. Ordinary client and server requests can run as a normal user.
 
-本次結果為 11 項整合驗證全部通過。其中連線上限另以 `--max-clients 2` 驗證，前兩個 child 保留時，第三個 client 收到 `ERR SERVER_BUSY`。共享函式庫檢查確認 client 與 server 都有 `DT_NEEDED libnetsys.so`，並使用 ORIGIN 相對執行檔的搜尋路徑。
+The full desktop bundle also includes offline Linux. `START_DEMO.cmd` updates the C source, rebuilds and runs the tests, then exports new evidence to `runs/<timestamp>/`. For a manual demonstration, open two `LINUX_SHELL.cmd` windows and run `sh scripts/demo.sh --server` in one and `sh scripts/demo.sh` in the other. Finish with `STOP_LINUX.cmd`. A plain GitHub clone does not include the runtime required by those Windows launchers.
 
-| 證據檔案 | 用途 |
-|---|---|
-| `evidence/results.json` | 每項驗證的通過狀態、耗時與量測結果 |
-| `evidence/raw/concurrency.txt` | 十二個 C client 的執行結果 |
-| `evidence/raw/concurrency_processes.txt` | 重疊期間的父子行程與 PID |
-| `evidence/raw/concurrency_ss.txt` | TCP established 連線快照 |
-| `evidence/raw/robustness_fragmented.txt` | 分段 header 的兩種模式比較 |
-| `evidence/raw/robustness_idle.txt` | 閒置連線的兩種模式比較 |
-| `evidence/raw/robustness_zombies.txt` | 完成後的 zombie 行程比較 |
-| `evidence/raw/debug_matrix.txt` | 編譯與執行兩層控制的四種組合 |
-| `evidence/loopback.pcap` | tcpdump 取得的原始封包 |
-| `evidence/raw/tcpdump_hex.txt` | 封包十六進位與文字內容 |
-| `evidence/raw/decoded_frames.txt` | 依 TCP 串流解碼的應用層 frame |
-| `evidence/packet_analysis.json` | 封包及串流分析的結構化結果 |
+The two-minute video is `media/ForkSysInfo_2min.mp4`. Complete C source and the Makefile are included in the report appendix and supplied as editable files. The demonstration uses loopback and does not implement TLS or user authentication.
 
-其他異常驗證包括零長度、過大與 UINT32 最大長度、內嵌 NUL、最大合法長度、同連線合併傳入 PING 與 QUIT、對方於 SLEEP 期間以 RST 斷線、埠號占用、連線被拒、錯誤命令或參數，以及較低連線上限的 admission control。每個案例均驗證可觀察的結果，並在需要時確認父行程仍可服務後續請求。
+## 9 Complete integration run
 
-目前的證據應與同一份原始碼及建置結果一起檢視。若修改程式或在另一台電腦執行，請重新產生證據，不沿用舊 PID、舊封包或舊測試結果。
+The complete suite passed all 11 test groups on Linux 6.12.117. It checks both builds, normal features, malformed input, concurrency, three robustness comparisons, admission control, debug output, shared-library linkage and actual loopback capture. The full result is `evidence-cli/results.json`.
 
-## 9 現場展示程序與限制
+![Complete integration run in the Linux console](../media/cli/08_tests.png)
 
-GitHub 原始碼版與桌面完整套件的內容如下。
+The suite launches its own temporary processes. Its PIDs and timings are separate from the standalone SLEEP 3000 demonstration in Section 5. That demonstration and the other console examples are indexed in `evidence-cli/console_results.json`, with the command output in `evidence-cli/raw/`.
 
-| 項目 | GitHub 原始碼版 | 桌面完整套件 |
-|---|---|---|
-| C 原始碼與測試 | 完整收錄 | 完整收錄 |
-| 報告 影片 截圖 封包 | 完整收錄 | 完整收錄 |
-| build 目錄 | 由 Makefile 重建 | 另附已建置版本 |
-| portable-linux 目錄 | 不納入 Git | 另附離線 QEMU 與磁碟 |
-| 新產生的 runs 目錄 | 不納入 Git | Windows 啟動工具產生 |
+Full uncropped console PNG files are supplied in `media/cli/`. The PDF layout omits only unused terminal space below the output.
 
-在自己的電腦準備好可用的 Linux 環境，先執行一次完整驗證。GitHub 下載版可依 README.md 使用原生 Linux，或在 Docker 的 Linux backend 已可啟動時自行建置映像檔；桌面完整套件可使用附帶的 QEMU 環境。上課依序展示 SYSINFO、12 個用戶端同時服務、三組健全性差異、debug 四種組合及封包分析，並以當次產生的證據解說。
+## References
 
-桌面完整套件的 Windows 入口為 `START_DEMO.cmd`，用來啟動可攜式 Linux、更新主機端原始碼並執行完整驗證；`LINUX_SHELL.cmd` 會開啟 Linux 終端機，並自動切換至 `/root/ForkSysInfo`。三個 `.cmd` 入口需要完整的 `portable-linux/`，單獨 clone GitHub 專案無法取得該環境。手動展示時開啟兩個終端機，第一個執行 `sh scripts/demo.sh --server`，第二個執行 `sh scripts/demo.sh`。Windows 自動驗證的新證據存到 `runs/` 的時間戳記資料夾，完成後使用 `STOP_LINUX.cmd` 正常關閉 Linux。
-
-可攜式磁碟安裝後採用 Linux 6.12.117 核心，並再度通過全部 11 項測試。第二次結果保存在 `evidence-recheck/`，與本報告前述 Linux 6.12.51 的第一次封包及 PID 分開保存。`media/06_live_console.png` 是第二次環境直接執行 C 程式的虛擬機終端畫面，與原始 log 檢視器截圖一併提供。
-
-本專案未加入 TLS 或身分驗證；預設只在 loopback 使用。每連線一個行程的設計適合本作業的十個以上連線示範，但不宣稱可無限制擴充。容器的資源資訊由其 Linux 執行環境提供，與實體 Windows 主機的視角可能不同。
-
-報告位於 `report/ForkSysInfo_Report.pdf`，原始文字版位於 `docs/REPORT.md`。實際交付影片為 `media/ForkSysInfo_2min.mp4`，另附繁體中文字幕與逐字稿。`docs/DEMO_SCRIPT.md` 中的英文內容為口頭解說參考譯稿；以 MP4 及其繁體中文逐字稿為實際錄製內容。原始 PCAP 位於 `evidence/loopback.pcap`，可由公開儲存庫下載後使用 Wireshark 檢視。
-
-## 10 參考資料
-
-1. Linux man-pages，fork(2)：https://man7.org/linux/man-pages/man2/fork.2.html
-2. Linux man-pages，wait(2) 與 waitpid(2)：https://man7.org/linux/man-pages/man2/waitpid.2.html
-3. Linux man-pages，tcp(7)：https://man7.org/linux/man-pages/man7/tcp.7.html
-4. The Tcpdump Group，tcpdump manual：https://www.tcpdump.org/manpages/tcpdump.1.html
-5. GNU，GNU make manual：https://www.gnu.org/software/make/manual/make.html
+1. Linux man-pages fork(2): https://man7.org/linux/man-pages/man2/fork.2.html
+2. Linux man-pages waitpid(2): https://man7.org/linux/man-pages/man2/waitpid.2.html
+3. Linux man-pages tcp(7): https://man7.org/linux/man-pages/man7/tcp.7.html
+4. Tcpdump manual: https://www.tcpdump.org/manpages/tcpdump.1.html
+5. GNU Make manual: https://www.gnu.org/software/make/manual/make.html
