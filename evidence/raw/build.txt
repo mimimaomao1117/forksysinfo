@@ -1,0 +1,5 @@
+$ make DEBUG=1 all
+make: Nothing to be done for 'all'.
+
+$ make DEBUG=0 all
+make: Nothing to be done for 'all'.

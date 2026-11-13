@@ -1,0 +1,6 @@
+2026-11-13T03:55:55.234 INFO pid=2278 role=server READY host=127.0.0.1 port=19094 robust=0 timeout_ms=700 max_clients=64 compiled_debug=1
+2026-11-13T03:55:55.235 WARN pid=2278 role=server UNSAFE_TEACHING_MODE partial_read_recovery=off idle_deadline=off child_reaping=off
+2026-11-13T03:55:55.279 INFO pid=2278 role=server FORK child=2279 active=1 peer=127.0.0.1:49784
+2026-11-13T03:55:55.280 WARN pid=2279 role=worker FRAME_READ_ERROR errno=71 Protocol error
+2026-11-13T03:55:55.280 INFO pid=2279 role=worker CHILD_DONE
+2026-11-13T03:55:55.555 INFO pid=2278 role=server STOPPED active=0

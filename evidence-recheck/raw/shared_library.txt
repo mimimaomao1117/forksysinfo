@@ -1,0 +1,85 @@
+$ ldd build/debug/server
+	/lib/ld-musl-x86_64.so.1 (0x7f5300aa2000)
+	libnetsys.so => /root/ForkSysInfo/build/debug/libnetsys.so (0x7f5300a91000)
+	libc.musl-x86_64.so.1 => /lib/ld-musl-x86_64.so.1 (0x7f5300aa2000)
+
+$ readelf -d build/debug/server
+
+Dynamic section at offset 0x3cb0 contains 26 entries:
+  Tag        Type                         Name/Value
+ 0x0000000000000001 (NEEDED)             Shared library: [libnetsys.so]
+ 0x0000000000000001 (NEEDED)             Shared library: [libc.musl-x86_64.so.1]
+ 0x000000000000001d (RUNPATH)            Library runpath: [$ORIGIN]
+ 0x000000000000000c (INIT)               0x1000
+ 0x000000000000000d (FINI)               0x266a
+ 0x0000000000000019 (INIT_ARRAY)         0x4b90
+ 0x000000000000001b (INIT_ARRAYSZ)       8 (bytes)
+ 0x000000000000001a (FINI_ARRAY)         0x4b98
+ 0x000000000000001c (FINI_ARRAYSZ)       8 (bytes)
+ 0x000000006ffffef5 (GNU_HASH)           0x388
+ 0x0000000000000005 (STRTAB)             0x860
+ 0x0000000000000006 (SYMTAB)             0x3c8
+ 0x000000000000000a (STRSZ)              573 (bytes)
+ 0x000000000000000b (SYMENT)             24 (bytes)
+ 0x0000000000000015 (DEBUG)              0x0
+ 0x0000000000000003 (PLTGOT)             0x4e90
+ 0x0000000000000002 (PLTRELSZ)           888 (bytes)
+ 0x0000000000000014 (PLTREL)             RELA
+ 0x0000000000000017 (JMPREL)             0xc68
+ 0x0000000000000007 (RELA)               0xaa0
+ 0x0000000000000008 (RELASZ)             456 (bytes)
+ 0x0000000000000009 (RELAENT)            24 (bytes)
+ 0x000000000000001e (FLAGS)              BIND_NOW
+ 0x000000006ffffffb (FLAGS_1)            Flags: NOW PIE
+ 0x000000006ffffff9 (RELACOUNT)          10
+ 0x0000000000000000 (NULL)               0x0
+
+$ ldd build/debug/client
+	/lib/ld-musl-x86_64.so.1 (0x7f77b17a5000)
+	libnetsys.so => /root/ForkSysInfo/build/debug/libnetsys.so (0x7f77b1795000)
+	libc.musl-x86_64.so.1 => /lib/ld-musl-x86_64.so.1 (0x7f77b17a5000)
+
+$ readelf -d build/debug/client
+
+Dynamic section at offset 0x2d30 contains 26 entries:
+  Tag        Type                         Name/Value
+ 0x0000000000000001 (NEEDED)             Shared library: [libnetsys.so]
+ 0x0000000000000001 (NEEDED)             Shared library: [libc.musl-x86_64.so.1]
+ 0x000000000000001d (RUNPATH)            Library runpath: [$ORIGIN]
+ 0x000000000000000c (INIT)               0x1000
+ 0x000000000000000d (FINI)               0x1881
+ 0x0000000000000019 (INIT_ARRAY)         0x3c50
+ 0x000000000000001b (INIT_ARRAYSZ)       8 (bytes)
+ 0x000000000000001a (FINI_ARRAY)         0x3c58
+ 0x000000000000001c (FINI_ARRAYSZ)       8 (bytes)
+ 0x000000006ffffef5 (GNU_HASH)           0x388
+ 0x0000000000000005 (STRTAB)             0x6b0
+ 0x0000000000000006 (SYMTAB)             0x3c8
+ 0x000000000000000a (STRSZ)              415 (bytes)
+ 0x000000000000000b (SYMENT)             24 (bytes)
+ 0x0000000000000015 (DEBUG)              0x0
+ 0x0000000000000003 (PLTGOT)             0x3f10
+ 0x0000000000000002 (PLTRELSZ)           456 (bytes)
+ 0x0000000000000014 (PLTREL)             RELA
+ 0x0000000000000017 (JMPREL)             0x9e8
+ 0x0000000000000007 (RELA)               0x850
+ 0x0000000000000008 (RELASZ)             408 (bytes)
+ 0x0000000000000009 (RELAENT)            24 (bytes)
+ 0x000000000000001e (FLAGS)              BIND_NOW
+ 0x000000006ffffffb (FLAGS_1)            Flags: NOW PIE
+ 0x000000006ffffff9 (RELACOUNT)          8
+ 0x0000000000000000 (NULL)               0x0
+
+$ nm -D --defined-only build/debug/libnetsys.so
+0000000000001fe9 T _fini
+0000000000001000 T _init
+0000000000001d7e T net_connect
+0000000000001357 T net_debug_enabled
+0000000000001ed9 T net_listen
+0000000000001363 T net_log
+0000000000001703 T net_nonblocking
+00000000000015c9 T net_now_ms
+0000000000001645 T net_parse_long
+000000000000197e T net_recv_frame
+0000000000001ae9 T net_send_frame
+0000000000001335 T net_set_log

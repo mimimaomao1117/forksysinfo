@@ -1,0 +1,43 @@
+$ client SYSINFO 
+OK SYSINFO
+hostname=localhost
+sysname=Linux
+release=6.12.51-0-virt
+machine=x86_64
+pid=2062
+uptime_seconds=203
+ram_total_bytes=1546440704
+ram_free_bytes=1111281664
+
+$ client PING 
+OK PONG pid=2064
+
+$ client ECHO hello shared library
+OK hello shared library
+
+$ client SLEEP 20
+OK SLEPT 20 pid=2068
+
+request='NO_SUCH_COMMAND'
+response='ERR UNKNOWN_COMMAND'
+request='SLEEP -1'
+response='ERR BAD_ARGUMENT SLEEP accepts 0..10000 milliseconds'
+request='SLEEP 999999'
+response='ERR BAD_ARGUMENT SLEEP accepts 0..10000 milliseconds'
+request='SLEEP 12x'
+response='ERR BAD_ARGUMENT SLEEP accepts 0..10000 milliseconds'
+invalid length=0: ERR BAD_LENGTH
+invalid length=4097: ERR BAD_LENGTH
+invalid length=4294967295: ERR BAD_LENGTH
+truncated payload then EOF: ERR BAD_FRAME
+maximum 4096-byte request accepted; response bytes=4094
+coalesced PING + QUIT: OK PONG pid=2075; OK BYE
+embedded NUL rejected: ERR BAD_FRAME
+reset peer during SLEEP; parent remains available
+server survived malformed clients: OK PONG pid=2079
+
+occupied port exit=1
+2026-11-13T03:50:56.878 ERROR pid=2080 role=server LISTEN_FAILED errno=98 Address in use
+
+connection refused exit=1
+2026-11-13T03:50:56.896 ERROR pid=2081 role=client CONNECT_FAILED errno=111 Connection refused

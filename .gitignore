@@ -1,0 +1,10 @@
+# Build outputs are reproducible with Makefile.
+/build/
+
+# The offline Windows bundle remains local. It contains QEMU and a VM disk.
+/portable-linux/
+/runs/
+__pycache__/
+*.py[cod]
+*.zip
+*.tmp

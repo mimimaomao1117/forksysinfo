@@ -1,0 +1,19 @@
+$ client --port 19090 SYSINFO 
+OK SYSINFO
+hostname=localhost
+sysname=Linux
+release=6.12.117-0-virt
+machine=x86_64
+pid=2313
+uptime_seconds=77
+ram_total_bytes=1546407936
+ram_free_bytes=1370124288
+
+$ client --port 19090 PING 
+OK PONG pid=2315
+
+$ client --port 19090 ECHO packet-capture-demo
+OK packet-capture-demo
+
+$ client --port 19090 SLEEP 50
+OK SLEPT 50 pid=2319

@@ -1,0 +1,5 @@
+2026-11-13T03:51:02.357 INFO pid=2121 role=server READY host=127.0.0.1 port=19097 robust=1 timeout_ms=700 max_clients=64 compiled_debug=1
+2026-11-13T03:51:02.405 INFO pid=2121 role=server FORK child=2123 active=1 peer=127.0.0.1:51566
+2026-11-13T03:51:02.407 INFO pid=2123 role=worker CHILD_DONE
+2026-11-13T03:51:02.409 INFO pid=2121 role=server REAP child=2123 active=0 status=0
+2026-11-13T03:51:02.724 INFO pid=2121 role=server STOPPED active=0

@@ -1,0 +1,5 @@
+2026-11-13T03:55:58.591 INFO pid=2287 role=server READY host=127.0.0.1 port=19098 robust=0 timeout_ms=700 max_clients=64 compiled_debug=1
+2026-11-13T03:55:58.592 WARN pid=2287 role=server UNSAFE_TEACHING_MODE partial_read_recovery=off idle_deadline=off child_reaping=off
+2026-11-13T03:55:58.645 INFO pid=2287 role=server FORK child=2289 active=1 peer=127.0.0.1:42282
+2026-11-13T03:55:58.648 INFO pid=2289 role=worker CHILD_DONE
+2026-11-13T03:55:58.970 INFO pid=2287 role=server STOPPED active=0

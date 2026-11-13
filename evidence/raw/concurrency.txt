@@ -1,0 +1,168 @@
+{
+  "client_count": 12,
+  "sleep_ms": 2000,
+  "parent_pid": 2082,
+  "simultaneous_child_count": 12,
+  "simultaneous_children": [
+    {
+      "pid": 2085,
+      "ppid": 2082,
+      "state": "S",
+      "command": "server"
+    },
+    {
+      "pid": 2087,
+      "ppid": 2082,
+      "state": "S",
+      "command": "server"
+    },
+    {
+      "pid": 2089,
+      "ppid": 2082,
+      "state": "S",
+      "command": "server"
+    },
+    {
+      "pid": 2091,
+      "ppid": 2082,
+      "state": "S",
+      "command": "server"
+    },
+    {
+      "pid": 2093,
+      "ppid": 2082,
+      "state": "S",
+      "command": "server"
+    },
+    {
+      "pid": 2094,
+      "ppid": 2082,
+      "state": "S",
+      "command": "server"
+    },
+    {
+      "pid": 2097,
+      "ppid": 2082,
+      "state": "S",
+      "command": "server"
+    },
+    {
+      "pid": 2098,
+      "ppid": 2082,
+      "state": "S",
+      "command": "server"
+    },
+    {
+      "pid": 2101,
+      "ppid": 2082,
+      "state": "S",
+      "command": "server"
+    },
+    {
+      "pid": 2103,
+      "ppid": 2082,
+      "state": "S",
+      "command": "server"
+    },
+    {
+      "pid": 2104,
+      "ppid": 2082,
+      "state": "S",
+      "command": "server"
+    },
+    {
+      "pid": 2106,
+      "ppid": 2082,
+      "state": "S",
+      "command": "server"
+    }
+  ],
+  "elapsed_seconds": 2.141,
+  "serial_sleep_seconds": 24.0,
+  "clients": [
+    {
+      "client_index": 1,
+      "client_pid": 2083,
+      "exit_code": 0,
+      "stdout": "OK SLEPT 2000 pid=2085\n",
+      "stderr": ""
+    },
+    {
+      "client_index": 2,
+      "client_pid": 2084,
+      "exit_code": 0,
+      "stdout": "OK SLEPT 2000 pid=2087\n",
+      "stderr": ""
+    },
+    {
+      "client_index": 3,
+      "client_pid": 2086,
+      "exit_code": 0,
+      "stdout": "OK SLEPT 2000 pid=2089\n",
+      "stderr": ""
+    },
+    {
+      "client_index": 4,
+      "client_pid": 2088,
+      "exit_code": 0,
+      "stdout": "OK SLEPT 2000 pid=2091\n",
+      "stderr": ""
+    },
+    {
+      "client_index": 5,
+      "client_pid": 2090,
+      "exit_code": 0,
+      "stdout": "OK SLEPT 2000 pid=2093\n",
+      "stderr": ""
+    },
+    {
+      "client_index": 6,
+      "client_pid": 2092,
+      "exit_code": 0,
+      "stdout": "OK SLEPT 2000 pid=2094\n",
+      "stderr": ""
+    },
+    {
+      "client_index": 7,
+      "client_pid": 2095,
+      "exit_code": 0,
+      "stdout": "OK SLEPT 2000 pid=2097\n",
+      "stderr": ""
+    },
+    {
+      "client_index": 8,
+      "client_pid": 2096,
+      "exit_code": 0,
+      "stdout": "OK SLEPT 2000 pid=2098\n",
+      "stderr": ""
+    },
+    {
+      "client_index": 9,
+      "client_pid": 2099,
+      "exit_code": 0,
+      "stdout": "OK SLEPT 2000 pid=2101\n",
+      "stderr": ""
+    },
+    {
+      "client_index": 10,
+      "client_pid": 2100,
+      "exit_code": 0,
+      "stdout": "OK SLEPT 2000 pid=2103\n",
+      "stderr": ""
+    },
+    {
+      "client_index": 11,
+      "client_pid": 2102,
+      "exit_code": 0,
+      "stdout": "OK SLEPT 2000 pid=2104\n",
+      "stderr": ""
+    },
+    {
+      "client_index": 12,
+      "client_pid": 2105,
+      "exit_code": 0,
+      "stdout": "OK SLEPT 2000 pid=2106\n",
+      "stderr": ""
+    }
+  ]
+}

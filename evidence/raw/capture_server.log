@@ -1,0 +1,14 @@
+2026-11-13T03:51:03.774 INFO pid=2147 role=server READY host=127.0.0.1 port=19090 robust=1 timeout_ms=2000 max_clients=64 compiled_debug=1
+2026-11-13T03:51:03.896 INFO pid=2147 role=server FORK child=2150 active=1 peer=127.0.0.1:57382
+2026-11-13T03:51:03.898 INFO pid=2150 role=worker CHILD_DONE
+2026-11-13T03:51:03.900 INFO pid=2147 role=server REAP child=2150 active=0 status=0
+2026-11-13T03:51:03.913 INFO pid=2147 role=server FORK child=2152 active=1 peer=127.0.0.1:57384
+2026-11-13T03:51:03.916 INFO pid=2152 role=worker CHILD_DONE
+2026-11-13T03:51:03.918 INFO pid=2147 role=server REAP child=2152 active=0 status=0
+2026-11-13T03:51:03.930 INFO pid=2147 role=server FORK child=2154 active=1 peer=127.0.0.1:57390
+2026-11-13T03:51:03.934 INFO pid=2154 role=worker CHILD_DONE
+2026-11-13T03:51:03.936 INFO pid=2147 role=server REAP child=2154 active=0 status=0
+2026-11-13T03:51:03.948 INFO pid=2147 role=server FORK child=2156 active=1 peer=127.0.0.1:57406
+2026-11-13T03:51:04.006 INFO pid=2156 role=worker CHILD_DONE
+2026-11-13T03:51:04.007 INFO pid=2147 role=server REAP child=2156 active=0 status=0
+2026-11-13T03:51:05.358 INFO pid=2147 role=server STOPPED active=0

@@ -1,0 +1,6 @@
+2026-11-13T03:55:55.602 INFO pid=2280 role=server READY host=127.0.0.1 port=19095 robust=1 timeout_ms=500 max_clients=64 compiled_debug=1
+2026-11-13T03:55:55.635 INFO pid=2280 role=server FORK child=2281 active=1 peer=127.0.0.1:59366
+2026-11-13T03:55:56.144 WARN pid=2281 role=worker FRAME_READ_ERROR errno=110 Operation timed out
+2026-11-13T03:55:56.146 INFO pid=2281 role=worker CHILD_DONE
+2026-11-13T03:55:56.147 INFO pid=2280 role=server REAP child=2281 active=0 status=0
+2026-11-13T03:55:56.860 INFO pid=2280 role=server STOPPED active=0

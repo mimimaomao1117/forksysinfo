@@ -1,0 +1,94 @@
+<!doctype html><html lang="zh-Hant"><meta charset="utf-8"><style>body{margin:0;background:#edf1f5;color:#162635;font:20px "Microsoft JhengHei",sans-serif}
+    header{background:#132c43;color:white;padding:25px 42px}header small{color:#c4d5e2;font-size:16px}
+    h1{font-size:32px;margin:0 0 8px}h2{font-size:22px;margin:18px 0 12px}main{padding:16px 42px 25px}
+    p{line-height:1.6;margin:14px 0;color:#314b61}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:white;
+    border:1px solid #d3dee7;border-radius:8px;padding:22px;font:18px/1.55 Consolas,monospace;margin:12px 0}
+    table{border-collapse:collapse;background:white;width:100%}td,th{padding:9px 15px;border:1px solid #d3dee7;text-align:left}
+    th{background:#dce7ef}.cols{display:grid;grid-template-columns:0.85fr 1.15fr;gap:24px}footer{color:#526879;font-size:16px;padding:15px 42px}
+    section{display:none}section.active{display:block}</style><section id="p0"><header><h1>ForkSysInfo 實測總覽</h1><small>原始執行紀錄檢視器 · 00_summary</small></header><main><p>11/11 組驗證通過 · Alpine Linux 3.22.2 / GCC 14.2 / QEMU TCG</p><pre>PASS  Linux environment and required tools
+PASS  Build debug and release
+PASS  Normal features and abnormal conditions
+PASS  Twelve simultaneous C clients and fork children
+PASS  Robustness comparison fragmented header
+PASS  Robustness comparison idle timeout
+PASS  Robustness comparison zombie reaping
+PASS  Bounded admission control
+PASS  Compile time and runtime debug matrix
+PASS  Dynamic shared library linkage
+PASS  Real loopback tcpdump capture and frame analysis</pre><p>實測時間 2026-11-13T03:50:56.160198+00:00 · 完整證據保存在 evidence/</p></main></section><section id="p1"><header><h1>系統資訊與基本功能</h1><small>原始執行紀錄檢視器 · 01_system_info</small></header><main><p>來源 evidence/raw/normal_and_exceptional.txt · C client 的真實 stdout</p><pre>$ client SYSINFO 
+OK SYSINFO
+hostname=localhost
+sysname=Linux
+release=6.12.51-0-virt
+machine=x86_64
+pid=2062
+uptime_seconds=203
+ram_total_bytes=1546440704
+ram_free_bytes=1111281664
+
+$ client PING 
+OK PONG pid=2064
+
+$ client ECHO hello shared library
+OK hello shared library
+
+$ client SLEEP 20
+OK SLEPT 20 pid=2068
+
+</pre></main></section><section id="p2"><header><h1>12 個用戶端同時執行</h1><small>原始執行紀錄檢視器 · 02_concurrency</small></header><main><p>同一快照 12 個 worker · parent PID 2082 · 實測 2.141 秒 · 逐一等待的理論下限 24.0 秒</p><div class="cols"><div><h2>/proc 子行程快照</h2><table><tr><th>PID</th><th>PPID</th><th>狀態</th><th>名稱</th></tr><tr><td>2085</td><td>2082</td><td>S</td><td>server</td></tr><tr><td>2087</td><td>2082</td><td>S</td><td>server</td></tr><tr><td>2089</td><td>2082</td><td>S</td><td>server</td></tr><tr><td>2091</td><td>2082</td><td>S</td><td>server</td></tr><tr><td>2093</td><td>2082</td><td>S</td><td>server</td></tr><tr><td>2094</td><td>2082</td><td>S</td><td>server</td></tr><tr><td>2097</td><td>2082</td><td>S</td><td>server</td></tr><tr><td>2098</td><td>2082</td><td>S</td><td>server</td></tr><tr><td>2101</td><td>2082</td><td>S</td><td>server</td></tr><tr><td>2103</td><td>2082</td><td>S</td><td>server</td></tr><tr><td>2104</td><td>2082</td><td>S</td><td>server</td></tr><tr><td>2106</td><td>2082</td><td>S</td><td>server</td></tr></table></div><div><h2>12 個 C client 的回應</h2><pre>client 01: OK SLEPT 2000 pid=2085
+client 02: OK SLEPT 2000 pid=2087
+client 03: OK SLEPT 2000 pid=2089
+client 04: OK SLEPT 2000 pid=2091
+client 05: OK SLEPT 2000 pid=2093
+client 06: OK SLEPT 2000 pid=2094
+client 07: OK SLEPT 2000 pid=2097
+client 08: OK SLEPT 2000 pid=2098
+client 09: OK SLEPT 2000 pid=2101
+client 10: OK SLEPT 2000 pid=2103
+client 11: OK SLEPT 2000 pid=2104
+client 12: OK SLEPT 2000 pid=2106</pre></div></div><p>原始證據 concurrency.txt、concurrency_processes.txt、concurrency_ss.txt</p></main></section><section id="p3"><header><h1>三組健全性機制的實測比較</h1><small>原始執行紀錄檢視器 · 03_robustness</small></header><main><p>相同測試輸入，分別使用正常模式與 --unsafe。以下欄位直接讀取 results.json。</p><pre>1. Fragmented header: send 1 byte, then 2, then 5
+robust: OK PONG pid=2114
+unsafe: BrokenPipeError: [Errno 32] Broken pipe
+
+2. Idle connection: deadline 500 ms; inspect after ~1.2 s
+robust: active_children=0
+unsafe: active_children=1
+
+3. Completed client: parent must reap worker
+robust: zombies=0; children=[]
+unsafe: zombies=1; children=[{&#x27;pid&#x27;: 2126, &#x27;ppid&#x27;: 2124, &#x27;state&#x27;: &#x27;Z&#x27;, &#x27;command&#x27;: &#x27;server&#x27;}]</pre><p>原始紀錄 robustness_fragmented.txt、robustness_idle.txt、robustness_zombies.txt</p></main></section><section id="p4"><header><h1>雙層 debug 與動態函式庫</h1><small>原始執行紀錄檢視器 · 04_debug_library</small></header><main><p>四組實際輸出計數 · ldd / readelf 連結證據</p><pre>DEBUG=1  --debug=False  DEBUG lines=0
+DEBUG=1  --debug=True   DEBUG lines=8
+DEBUG=0  --debug=False  DEBUG lines=0
+DEBUG=0  --debug=True   DEBUG lines=0</pre><h2>兩側載入共用 .so</h2><pre>$ ldd build/debug/server
+	libnetsys.so =&gt; /root/ForkSysInfo/build/debug/libnetsys.so (0x7f5d1dac0000)
+$ readelf -d build/debug/server
+ 0x0000000000000001 (NEEDED)             Shared library: [libnetsys.so]
+ 0x000000000000001d (RUNPATH)            Library runpath: [$ORIGIN]
+$ ldd build/debug/client
+	libnetsys.so =&gt; /root/ForkSysInfo/build/debug/libnetsys.so (0x7f9db3499000)
+$ readelf -d build/debug/client
+ 0x0000000000000001 (NEEDED)             Shared library: [libnetsys.so]
+ 0x000000000000001d (RUNPATH)            Library runpath: [$ORIGIN]
+$ nm -D --defined-only build/debug/libnetsys.so</pre><p>完整原始紀錄 debug_matrix.txt、shared_library.txt</p></main></section><section id="p5"><header><h1>tcpdump loopback 封包擷取</h1><small>原始執行紀錄檢視器 · 05_packets</small></header><main><p>真實 PCAP：40 packets · 4 TCP connections · 8 data segments · 0 RST</p><pre>$ tcpdump -nn -tttt -r evidence/loopback.pcap
+2026-11-13 03:51:03.889534 IP 127.0.0.1.57382 &gt; 127.0.0.1.19090: Flags [S], seq 847142361, win 65495, options [mss 65495,sackOK,TS val 41803953 ecr 0,nop,wscale 7], length 0
+2026-11-13 03:51:03.889804 IP 127.0.0.1.19090 &gt; 127.0.0.1.57382: Flags [S.], seq 3018948516, ack 847142362, win 65483, options [mss 65495,sackOK,TS val 41803956 ecr 41803953,nop,wscale 7], length 0
+2026-11-13 03:51:03.890128 IP 127.0.0.1.57382 &gt; 127.0.0.1.19090: Flags [.], ack 1, win 512, options [nop,nop,TS val 41803956 ecr 41803956], length 0
+2026-11-13 03:51:03.893976 IP 127.0.0.1.57382 &gt; 127.0.0.1.19090: Flags [P.], seq 1:12, ack 1, win 512, options [nop,nop,TS val 41803960 ecr 41803956], length 11
+2026-11-13 03:51:03.894082 IP 127.0.0.1.19090 &gt; 127.0.0.1.57382: Flags [.], ack 12, win 512, options [nop,nop,TS val 41803960 ecr 41803960], length 0
+2026-11-13 03:51:03.895959 IP 127.0.0.1.19090 &gt; 127.0.0.1.57382: Flags [P.], seq 1:167, ack 12, win 512, options [nop,nop,TS val 41803962 ecr 41803960], length 166</pre><h2>解碼後的長度前綴與命令 節錄</h2><pre>TCP ephemeral port 57382 request
+length=7 header=00 00 00 07
+SYSINFO
+
+TCP ephemeral port 57382 response
+length=162 header=00 00 00 a2
+OK SYSINFO
+hostname=localhost
+sysname=Linux
+release=6.12.51-0-virt
+machine=x86_64
+pid=2150
+uptime_seconds=210
+ram_total_bytes=1546440704
+ram_free_bytes=1101258752</pre><p>檔案 evidence/loopback.pcap · packet_analysis.json · tcpdump_hex.txt</p></main></section>
+    <footer>畫面呈現 Linux 程式的實際保存輸出，可與 JSON、原始 log 及 PCAP 逐項核對。</footer>
+    <script>const n=new URLSearchParams(location.search).get('panel')||'0';document.getElementById('p'+n).className='active';</script></html>

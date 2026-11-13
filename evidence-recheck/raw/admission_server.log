@@ -1,0 +1,6 @@
+2026-11-13T03:55:59.011 INFO pid=2290 role=server READY host=127.0.0.1 port=19099 robust=1 timeout_ms=2500 max_clients=2 compiled_debug=1
+2026-11-13T03:55:59.047 INFO pid=2290 role=server FORK child=2291 active=1 peer=127.0.0.1:60490
+2026-11-13T03:55:59.050 INFO pid=2290 role=server FORK child=2292 active=2 peer=127.0.0.1:60506
+2026-11-13T03:55:59.056 WARN pid=2290 role=server CLIENT_LIMIT active=2 max=2
+2026-11-13T03:55:59.076 INFO pid=2292 role=worker CHILD_DONE
+2026-11-13T03:55:59.079 INFO pid=2290 role=server STOPPED active=0

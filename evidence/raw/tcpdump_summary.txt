@@ -1,0 +1,42 @@
+$ tcpdump -nn -tttt -r evidence/loopback.pcap
+2026-11-13 03:51:03.889534 IP 127.0.0.1.57382 > 127.0.0.1.19090: Flags [S], seq 847142361, win 65495, options [mss 65495,sackOK,TS val 41803953 ecr 0,nop,wscale 7], length 0
+2026-11-13 03:51:03.889804 IP 127.0.0.1.19090 > 127.0.0.1.57382: Flags [S.], seq 3018948516, ack 847142362, win 65483, options [mss 65495,sackOK,TS val 41803956 ecr 41803953,nop,wscale 7], length 0
+2026-11-13 03:51:03.890128 IP 127.0.0.1.57382 > 127.0.0.1.19090: Flags [.], ack 1, win 512, options [nop,nop,TS val 41803956 ecr 41803956], length 0
+2026-11-13 03:51:03.893976 IP 127.0.0.1.57382 > 127.0.0.1.19090: Flags [P.], seq 1:12, ack 1, win 512, options [nop,nop,TS val 41803960 ecr 41803956], length 11
+2026-11-13 03:51:03.894082 IP 127.0.0.1.19090 > 127.0.0.1.57382: Flags [.], ack 12, win 512, options [nop,nop,TS val 41803960 ecr 41803960], length 0
+2026-11-13 03:51:03.895959 IP 127.0.0.1.19090 > 127.0.0.1.57382: Flags [P.], seq 1:167, ack 12, win 512, options [nop,nop,TS val 41803962 ecr 41803960], length 166
+2026-11-13 03:51:03.896083 IP 127.0.0.1.57382 > 127.0.0.1.19090: Flags [.], ack 167, win 511, options [nop,nop,TS val 41803962 ecr 41803962], length 0
+2026-11-13 03:51:03.896652 IP 127.0.0.1.57382 > 127.0.0.1.19090: Flags [F.], seq 12, ack 167, win 512, options [nop,nop,TS val 41803962 ecr 41803962], length 0
+2026-11-13 03:51:03.898220 IP 127.0.0.1.19090 > 127.0.0.1.57382: Flags [F.], seq 167, ack 13, win 512, options [nop,nop,TS val 41803964 ecr 41803962], length 0
+2026-11-13 03:51:03.898442 IP 127.0.0.1.57382 > 127.0.0.1.19090: Flags [.], ack 168, win 512, options [nop,nop,TS val 41803964 ecr 41803964], length 0
+2026-11-13 03:51:03.910566 IP 127.0.0.1.57384 > 127.0.0.1.19090: Flags [S], seq 65496916, win 65495, options [mss 65495,sackOK,TS val 41803976 ecr 0,nop,wscale 7], length 0
+2026-11-13 03:51:03.910787 IP 127.0.0.1.19090 > 127.0.0.1.57384: Flags [S.], seq 1068661957, ack 65496917, win 65483, options [mss 65495,sackOK,TS val 41803977 ecr 41803976,nop,wscale 7], length 0
+2026-11-13 03:51:03.911608 IP 127.0.0.1.57384 > 127.0.0.1.19090: Flags [.], ack 1, win 512, options [nop,nop,TS val 41803977 ecr 41803977], length 0
+2026-11-13 03:51:03.912231 IP 127.0.0.1.57384 > 127.0.0.1.19090: Flags [P.], seq 1:9, ack 1, win 512, options [nop,nop,TS val 41803978 ecr 41803977], length 8
+2026-11-13 03:51:03.912284 IP 127.0.0.1.19090 > 127.0.0.1.57384: Flags [.], ack 9, win 512, options [nop,nop,TS val 41803978 ecr 41803978], length 0
+2026-11-13 03:51:03.914004 IP 127.0.0.1.19090 > 127.0.0.1.57384: Flags [P.], seq 1:21, ack 9, win 512, options [nop,nop,TS val 41803980 ecr 41803978], length 20
+2026-11-13 03:51:03.914122 IP 127.0.0.1.57384 > 127.0.0.1.19090: Flags [.], ack 21, win 512, options [nop,nop,TS val 41803980 ecr 41803980], length 0
+2026-11-13 03:51:03.914692 IP 127.0.0.1.57384 > 127.0.0.1.19090: Flags [F.], seq 9, ack 21, win 512, options [nop,nop,TS val 41803980 ecr 41803980], length 0
+2026-11-13 03:51:03.916409 IP 127.0.0.1.19090 > 127.0.0.1.57384: Flags [F.], seq 21, ack 10, win 512, options [nop,nop,TS val 41803982 ecr 41803980], length 0
+2026-11-13 03:51:03.916708 IP 127.0.0.1.57384 > 127.0.0.1.19090: Flags [.], ack 22, win 512, options [nop,nop,TS val 41803982 ecr 41803982], length 0
+2026-11-13 03:51:03.928606 IP 127.0.0.1.57390 > 127.0.0.1.19090: Flags [S], seq 1162906760, win 65495, options [mss 65495,sackOK,TS val 41803994 ecr 0,nop,wscale 7], length 0
+2026-11-13 03:51:03.928752 IP 127.0.0.1.19090 > 127.0.0.1.57390: Flags [S.], seq 2536671073, ack 1162906761, win 65483, options [mss 65495,sackOK,TS val 41803995 ecr 41803994,nop,wscale 7], length 0
+2026-11-13 03:51:03.928879 IP 127.0.0.1.57390 > 127.0.0.1.19090: Flags [.], ack 1, win 512, options [nop,nop,TS val 41803995 ecr 41803995], length 0
+2026-11-13 03:51:03.929534 IP 127.0.0.1.57390 > 127.0.0.1.19090: Flags [P.], seq 1:29, ack 1, win 512, options [nop,nop,TS val 41803995 ecr 41803995], length 28
+2026-11-13 03:51:03.929617 IP 127.0.0.1.19090 > 127.0.0.1.57390: Flags [.], ack 29, win 512, options [nop,nop,TS val 41803995 ecr 41803995], length 0
+2026-11-13 03:51:03.931604 IP 127.0.0.1.19090 > 127.0.0.1.57390: Flags [P.], seq 1:27, ack 29, win 512, options [nop,nop,TS val 41803997 ecr 41803995], length 26
+2026-11-13 03:51:03.931733 IP 127.0.0.1.57390 > 127.0.0.1.19090: Flags [.], ack 27, win 512, options [nop,nop,TS val 41803998 ecr 41803997], length 0
+2026-11-13 03:51:03.932328 IP 127.0.0.1.57390 > 127.0.0.1.19090: Flags [F.], seq 29, ack 27, win 512, options [nop,nop,TS val 41803998 ecr 41803997], length 0
+2026-11-13 03:51:03.934178 IP 127.0.0.1.19090 > 127.0.0.1.57390: Flags [F.], seq 27, ack 30, win 512, options [nop,nop,TS val 41804000 ecr 41803998], length 0
+2026-11-13 03:51:03.934434 IP 127.0.0.1.57390 > 127.0.0.1.19090: Flags [.], ack 28, win 512, options [nop,nop,TS val 41804000 ecr 41804000], length 0
+2026-11-13 03:51:03.946031 IP 127.0.0.1.57406 > 127.0.0.1.19090: Flags [S], seq 761076552, win 65495, options [mss 65495,sackOK,TS val 41804012 ecr 0,nop,wscale 7], length 0
+2026-11-13 03:51:03.946180 IP 127.0.0.1.19090 > 127.0.0.1.57406: Flags [S.], seq 1131597372, ack 761076553, win 65483, options [mss 65495,sackOK,TS val 41804012 ecr 41804012,nop,wscale 7], length 0
+2026-11-13 03:51:03.946319 IP 127.0.0.1.57406 > 127.0.0.1.19090: Flags [.], ack 1, win 512, options [nop,nop,TS val 41804012 ecr 41804012], length 0
+2026-11-13 03:51:03.949227 IP 127.0.0.1.57406 > 127.0.0.1.19090: Flags [P.], seq 1:13, ack 1, win 512, options [nop,nop,TS val 41804015 ecr 41804012], length 12
+2026-11-13 03:51:03.949363 IP 127.0.0.1.19090 > 127.0.0.1.57406: Flags [.], ack 13, win 512, options [nop,nop,TS val 41804015 ecr 41804015], length 0
+2026-11-13 03:51:04.004042 IP 127.0.0.1.19090 > 127.0.0.1.57406: Flags [P.], seq 1:25, ack 13, win 512, options [nop,nop,TS val 41804070 ecr 41804015], length 24
+2026-11-13 03:51:04.004224 IP 127.0.0.1.57406 > 127.0.0.1.19090: Flags [.], ack 25, win 512, options [nop,nop,TS val 41804070 ecr 41804070], length 0
+2026-11-13 03:51:04.004779 IP 127.0.0.1.57406 > 127.0.0.1.19090: Flags [F.], seq 13, ack 25, win 512, options [nop,nop,TS val 41804071 ecr 41804070], length 0
+2026-11-13 03:51:04.006585 IP 127.0.0.1.19090 > 127.0.0.1.57406: Flags [F.], seq 25, ack 14, win 512, options [nop,nop,TS val 41804072 ecr 41804071], length 0
+2026-11-13 03:51:04.006782 IP 127.0.0.1.57406 > 127.0.0.1.19090: Flags [.], ack 26, win 512, options [nop,nop,TS val 41804073 ecr 41804072], length 0
+reading from file /root/ForkSysInfo/evidence/loopback.pcap, link-type EN10MB (Ethernet), snapshot length 262144

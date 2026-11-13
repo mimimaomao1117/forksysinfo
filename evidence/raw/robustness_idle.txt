@@ -1,0 +1,39 @@
+[
+  {
+    "mode": "robust",
+    "timeout_ms": 500,
+    "observed_after_seconds": 1.207,
+    "before": [
+      {
+        "pid": 2118,
+        "ppid": 2117,
+        "state": "S",
+        "command": "server"
+      }
+    ],
+    "after": [],
+    "active_children": 0
+  },
+  {
+    "mode": "unsafe",
+    "timeout_ms": 500,
+    "observed_after_seconds": 1.219,
+    "before": [
+      {
+        "pid": 2120,
+        "ppid": 2119,
+        "state": "S",
+        "command": "server"
+      }
+    ],
+    "after": [
+      {
+        "pid": 2120,
+        "ppid": 2119,
+        "state": "S",
+        "command": "server"
+      }
+    ],
+    "active_children": 1
+  }
+]

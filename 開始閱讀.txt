@@ -1,0 +1,32 @@
+ForkSysInfo C 語言 Client Server 作業
+
+一 先閱讀 report/ForkSysInfo_Report.pdf
+   含系統設計、關鍵程式、實測分析、執行截圖及全部 C 原始碼與 Makefile。
+
+二 觀看 media/ForkSysInfo_2min.mp4
+   精確 120 秒，繁體中文旁白及字幕，使用實際測試證據講解。
+
+三 執行 START_DEMO.cmd
+   隨附離線 Linux，無須 Docker 或修改 BIOS。約需 1 至 3 分鐘開機。
+   會更新本資料夾中的原始碼、重新編譯並驗證，結果存入 runs/時間戳記/。
+   此入口已在本機實測完成，11/11 項驗證通過。
+
+四 課堂手動展示
+   開啟兩個 LINUX_SHELL.cmd。
+   第一個視窗：sh scripts/demo.sh --server
+   第二個視窗：sh scripts/demo.sh
+   完成後執行 STOP_LINUX.cmd 關閉背景 Linux。
+
+五 繳交內容
+   src/ 與 include/  完整可編輯 C 原始碼
+   Makefile          兩種版本與共享動態函式庫的建置規則
+   build/            Linux debug 及 release 執行檔與 libnetsys.so
+   tests/ scripts/   自動驗證與現場示範腳本
+   evidence/         報告引用的第一次原始實測紀錄及 loopback.pcap
+   evidence-recheck/ 安裝後 Linux 的第二次完整實測
+   runs/             Windows 啟動工具實際執行產生的新證據
+   docs/             可編輯報告與影片腳本
+   media/            真實執行畫面、120 秒影片、字幕與逐字稿
+   portable-linux/   離線示範用 QEMU 及 Linux 磁碟
+
+原生 Linux、Ubuntu/Debian 及 Docker 的其他操作方式請見 README.md。

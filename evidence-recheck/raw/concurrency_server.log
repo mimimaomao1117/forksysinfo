@@ -1,0 +1,38 @@
+2026-11-13T03:55:52.666 INFO pid=2245 role=server READY host=127.0.0.1 port=19092 robust=1 timeout_ms=6000 max_clients=64 compiled_debug=1
+2026-11-13T03:55:52.712 INFO pid=2245 role=server FORK child=2247 active=1 peer=127.0.0.1:35910
+2026-11-13T03:55:52.722 INFO pid=2245 role=server FORK child=2250 active=2 peer=127.0.0.1:35914
+2026-11-13T03:55:52.739 INFO pid=2245 role=server FORK child=2252 active=3 peer=127.0.0.1:35928
+2026-11-13T03:55:52.742 INFO pid=2245 role=server FORK child=2253 active=4 peer=127.0.0.1:35944
+2026-11-13T03:55:52.756 INFO pid=2245 role=server FORK child=2256 active=5 peer=127.0.0.1:35952
+2026-11-13T03:55:52.761 INFO pid=2245 role=server FORK child=2258 active=6 peer=127.0.0.1:35964
+2026-11-13T03:55:52.771 INFO pid=2245 role=server FORK child=2260 active=7 peer=127.0.0.1:35970
+2026-11-13T03:55:52.773 INFO pid=2245 role=server FORK child=2261 active=8 peer=127.0.0.1:35982
+2026-11-13T03:55:52.789 INFO pid=2245 role=server FORK child=2264 active=9 peer=127.0.0.1:35998
+2026-11-13T03:55:52.800 INFO pid=2245 role=server FORK child=2266 active=10 peer=127.0.0.1:36008
+2026-11-13T03:55:52.811 INFO pid=2245 role=server FORK child=2268 active=11 peer=127.0.0.1:36024
+2026-11-13T03:55:52.831 INFO pid=2245 role=server FORK child=2269 active=12 peer=127.0.0.1:36030
+2026-11-13T03:55:54.721 INFO pid=2247 role=worker CHILD_DONE
+2026-11-13T03:55:54.723 INFO pid=2245 role=server REAP child=2247 active=11 status=0
+2026-11-13T03:55:54.735 INFO pid=2250 role=worker CHILD_DONE
+2026-11-13T03:55:54.737 INFO pid=2245 role=server REAP child=2250 active=10 status=0
+2026-11-13T03:55:54.746 INFO pid=2252 role=worker CHILD_DONE
+2026-11-13T03:55:54.748 INFO pid=2245 role=server REAP child=2252 active=9 status=0
+2026-11-13T03:55:54.750 INFO pid=2253 role=worker CHILD_DONE
+2026-11-13T03:55:54.751 INFO pid=2245 role=server REAP child=2253 active=8 status=0
+2026-11-13T03:55:54.775 INFO pid=2256 role=worker CHILD_DONE
+2026-11-13T03:55:54.778 INFO pid=2245 role=server REAP child=2256 active=7 status=0
+2026-11-13T03:55:54.780 INFO pid=2258 role=worker CHILD_DONE
+2026-11-13T03:55:54.781 INFO pid=2245 role=server REAP child=2258 active=6 status=0
+2026-11-13T03:55:54.789 INFO pid=2260 role=worker CHILD_DONE
+2026-11-13T03:55:54.791 INFO pid=2245 role=server REAP child=2260 active=5 status=0
+2026-11-13T03:55:54.793 INFO pid=2261 role=worker CHILD_DONE
+2026-11-13T03:55:54.794 INFO pid=2245 role=server REAP child=2261 active=4 status=0
+2026-11-13T03:55:54.807 INFO pid=2264 role=worker CHILD_DONE
+2026-11-13T03:55:54.808 INFO pid=2245 role=server REAP child=2264 active=3 status=0
+2026-11-13T03:55:54.813 INFO pid=2266 role=worker CHILD_DONE
+2026-11-13T03:55:54.816 INFO pid=2245 role=server REAP child=2266 active=2 status=0
+2026-11-13T03:55:54.822 INFO pid=2268 role=worker CHILD_DONE
+2026-11-13T03:55:54.824 INFO pid=2245 role=server REAP child=2268 active=1 status=0
+2026-11-13T03:55:54.849 INFO pid=2269 role=worker CHILD_DONE
+2026-11-13T03:55:54.851 INFO pid=2245 role=server REAP child=2269 active=0 status=0
+2026-11-13T03:55:54.864 INFO pid=2245 role=server STOPPED active=0
