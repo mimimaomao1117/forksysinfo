@@ -536,8 +536,9 @@ def packet_capture():
     assert cap.returncode == 0, cap_log_path.read_text()
     summary = run(["tcpdump", "-nn", "-tttt", "-r", pcap])
     hex_dump = run(["tcpdump", "-nn", "-X", "-r", pcap])
-    save("tcpdump_summary.txt", "$ tcpdump -nn -tttt -r evidence/loopback.pcap\n" + summary.stdout + summary.stderr)
-    save("tcpdump_hex.txt", "$ tcpdump -nn -X -r evidence/loopback.pcap\n" + hex_dump.stdout + hex_dump.stderr)
+    pcap_label = os.path.relpath(pcap, ROOT)
+    save("tcpdump_summary.txt", f"$ tcpdump -nn -tttt -r {pcap_label}\n" + summary.stdout + summary.stderr)
+    save("tcpdump_hex.txt", f"$ tcpdump -nn -X -r {pcap_label}\n" + hex_dump.stdout + hex_dump.stderr)
     analysis = parse_pcap(pcap, server.port)
     (EVIDENCE / "packet_analysis.json").write_text(json.dumps(analysis, indent=2) + "\n")
     RESULTS["packet_capture"] = {k: v for k, v in analysis.items() if k not in ("packets", "decoded_streams")}
