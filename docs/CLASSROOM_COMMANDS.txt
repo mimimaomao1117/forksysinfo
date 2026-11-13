@@ -1,0 +1,133 @@
+ForkSysInfo - Classroom Command Cheat Sheet
+
+Use the complete desktop/offline bundle. Commands below are typed in the
+Linux shell, except the Windows launcher actions. Do not type a shell prompt.
+Use only one copy of the offline bundle at a time: its SSH port is 22222.
+
+BEFORE CLASS - WINDOWS
+1. Open the ForkSysInfo folder inside ForkSysInfo_Assignment on the desktop.
+2. Double-click START_DEMO.cmd. It boots Linux, updates the C source, builds
+   both variants, runs all 11 test groups, and exports a new runs/ directory.
+   Allow boot and validation to finish; wait for "All runtime validation passed."
+   The VM remains running. Prepare it before your presentation slot.
+3. Open the English report and video in Windows. Open both diagram PNGs.
+4. Double-click LINUX_SHELL.cmd twice. Call the windows Terminal A and B.
+   Both initially enter /root/ForkSysInfo in the same Linux VM.
+
+1. PREPARE A FRESH CLASSROOM COPY - TERMINAL A ONLY
+The live helper modes replace evidence-cli output. Work in a new temporary
+copy so the submitted report evidence remains unchanged. Create this once.
+
+cd /root/ForkSysInfo
+CLASSDIR=$(mktemp -d /tmp/forksysinfo-classroom.XXXXXX)
+cp -a include src tests scripts Makefile build evidence-cli "$CLASSDIR"/
+printf '%s\n' "$CLASSDIR" > /tmp/forksysinfo-classroom.path
+cd "$CLASSDIR"
+pwd
+make -B DEBUG=1 all
+make -B DEBUG=0 all
+
+2. JOIN THE SAME COPY - TERMINAL B
+Do this after Terminal A finishes the copy. Check that both pwd outputs match.
+
+cd "$(cat /tmp/forksysinfo-classroom.path)"
+pwd
+
+3. START THE MANUAL SERVER - TERMINAL A
+
+./build/debug/server --host 127.0.0.1 --port 9090 --timeout-ms 5000 --max-clients 64 --debug
+
+Leave this running in the foreground. Point to READY, compiled_debug=1,
+and FORK/REAP messages as clients connect and exit.
+
+4. SEND REQUESTS - TERMINAL B
+
+./build/debug/client --port 9090 SYSINFO
+./build/debug/client --port 9090 --debug PING
+./build/debug/client --port 9090 ECHO "Hello from the classroom"
+
+Expected: OK SYSINFO with Linux fields; OK PONG with a worker PID; echoed text.
+Client options such as --debug must appear before the command name.
+
+Optional error handling:
+
+./build/debug/client --port 9090 INVALID
+./build/debug/client --port 9090 SLEEP -1
+./build/debug/client --port 9090 PING
+
+Expected: ERR UNKNOWN_COMMAND, ERR BAD_ARGUMENT, then a successful PONG.
+The two error replies intentionally give the client a nonzero exit status.
+
+5. STOP THE MANUAL SERVER - TERMINAL A
+Press Ctrl+C. Wait for STOPPED active=0 and the shell prompt.
+
+6. RUN THE MANAGED DEMONSTRATIONS - TERMINAL B, ONE AT A TIME
+Each mode starts its own temporary server(s), uses separate 192xx ports,
+prints real output, and stops its servers when it finishes.
+
+python3 scripts/cli_evidence.py concurrency
+
+Point to 12 rows with the same PPID, 12 OK SLEPT 3000 replies, and elapsed time.
+The report's recorded value is 3.175 seconds; the new PID and time will differ.
+The 36-second serial lower bound is a calculation, not a measured serial run.
+
+python3 scripts/cli_evidence.py robustness
+
+Point to the three robust/unsafe pairs: fragmented input, idle worker, zombie.
+Expected: PONG versus a connection error; 0 versus 1 active idle worker;
+0 versus 1 zombie. The exact error wording and PIDs can vary.
+
+python3 scripts/cli_evidence.py debug-library
+
+Point to debug lines only when both controls are enabled. The recorded
+four-way matrix is 0/8/0/0. Show both ldd entries and the $ORIGIN RUNPATH.
+
+7. ANALYZE THE RECORDED CAPTURE - TERMINAL B
+These commands read the copied capture; they do not create new network traffic.
+
+tshark --version | head -n1
+tshark -r evidence-cli/loopback.pcap -Y 'tcp.stream == 0'
+tshark -r evidence-cli/loopback.pcap -Y 'tcp.len == 8 && tcp.dstport == 19090' -x
+tshark -r evidence-cli/loopback.pcap -Y 'tcp.len == 8 && tcp.dstport == 19090' -T fields -e tcp.payload
+
+Expected PING frame: 0000000450494e47.
+The recorded capture has 40 packets and four TCP connections. A four-byte
+network-order length of 4 precedes the four command bytes 50 49 4e 47.
+
+8. SHOW TEST STATUS - TERMINAL B
+This reads the saved 11/11 result; explicitly call it a recorded result.
+
+python3 scripts/cli_evidence.py summary
+
+Optional fresh complete run, if the teacher wants to see all tests and a new
+tcpdump capture. Keep the manual server stopped and run no other test mode
+at the same time. This replaces evidence-cli only inside the temporary copy.
+
+python3 scripts/cli_evidence.py suite
+
+Expected: 11/11 passed. Afterwards the TShark commands above inspect the new
+capture. The full suite uses SLEEP 2000, unlike the separate SLEEP 3000
+concurrency demonstration. Do not mix their timings.
+
+9. FINISH
+If any manual server is still in the foreground, stop it with Ctrl+C.
+Type exit in each Linux shell. Then double-click STOP_LINUX.cmd in Windows.
+Wait for the shutdown message. The temporary classroom copy is disposable;
+keep the submitted files in the desktop project and ZIP.
+
+IF SOMETHING DOES NOT WORK
+- Wrong directory: run pwd; rejoin with cd "$(cat /tmp/forksysinfo-classroom.path)".
+- Connection refused: confirm Terminal A shows READY and both ports are 9090.
+- Port already in use: inspect ss -ltnp | grep ':9090'; return to the terminal
+  running your previous server and press Ctrl+C. Do not kill unrelated processes.
+- Missing library/binary: run make -B DEBUG=1 all in the classroom copy;
+  keep libnetsys.so beside the client and server in build/debug/.
+- Fixed test port busy: stop the other test run before retrying a managed mode.
+- VM not ready: read portable-linux/boot.log and qemu.log in Windows, confirm
+  only one bundle is running, and use STOP_LINUX.cmd before a clean restart.
+- Native Linux instead of this root guest: use README.md for dependencies;
+  a fresh capture suite needs appropriate privileges, for example
+  sudo python3 scripts/cli_evidence.py suite.
+
+Full spoken walkthrough: CLASSROOM_DEMO.md
+Teacher questions and English answers: CLASSROOM_QA.md

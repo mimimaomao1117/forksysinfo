@@ -2,6 +2,8 @@
 
 Repository: https://github.com/mimimaomao1117/forksysinfo
 
+For the complete two-terminal classroom workflow, use [CLASSROOM_DEMO.md](CLASSROOM_DEMO.md). It includes exact commands, an 8 to 10 minute spoken English script, a shorter route, and rehearsal preparation. Keep [CLASSROOM_COMMANDS.txt](CLASSROOM_COMMANDS.txt) beside the terminal; use [CLASSROOM_QA.md](CLASSROOM_QA.md) for 24 likely teacher questions and English answers.
+
 The current lab report is in English and uses native Linux console screenshots. It includes diagrams of the parent and child processes, dynamic linking, and the length-prefixed protocol. The new console records are in `evidence-cli/`.
 
 ## Live demonstration

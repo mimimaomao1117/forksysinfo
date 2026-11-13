@@ -10,6 +10,9 @@ https://github.com/mimimaomao1117/forksysinfo
    文字報告：docs/REPORT.md
    影片：media/ForkSysInfo_2min.mp4
    展示講稿：docs/DEMO_SCRIPT.md
+   上課完整流程與逐段英文講稿：docs/CLASSROOM_DEMO.md
+   可直接照打的指令清單：docs/CLASSROOM_COMMANDS.txt
+   老師可能問的 24 題英文問答：docs/CLASSROOM_QA.md
    影片約兩分鐘，已更新為英文旁白與英文字幕，內容對應新版報告、8 張命令列截圖及 2 張 Diagram。
    英文字幕：media/ForkSysInfo_2min.en.srt
    英文逐字稿：media/ForkSysInfo_2min_transcript.txt

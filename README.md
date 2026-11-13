@@ -8,6 +8,7 @@ Public repository: [mimimaomao1117/forksysinfo](https://github.com/mimimaomao111
 - [Native command-line screenshots](media/cli/)
 - [Latest packet capture](evidence-cli/loopback.pcap) and [test results](evidence-cli/results.json)
 - [Two-minute English video](media/ForkSysInfo_2min.mp4), [English subtitles](media/ForkSysInfo_2min.en.srt), and [transcript](media/ForkSysInfo_2min_transcript.txt)
+- [Classroom steps and spoken English script](docs/CLASSROOM_DEMO.md), [command cheat sheet](docs/CLASSROOM_COMMANDS.txt), and [teacher Q&A](docs/CLASSROOM_QA.md)
 
 ## Design
 
