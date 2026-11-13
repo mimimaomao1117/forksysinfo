@@ -19,6 +19,23 @@ These PNGs were captured directly from the QEMU Linux framebuffer. The full, unc
 
 The architecture and framing diagrams are available as editable SVG and rendered PNG files in [diagrams/](diagrams/): `architecture.svg`, `architecture.png`, `protocol.svg`, and `protocol.png`.
 
-The older `00_summary.png` through `06_live_console.png` and the [120-second video](ForkSysInfo_2min.mp4) remain as reference material from the earlier runs. The video retains its original Traditional Chinese narration, [SRT subtitles](ForkSysInfo_2min.zh-TW.srt), and [transcript](ForkSysInfo_2min_transcript.txt). The revised report is in English.
+The [two-minute English video](ForkSysInfo_2min.mp4) uses the current console screenshots and both diagrams. Its narration, [English SRT subtitles](ForkSysInfo_2min.en.srt), and [transcript](ForkSysInfo_2min_transcript.txt) follow the revised report. This is a narrated walkthrough of the recorded command-line evidence; the screenshots show the actual runs rather than a newly recorded live session.
 
-The video's Windows launcher belongs to the complete desktop bundle. A plain GitHub clone does not include `portable-linux/`; use the Linux or Docker instructions in the [project README](../README.md).
+The video covers the fork-based design, length-prefixed messages, SYSINFO, twelve simultaneous `SLEEP 3000` requests completed in 3.175 seconds, the three robustness comparisons, both debug controls, dynamic linking, TShark analysis, and the 11/11 integration result. Packet figures refer to `evidence-cli/loopback.pcap`: four TCP connections and forty packets.
+
+The older `00_summary.png` through `06_live_console.png` remain reference images from earlier runs. They are separate from the current `cli/` screenshots and English video.
+
+The Windows launchers require the complete desktop bundle. A plain GitHub clone does not include `portable-linux/`; use the Linux or Docker instructions in the [project README](../README.md).
+
+## Video build sources
+
+The [timeline](video_timeline.json) contains the English narration and cue timings. The [manifest](video_manifest.json) records the exact source-image hashes, displayed crops, audio timings, and MP4 properties. The video is 1920 by 1080 at 25 fps, with English narration and captions throughout.
+
+The included narration uses the Windows English voice Microsoft Zira Desktop. To rebuild on Windows, install Python with Pillow and FFmpeg, then run from the project root:
+
+```powershell
+powershell -File scripts/narrate_video.ps1 -WorkDirectory work/video
+python scripts/build_video.py --work work/video
+```
+
+FFmpeg and ffprobe must be on PATH; their locations can also be supplied with `--ffmpeg` and `--ffprobe`. Intermediate WAV and frame files belong in the local work directory, outside the submitted media directory.

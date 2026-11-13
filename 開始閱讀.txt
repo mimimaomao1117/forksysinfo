@@ -10,7 +10,10 @@ https://github.com/mimimaomao1117/forksysinfo
    文字報告：docs/REPORT.md
    影片：media/ForkSysInfo_2min.mp4
    展示講稿：docs/DEMO_SCRIPT.md
-   影片精確 120 秒，保留原有繁體中文旁白與字幕；新版報告及圖說為英文。
+   影片約兩分鐘，已更新為英文旁白與英文字幕，內容對應新版報告、8 張命令列截圖及 2 張 Diagram。
+   英文字幕：media/ForkSysInfo_2min.en.srt
+   英文逐字稿：media/ForkSysInfo_2min_transcript.txt
+   影片以實際截圖與圖解說明既有實測，並非重新錄製的現場操作。
 
 二 從 GitHub 取得專案
    GitHub 版收錄完整 C 原始碼、測試、文件、PDF、影片、截圖與封包證據。
@@ -44,17 +47,19 @@ https://github.com/mimimaomao1117/forksysinfo
    Docker 的兩個終端機操作方式見 README.md。
 
 五 參考實測與內容位置
-   既有實測 11/11 組驗證通過，12 個 C client 同時對應 12 個工作子行程。
-   SLEEP 2000 的總耗時為 2.141 秒；24 秒是循序等待的理論下限。
+   新版報告與英文影片引用 evidence-cli/；完整實測 11/11 組驗證通過。
+   12 個 C client 同時對應 12 個工作子行程，SLEEP 3000 總耗時為 3.175 秒。
+   36 秒是循序等待的理論下限，並非另一個循序伺服器的實測結果。
    PCAP 含 4 條連線、40 個封包及 8 個含資料的 TCP segment。
 
    src/ include/     完整可編輯 C 原始碼
    Makefile          debug/release 與 libnetsys.so 建置規則
    tests/ scripts/   自動驗證與現場示範工具
-   evidence/         報告引用的第一次實測，Linux 6.12.51-0-virt
-   evidence-recheck/ 安裝後第二次完整驗證，Linux 6.12.117-0-virt
+   evidence-cli/     新版報告、命令列截圖與英文影片引用的實測
+   evidence/         較早的第一次實測，Linux 6.12.51-0-virt
+   evidence-recheck/ 較早的安裝後驗證，Linux 6.12.117-0-virt
    docs/ report/     可編輯文件及 PDF 報告
-   media/            執行截圖、120 秒影片、字幕與逐字稿
+   media/            執行截圖、約兩分鐘英文影片、英文字幕與逐字稿
    build/            桌面套件的 Linux 建置產物，可由 Makefile 重建
    runs/             桌面啟動工具匯出的新證據，僅存於本機
    portable-linux/   桌面套件的離線 QEMU 與 Linux 磁碟

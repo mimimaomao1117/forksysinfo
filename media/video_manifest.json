@@ -1,0 +1,343 @@
+{
+  "language": "en-US",
+  "duration_seconds": 120,
+  "voice": "Microsoft Zira Desktop",
+  "narration_method": "Windows System.Speech synthetic English narration",
+  "visual_method": "Original report diagrams and native console captures, with labelled crops and English captions",
+  "media": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "width": 1920,
+        "height": 1080,
+        "duration": "120.000000",
+        "tags": {
+          "language": "eng"
+        }
+      },
+      {
+        "codec_name": "aac",
+        "sample_rate": "48000",
+        "channels": 1,
+        "duration": "120.000000",
+        "tags": {
+          "language": "eng"
+        }
+      }
+    ],
+    "format": {
+      "duration": "120.000000",
+      "size": "3912636"
+    }
+  },
+  "sources_sha256": {
+    "cli/01_build.png": "ec9196a217e81c0b624681ce1155b277d969a76c326ffefde293b2b71f95b21c",
+    "diagrams/architecture.png": "192cb7c51cfd09bb06396545e2031f4cb804e7b33f88225ff71fdad533eeede3",
+    "diagrams/protocol.png": "93d689ee790c4a3da8691a46ca61d649d1242c00f3a4b12373b8d1f2523ec562",
+    "cli/02_sysinfo.png": "e8aa0bb869fa8c5b9568cc0a7ab27018656ade7d58ad25a6e8d072d6849633d9",
+    "cli/03_concurrency.png": "c25d133417bc0c1bdb7c5c35ecc1a540f48117217d287074c0d9614076ad460a",
+    "cli/04_robustness.png": "42ace9e665a76809f437eca42045b8a44a40a7f5582b7887d3859687d9160616",
+    "cli/05_debug_library.png": "f2344c0cd54ac6432ad96e627320c82ad0a0b4441d1fb9b6dbd11569f164237c",
+    "cli/06_tshark.png": "ad14d27a3c5947c10045bb39e024c78fef95cd5638ed34e6d5a05da7467a46b2",
+    "cli/07_packets_hex.png": "5cc978d28a7e197057921efba9e182b3e4b6c99300de92d9d83900ca108f7bf8",
+    "cli/08_tests.png": "07f825edda811f29d03a09afe716f63a5b9a17639890a345d6e1593d283311fc"
+  },
+  "cues": [
+    {
+      "start": 0.0,
+      "duration": 4.8,
+      "source": "cli/01_build.png",
+      "crop": [
+        0,
+        0,
+        1280,
+        570
+      ],
+      "caption": "ForkSysInfo is a C client and server built with a Makefile.",
+      "speech_seconds": 4.424,
+      "tempo_factor": 1.0
+    },
+    {
+      "start": 4.8,
+      "duration": 5.2,
+      "source": "cli/01_build.png",
+      "crop": [
+        0,
+        0,
+        1280,
+        570
+      ],
+      "caption": "This English walkthrough uses the same console evidence and diagrams as the report.",
+      "speech_seconds": 5.278,
+      "tempo_factor": 1.0816
+    },
+    {
+      "start": 10.0,
+      "duration": 5,
+      "source": "diagrams/architecture.png",
+      "crop": [
+        0,
+        0,
+        1400,
+        607
+      ],
+      "caption": "The parent accepts each TCP connection and forks one child process.",
+      "speech_seconds": 5.134,
+      "tempo_factor": 1.0969
+    },
+    {
+      "start": 15.0,
+      "duration": 5,
+      "source": "diagrams/architecture.png",
+      "crop": [
+        0,
+        0,
+        1400,
+        607
+      ],
+      "caption": "Each child serves its client while the parent keeps accepting connections.",
+      "speech_seconds": 4.784,
+      "tempo_factor": 1.0222
+    },
+    {
+      "start": 20.0,
+      "duration": 5,
+      "source": "diagrams/architecture.png",
+      "crop": [
+        0,
+        610,
+        1400,
+        820
+      ],
+      "caption": "Both programs dynamically link the shared utility library.",
+      "speech_seconds": 4.169,
+      "tempo_factor": 1.0
+    },
+    {
+      "start": 25.0,
+      "duration": 5,
+      "source": "diagrams/protocol.png",
+      "crop": null,
+      "caption": "Each frame starts with a four-byte, big-endian payload length.",
+      "speech_seconds": 4.464,
+      "tempo_factor": 1.0
+    },
+    {
+      "start": 30.0,
+      "duration": 5,
+      "source": "diagrams/protocol.png",
+      "crop": null,
+      "caption": "Lengths must be between one and four thousand ninety-six bytes.",
+      "speech_seconds": 4.249,
+      "tempo_factor": 1.0
+    },
+    {
+      "start": 35.0,
+      "duration": 4,
+      "source": "diagrams/protocol.png",
+      "crop": null,
+      "caption": "Read loops handle partial TCP reads before processing.",
+      "speech_seconds": 4.229,
+      "tempo_factor": 1.1491
+    },
+    {
+      "start": 39.0,
+      "duration": 6,
+      "source": "cli/02_sysinfo.png",
+      "crop": [
+        0,
+        0,
+        1280,
+        620
+      ],
+      "caption": "The SYSINFO request returns the host name, kernel, architecture, memory, and uptime.",
+      "speech_seconds": 6.528,
+      "tempo_factor": 1.1493
+    },
+    {
+      "start": 45.0,
+      "duration": 6,
+      "source": "cli/02_sysinfo.png",
+      "crop": [
+        0,
+        0,
+        1280,
+        620
+      ],
+      "caption": "PING and ECHO are also shown here, with replies from separate worker processes.",
+      "speech_seconds": 5.579,
+      "tempo_factor": 1.0
+    },
+    {
+      "start": 51.0,
+      "duration": 5.5,
+      "source": "cli/03_concurrency.png",
+      "crop": [
+        0,
+        0,
+        1280,
+        805
+      ],
+      "caption": "Twelve C clients request a three-second sleep at the same time.",
+      "speech_seconds": 4.414,
+      "tempo_factor": 1.0
+    },
+    {
+      "start": 56.5,
+      "duration": 5.7,
+      "source": "cli/03_concurrency.png",
+      "crop": [
+        0,
+        0,
+        1280,
+        805
+      ],
+      "caption": "The process snapshot shows twelve children sharing parent process 2152.",
+      "speech_seconds": 5.828,
+      "tempo_factor": 1.0833
+    },
+    {
+      "start": 62.2,
+      "duration": 5.8,
+      "source": "cli/03_concurrency.png",
+      "crop": [
+        0,
+        0,
+        1280,
+        805
+      ],
+      "caption": "All clients finish in 3.175 seconds, demonstrating concurrent service.",
+      "speech_seconds": 6.263,
+      "tempo_factor": 1.1429
+    },
+    {
+      "start": 68.0,
+      "duration": 6.8,
+      "source": "cli/04_robustness.png",
+      "crop": [
+        0,
+        0,
+        1280,
+        378
+      ],
+      "caption": "Three comparisons use the same abnormal inputs with robustness enabled and disabled.",
+      "speech_seconds": 5.353,
+      "tempo_factor": 1.0
+    },
+    {
+      "start": 74.8,
+      "duration": 6.6,
+      "source": "cli/04_robustness.png",
+      "crop": [
+        0,
+        0,
+        1280,
+        378
+      ],
+      "caption": "Fragmented requests succeed with read loops. The idle timeout releases a stalled worker.",
+      "speech_seconds": 6.508,
+      "tempo_factor": 1.0363
+    },
+    {
+      "start": 81.39999999999999,
+      "duration": 6.6,
+      "source": "cli/04_robustness.png",
+      "crop": [
+        0,
+        0,
+        1280,
+        378
+      ],
+      "caption": "Reaping removes completed children. The unsafe version leaves a blocked worker and a zombie.",
+      "speech_seconds": 6.393,
+      "tempo_factor": 1.018
+    },
+    {
+      "start": 87.99999999999999,
+      "duration": 6,
+      "source": "cli/05_debug_library.png",
+      "crop": [
+        0,
+        0,
+        1280,
+        402
+      ],
+      "caption": "Debug messages appear only when compile-time debug and the runtime flag are both enabled.",
+      "speech_seconds": 5.583,
+      "tempo_factor": 1.0
+    },
+    {
+      "start": 93.99999999999999,
+      "duration": 6,
+      "source": "cli/05_debug_library.png",
+      "crop": [
+        0,
+        0,
+        1280,
+        402
+      ],
+      "caption": "The linkage commands show both programs loading the same local shared library.",
+      "speech_seconds": 5.054,
+      "tempo_factor": 1.0
+    },
+    {
+      "start": 99.99999999999999,
+      "duration": 6,
+      "source": "cli/06_tshark.png",
+      "crop": [
+        0,
+        0,
+        1280,
+        445
+      ],
+      "caption": "TShark shows the loopback handshake, data exchange, and orderly close.",
+      "speech_seconds": 5.459,
+      "tempo_factor": 1.0
+    },
+    {
+      "start": 105.99999999999999,
+      "duration": 6,
+      "source": "cli/07_packets_hex.png",
+      "crop": [
+        0,
+        0,
+        1280,
+        277
+      ],
+      "caption": "The PING frame has a four-byte length header and a four-byte command.",
+      "speech_seconds": 4.189,
+      "tempo_factor": 1.0
+    },
+    {
+      "start": 111.99999999999999,
+      "duration": 4.5,
+      "source": "cli/08_tests.png",
+      "crop": [
+        0,
+        0,
+        1280,
+        353
+      ],
+      "caption": "The complete integration run passes all eleven test groups.",
+      "speech_seconds": 4.214,
+      "tempo_factor": 1.0081
+    },
+    {
+      "start": 116.49999999999999,
+      "duration": 3.5,
+      "source": "cli/08_tests.png",
+      "crop": [
+        0,
+        0,
+        1280,
+        353
+      ],
+      "caption": "Source and reproduction commands are included.",
+      "speech_seconds": 3.334,
+      "tempo_factor": 1.0484
+    }
+  ],
+  "video_sha256": "b42f8955fa7356df0ec8083aabc84a10e8fb41718430ff62a0b80bcbfedadc2b"
+}

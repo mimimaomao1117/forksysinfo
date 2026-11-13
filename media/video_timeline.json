@@ -1,0 +1,80 @@
+{
+  "title": "ForkSysInfo: English Demonstration",
+  "language": "en-US",
+  "duration_seconds": 120,
+  "voice": "Microsoft Zira Desktop",
+  "chapters": [
+    {
+      "title": "Build and project overview", "source": "cli/01_build.png", "duration": 10,
+      "cues": [
+        {"duration": 4.8, "text": "ForkSysInfo is a C client and server built with a Makefile."},
+        {"duration": 5.2, "text": "This English walkthrough uses the same console evidence and diagrams as the report."}
+      ]
+    },
+    {
+      "title": "One child process per connection", "source": "diagrams/architecture.png", "duration": 15,
+      "cues": [
+        {"duration": 5, "text": "The parent accepts each TCP connection and forks one child process.", "crop": [0, 0, 1400, 607]},
+        {"duration": 5, "text": "Each child serves its client while the parent keeps accepting connections.", "crop": [0, 0, 1400, 607]},
+        {"duration": 5, "text": "Both programs dynamically link the shared utility library.", "crop": [0, 610, 1400, 820]}
+      ]
+    },
+    {
+      "title": "Length-prefixed TCP protocol", "source": "diagrams/protocol.png", "duration": 14,
+      "cues": [
+        {"duration": 5, "text": "Each frame starts with a four-byte, big-endian payload length."},
+        {"duration": 5, "text": "Lengths must be between one and four thousand ninety-six bytes."},
+        {"duration": 4, "text": "Read loops handle partial TCP reads before processing."}
+      ]
+    },
+    {
+      "title": "System information and client commands", "source": "cli/02_sysinfo.png", "duration": 12,
+      "cues": [
+        {"duration": 6, "text": "The SYSINFO request returns the host name, kernel, architecture, memory, and uptime.", "speech": "The sys info request returns the host name, kernel, architecture, memory, and uptime."},
+        {"duration": 6, "text": "PING and ECHO are also shown here, with replies from separate worker processes."}
+      ]
+    },
+    {
+      "title": "Concurrency: twelve clients and twelve children", "source": "cli/03_concurrency.png", "duration": 17,
+      "cues": [
+        {"duration": 5.5, "text": "Twelve C clients request a three-second sleep at the same time."},
+        {"duration": 5.7, "text": "The process snapshot shows twelve children sharing parent process 2152.", "speech": "The process snapshot shows twelve children sharing parent process twenty-one fifty-two."},
+        {"duration": 5.8, "text": "All clients finish in 3.175 seconds, demonstrating concurrent service.", "speech": "All clients finish in three point one seven five seconds, demonstrating concurrent service."}
+      ]
+    },
+    {
+      "title": "Robustness: fragmented input, idle clients, zombies", "source": "cli/04_robustness.png", "duration": 20,
+      "cues": [
+        {"duration": 6.8, "text": "Three comparisons use the same abnormal inputs with robustness enabled and disabled."},
+        {"duration": 6.6, "text": "Fragmented requests succeed with read loops. The idle timeout releases a stalled worker."},
+        {"duration": 6.6, "text": "Reaping removes completed children. The unsafe version leaves a blocked worker and a zombie."}
+      ]
+    },
+    {
+      "title": "Two debug controls and shared-library linkage", "source": "cli/05_debug_library.png", "duration": 12,
+      "cues": [
+        {"duration": 6, "text": "Debug messages appear only when compile-time debug and the runtime flag are both enabled."},
+        {"duration": 6, "text": "The linkage commands show both programs loading the same local shared library."}
+      ]
+    },
+    {
+      "title": "TShark analysis of the tcpdump capture", "source": "cli/06_tshark.png", "duration": 6,
+      "cues": [
+        {"duration": 6, "text": "TShark shows the loopback handshake, data exchange, and orderly close.", "speech": "T shark shows the loopback handshake, data exchange, and orderly close."}
+      ]
+    },
+    {
+      "title": "Packet bytes: four-byte length followed by PING", "source": "cli/07_packets_hex.png", "duration": 6,
+      "cues": [
+        {"duration": 6, "text": "The PING frame has a four-byte length header and a four-byte command."}
+      ]
+    },
+    {
+      "title": "Complete integration results", "source": "cli/08_tests.png", "duration": 8,
+      "cues": [
+        {"duration": 4.5, "text": "The complete integration run passes all eleven test groups."},
+        {"duration": 3.5, "text": "Source and reproduction commands are included."}
+      ]
+    }
+  ]
+}

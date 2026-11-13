@@ -1,33 +1,46 @@
-﻿ForkSysInfo 兩分鐘實測證據解說
-繁體中文旁白逐字稿
-畫面包含原始 log 節錄及 QEMU 主控台直接擷取，並非未剪輯錄影。
+ForkSysInfo: English Demonstration
+English narration transcript
+Narrated walkthrough of the report figures and recorded Linux command-line evidence.
+Sources: media/cli/, media/diagrams/, evidence-cli/.
 
-文件補充 2026 年 11 月 13 日
-公開專案：https://github.com/mimimaomao1117/forksysinfo
-影片末段的「開始展示批次檔」指桌面完整離線套件的 START_DEMO.cmd。
-GitHub clone 不含 portable-linux，請改依 README.md 的 Linux 或 Docker 步驟重現。
-下方各時間點的逐字稿保留實際錄音內容，本補充不屬於影片旁白。
+00:00  Build and project overview
+ForkSysInfo is a C client and server built with a Makefile.
+This English walkthrough uses the same console evidence and diagrams as the report.
 
-00:00  實測證據解說
-這是 ForkSysInfo 的實測證據解說。程式以 C 語言實作，用 fork 為每條連線建立子行程，不使用執行緒。十一項整合驗證全部通過，原始紀錄都隨專案保留。
+00:10  One child process per connection
+The parent accepts each TCP connection and forks one child process.
+Each child serves its client while the parent keeps accepting connections.
+Both programs dynamically link the shared utility library.
 
-00:15  共同載入動態函式庫
-用戶端與伺服器都動態載入同一個共享函式庫。畫面中的連結紀錄顯示，雙方需要 libnetsys.so，並從執行檔所在目錄尋找。封包採用四個位元組的長度前綴。
+00:25  Length-prefixed TCP protocol
+Each frame starts with a four-byte, big-endian payload length.
+Lengths must be between one and four thousand ninety-six bytes.
+Read loops handle partial TCP reads before processing.
 
-00:30  用戶端查詢伺服器系統資訊
-用戶端送出系統資訊請求，伺服器回傳主機名稱、核心版本、行程編號、運作時間及記憶體。畫面是 C 用戶端的真實輸出，也展示字串回傳與延遲工作。
+00:39  System information and client commands
+The SYSINFO request returns the host name, kernel, architecture, memory, and uptime.
+PING and ECHO are also shown here, with replies from separate worker processes.
 
-00:45  十二個用戶端同時服務證明
-十二個 C 用戶端，同時要求兩秒的延遲工作。同一個快照顯示十二個不同子行程，全部對應父行程二零八二。每個用戶端都成功回應，總耗時只有二點一四一秒。若依序等待，理論下限是二十四秒。
+00:51  Concurrency: twelve clients and twelve children
+Twelve C clients request a three-second sleep at the same time.
+The process snapshot shows twelve children sharing parent process 2152.
+All clients finish in 3.175 seconds, demonstrating concurrent service.
 
-01:05  三組健全性機制比較
-三組比較使用相同輸入。分段傳送的請求，在正常模式成功，比較模式則出現中斷連線。閒置連線設定五百毫秒期限，稍後觀察，正常模式已沒有子行程，比較模式仍留一個。完成後的殭屍行程，也是零比一。
+01:08  Robustness: fragmented input, idle clients, zombies
+Three comparisons use the same abnormal inputs with robustness enabled and disabled.
+Fragmented requests succeed with read loops. The idle timeout releases a stalled worker.
+Reaping removes completed children. The unsafe version leaves a blocked worker and a zombie.
 
-01:25  編譯期與執行期兩層 debug
-除錯紀錄有編譯期和執行期兩道控制。四種組合的實測行數依序為，零，八，零，零。只有兩層都開啟才會輸出。正式版本已移除除錯程式碼，執行期旗標無法恢復。
+01:27  Two debug controls and shared-library linkage
+Debug messages appear only when compile-time debug and the runtime flag are both enabled.
+The linkage commands show both programs loading the same local shared library.
 
-01:40  tcpdump 真實 loopback 封包
-封包擷取來自本機的 loopback 介面。原始檔包含四條連線，四十個封包，其中八個帶有資料，沒有重設連線。畫面可核對交握、請求與回應，並依四個位元組的長度前綴解碼。
+01:39  TShark analysis of the tcpdump capture
+TShark shows the loopback handshake, data exchange, and orderly close.
 
-01:55  在自己的電腦重新展示
-執行開始展示批次檔，即可在自己的電腦重新驗證。
+01:45  Packet bytes: four-byte length followed by PING
+The PING frame has a four-byte length header and a four-byte command.
+
+01:51  Complete integration results
+The complete integration run passes all eleven test groups.
+Source and reproduction commands are included.

@@ -7,7 +7,7 @@ Public repository: [mimimaomao1117/forksysinfo](https://github.com/mimimaomao111
 - [English report PDF](report/ForkSysInfo_Report.pdf) and [report source](docs/REPORT.md)
 - [Native command-line screenshots](media/cli/)
 - [Latest packet capture](evidence-cli/loopback.pcap) and [test results](evidence-cli/results.json)
-- [120-second video](media/ForkSysInfo_2min.mp4), with the original Traditional Chinese narration
+- [Two-minute English video](media/ForkSysInfo_2min.mp4), [English subtitles](media/ForkSysInfo_2min.en.srt), and [transcript](media/ForkSysInfo_2min_transcript.txt)
 
 ## Design
 
@@ -34,7 +34,7 @@ The 36-second serial lower bound is `12 x 3 seconds`; it is a calculation, not a
 
 ![Actual process snapshot and C client responses](media/cli/03_concurrency.png)
 
-`media/cli/` contains eight screenshots captured directly from the Linux virtual console. The original uncropped PNGs are retained; the report may omit unused blank space below their output. Earlier `evidence/`, `evidence-recheck/`, screenshots, and video are preserved as separately identified reference material.
+`media/cli/` contains eight screenshots captured directly from the Linux virtual console. The original uncropped PNGs are retained; the report may omit unused blank space below their output. The English video narrates these screenshots and the same architecture and framing diagrams used in the report. It is a walkthrough of the recorded evidence. Earlier `evidence/`, `evidence-recheck/`, and the older dashboard screenshots remain reference material from earlier runs.
 
 ## Build and run on Linux
 

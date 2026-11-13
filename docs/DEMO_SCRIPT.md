@@ -32,17 +32,22 @@ tshark -r evidence-cli/loopback.pcap -Y 'tcp.len == 8 && tcp.dstport == 19090' -
 
 ## Submitted two-minute video
 
-`media/ForkSysInfo_2min.mp4` retains the original Traditional Chinese narration. Its SRT and transcript preserve the recorded wording. The video illustrates the earlier SLEEP 2000 reference run; its 2.141-second value is separate from the current report's SLEEP 3000 console demonstration at 3.175 seconds.
+`media/ForkSysInfo_2min.mp4` is an English narrated walkthrough of the current report's screenshots and diagrams. English subtitles are in `media/ForkSysInfo_2min.en.srt`; the narration text is in `media/ForkSysInfo_2min_transcript.txt`. It presents the recorded evidence rather than a new live execution.
 
 | Video time | Topic |
 |---|---|
-| 00:00 to 00:15 | Project and test result |
-| 00:15 to 00:30 | Shared library and framing |
-| 00:30 to 00:45 | System information request |
-| 00:45 to 01:05 | Twelve simultaneous clients |
-| 01:05 to 01:25 | Three robustness comparisons |
-| 01:25 to 01:40 | Compile-time and runtime debug |
-| 01:40 to 01:55 | Packet capture and payload |
-| 01:55 to 02:00 | Reproduction entry point |
+| 00:00 to 00:10 | Project and debug/release builds |
+| 00:10 to 00:25 | Parent, forked workers and shared-library diagram |
+| 00:25 to 00:39 | Length-prefixed protocol diagram |
+| 00:39 to 00:51 | SYSINFO, PING and ECHO output |
+| 00:51 to 01:08 | Twelve simultaneous clients and 3.175-second result |
+| 01:08 to 01:28 | Fragmented input, idle timeout and zombie comparisons |
+| 01:28 to 01:40 | Compile-time/runtime debug and dynamic linking |
+| 01:40 to 01:52 | TShark packet analysis and PING hex |
+| 01:52 to 02:00 | 11/11 integration result and source location |
+
+The concurrency screenshot shows twelve workers under parent PID 2152. All twelve C clients sent `SLEEP 3000` and succeeded in 3.175 seconds. A serial lower bound of 36 seconds is calculated from twelve three-second waits, not measured from a separate serial server. PIDs and timings change when rerun.
+
+The robustness evidence compares full receive loops with fragmented-input failure, a 500 ms idle deadline with a worker still blocked after 1.2 seconds, and child reaping with a zombie child. The four debug combinations produce 0, 8, 0 and 0 debug lines in the recorded PING test. TShark 4.4.7 reads the current forty-packet capture with four TCP connections; the PING frame is `0000000450494e47`.
 
 The Windows CMD entry points require the complete desktop bundle with `portable-linux/`. A GitHub clone uses the Linux or Docker instructions in README.md. For the desktop bundle, open two `LINUX_SHELL.cmd` windows and run `sh scripts/demo.sh --server` and `sh scripts/demo.sh`. Finish with `STOP_LINUX.cmd`.
