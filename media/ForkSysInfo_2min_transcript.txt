@@ -2,6 +2,12 @@
 繁體中文旁白逐字稿
 畫面包含原始 log 節錄及 QEMU 主控台直接擷取，並非未剪輯錄影。
 
+文件補充 2026 年 11 月 13 日
+公開專案：https://github.com/mimimaomao1117/forksysinfo
+影片末段的「開始展示批次檔」指桌面完整離線套件的 START_DEMO.cmd。
+GitHub clone 不含 portable-linux，請改依 README.md 的 Linux 或 Docker 步驟重現。
+下方各時間點的逐字稿保留實際錄音內容，本補充不屬於影片旁白。
+
 00:00  實測證據解說
 這是 ForkSysInfo 的實測證據解說。程式以 C 語言實作，用 fork 為每條連線建立子行程，不使用執行緒。十一項整合驗證全部通過，原始紀錄都隨專案保留。
 

@@ -2,6 +2,8 @@
 
 本專案以 C 語言實作 TCP 用戶端與伺服器。伺服器透過 `fork()` 為每條連線建立獨立子行程，不使用執行緒。雙方動態連結共同的 `libnetsys.so`，並提供編譯時及執行時兩層 debug 控制。系統資訊查詢是主要功能，另外提供 PING、ECHO、SLEEP 與 QUIT，以利驗證協定、併發和連線生命週期。
 
+公開儲存庫為 [mimimaomao1117/forksysinfo](https://github.com/mimimaomao1117/forksysinfo)，不需登入即可瀏覽及下載。文件更新日期為 2026 年 11 月 13 日。GitHub 版提供完整原始碼、測試、報告、影片、截圖與封包證據；桌面完整套件另附可攜式 Linux 環境。以下測量數值引用原始實測紀錄，文件更新不代表重新量測。
+
 本次執行平台為 Windows 本機上由 QEMU 軟體模擬的 Linux 環境；Docker 與原生 Linux 是可選的重現方式。SYSINFO 顯示 Linux 環境所見的核心、主機名稱及記憶體等資訊，不代表 Windows 工作管理員的數值。
 
 2026 年 11 月 13 日 11 時 50 分 56 秒至 11 時 51 分 05 秒（UTC+8）的 11 項整合驗證全部通過。環境紀錄為 Linux `6.12.51-0-virt`、GCC 14.2.0、GNU Make 4.4.1、Python 3.12.16 與 tcpdump 4.99.5。原始 log 採 UTC 時間，故對應 03:50:56 至 03:51:05；兩者為同一次實測。
@@ -100,7 +102,7 @@ socket 使用 nonblocking I/O 並搭配 `poll()` 等待 readiness。父行程的
 | 情境 | 正常模式 | `--unsafe` 比較模式 |
 |---|---|---|
 | 4-byte header 被分段傳送 | 迴圈讀滿後正確解析 | 單次接收取得不足 4 bytes，請求失敗 |
-| 接受連線後不傳完 frame | 到截止時間後結束子行程 | 子行程繼續等待，占用資源 |
+| 接受連線後完全不傳資料 | 到截止時間後結束子行程 | 子行程繼續等待，占用資源 |
 | 用戶端完成並離開 | 父行程呼叫 `waitpid()` 回收 | 子行程留在 zombie 狀態，直到清理 |
 
 上述差異必須看實際結果，不能只憑原始碼判斷。測試使用相同的命令、等待時間與觀察方式，分別執行正常模式及比較模式，再保存真實 log 與 `/proc` 行程狀態。[2]
@@ -145,7 +147,19 @@ loopback 的封包時間非常接近，且可能受到核心 segmentation 或 ch
 
 ## 8 執行證據與重現方式
 
-請由專案根目錄執行 `bash scripts/run_all.sh`。它會建置兩種版本並執行驗證。`evidence/` 保存環境資訊、執行 log、結果 JSON、併發行程快照、debug 輸出以及 pcap。隨附的執行截圖是實際原始 log 檢視器的畫面擷取；兩分鐘影片是有旁白的證據講解，並非未剪輯的全程桌面錄影。
+公開原始碼可由儲存庫頁面下載 ZIP，或使用以下指令取得。在原生 Ubuntu 或 Debian 中，server 與 client 可由一般使用者執行；完整驗證會使用 tcpdump 擷取封包，因此以下測試指令使用 sudo。
+
+```bash
+sudo apt-get update
+sudo apt-get install -y build-essential python3 tcpdump iproute2 binutils procps git
+git clone https://github.com/mimimaomao1117/forksysinfo.git
+cd forksysinfo
+make DEBUG=1
+make DEBUG=0
+sudo bash scripts/run_all.sh
+```
+
+在已設定擷取權限的 Docker 容器或桌面離線 VM 中，使用 `bash scripts/run_all.sh`。腳本會重新建置兩種版本並執行驗證。重跑會更新該工作目錄的 `evidence/`，其中包含環境資訊、執行 log、結果 JSON、併發快照、debug 輸出與 pcap；若需保留本機參考紀錄，請先另存副本。隨附執行截圖來自實際原始 log 檢視器；120 秒影片採繁體中文旁白講解實測證據，並非未剪輯的全程桌面錄影。
 
 本次結果為 11 項整合驗證全部通過。其中連線上限另以 `--max-clients 2` 驗證，前兩個 child 保留時，第三個 client 收到 `ERR SERVER_BUSY`。共享函式庫檢查確認 client 與 server 都有 `DT_NEEDED libnetsys.so`，並使用 ORIGIN 相對執行檔的搜尋路徑。
 
@@ -170,13 +184,25 @@ loopback 的封包時間非常接近，且可能受到核心 segmentation 或 ch
 
 ## 9 現場展示程序與限制
 
-在自己的電腦準備好可用的 Linux 環境，先執行一次完整驗證。Windows 可使用隨附的 QEMU 方式；若 Docker 的 Linux backend 已可啟動，也可自行建置映像檔。上課依序展示一般系統資訊查詢、12 個用戶端的同時服務證據、三組健全性差異、debug 四種組合及封包分析。重新執行測試可以直接產生自己的新證據。
+GitHub 原始碼版與桌面完整套件的內容如下。
 
-Windows 隨附入口為根目錄的 `START_DEMO.cmd`，用來啟動可攜式 Linux、更新主機端原始碼並執行完整驗證；`LINUX_SHELL.cmd` 用來進入可手動操作的 Linux 終端機，並自動切換至 `/root/ForkSysInfo`。可開兩個終端機，分別執行 server 與 client。新證據會存到 `runs/` 下的時間戳記資料夾，完成後使用 `STOP_LINUX.cmd` 正常關閉 Linux。請保留整個專案及 `portable-linux/` 的相對位置。
+| 項目 | GitHub 原始碼版 | 桌面完整套件 |
+|---|---|---|
+| C 原始碼與測試 | 完整收錄 | 完整收錄 |
+| 報告 影片 截圖 封包 | 完整收錄 | 完整收錄 |
+| build 目錄 | 由 Makefile 重建 | 另附已建置版本 |
+| portable-linux 目錄 | 不納入 Git | 另附離線 QEMU 與磁碟 |
+| 新產生的 runs 目錄 | 不納入 Git | Windows 啟動工具產生 |
+
+在自己的電腦準備好可用的 Linux 環境，先執行一次完整驗證。GitHub 下載版可依 README.md 使用原生 Linux，或在 Docker 的 Linux backend 已可啟動時自行建置映像檔；桌面完整套件可使用附帶的 QEMU 環境。上課依序展示 SYSINFO、12 個用戶端同時服務、三組健全性差異、debug 四種組合及封包分析，並以當次產生的證據解說。
+
+桌面完整套件的 Windows 入口為 `START_DEMO.cmd`，用來啟動可攜式 Linux、更新主機端原始碼並執行完整驗證；`LINUX_SHELL.cmd` 會開啟 Linux 終端機，並自動切換至 `/root/ForkSysInfo`。三個 `.cmd` 入口需要完整的 `portable-linux/`，單獨 clone GitHub 專案無法取得該環境。手動展示時開啟兩個終端機，第一個執行 `sh scripts/demo.sh --server`，第二個執行 `sh scripts/demo.sh`。Windows 自動驗證的新證據存到 `runs/` 的時間戳記資料夾，完成後使用 `STOP_LINUX.cmd` 正常關閉 Linux。
 
 可攜式磁碟安裝後採用 Linux 6.12.117 核心，並再度通過全部 11 項測試。第二次結果保存在 `evidence-recheck/`，與本報告前述 Linux 6.12.51 的第一次封包及 PID 分開保存。`media/06_live_console.png` 是第二次環境直接執行 C 程式的虛擬機終端畫面，與原始 log 檢視器截圖一併提供。
 
 本專案未加入 TLS 或身分驗證；預設只在 loopback 使用。每連線一個行程的設計適合本作業的十個以上連線示範，但不宣稱可無限制擴充。容器的資源資訊由其 Linux 執行環境提供，與實體 Windows 主機的視角可能不同。
+
+報告位於 `report/ForkSysInfo_Report.pdf`，原始文字版位於 `docs/REPORT.md`。實際交付影片為 `media/ForkSysInfo_2min.mp4`，另附繁體中文字幕與逐字稿。`docs/DEMO_SCRIPT.md` 中的英文內容為口頭解說參考譯稿；以 MP4 及其繁體中文逐字稿為實際錄製內容。原始 PCAP 位於 `evidence/loopback.pcap`，可由公開儲存庫下載後使用 Wireshark 檢視。
 
 ## 10 參考資料
 

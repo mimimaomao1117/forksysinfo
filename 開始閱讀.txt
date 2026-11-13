@@ -1,32 +1,62 @@
 ForkSysInfo C 語言 Client Server 作業
+文件更新日期：2026 年 11 月 13 日
 
-一 先閱讀 report/ForkSysInfo_Report.pdf
-   含系統設計、關鍵程式、實測分析、執行截圖及全部 C 原始碼與 Makefile。
+公開 GitHub 儲存庫
+https://github.com/mimimaomao1117/forksysinfo
+任何人都可瀏覽、clone 或下載原始碼。
 
-二 觀看 media/ForkSysInfo_2min.mp4
-   精確 120 秒，繁體中文旁白及字幕，使用實際測試證據講解。
+一 先閱讀與觀看
+   報告：report/ForkSysInfo_Report.pdf
+   文字報告：docs/REPORT.md
+   影片：media/ForkSysInfo_2min.mp4
+   展示講稿：docs/DEMO_SCRIPT.md
+   影片精確 120 秒，含繁體中文旁白與字幕。
 
-三 執行 START_DEMO.cmd
-   隨附離線 Linux，無須 Docker 或修改 BIOS。約需 1 至 3 分鐘開機。
-   會更新本資料夾中的原始碼、重新編譯並驗證，結果存入 runs/時間戳記/。
-   此入口已在本機實測完成，11/11 項驗證通過。
+二 從 GitHub 取得專案
+   GitHub 版收錄完整 C 原始碼、測試、文件、PDF、影片、截圖與封包證據。
+   不包含 build/、portable-linux/ 與 runs/。
+   請依 README.md 的原生 Linux 或 Docker 步驟執行；GitHub 下載版的
+   START_DEMO.cmd、LINUX_SHELL.cmd、STOP_LINUX.cmd 需另有離線環境才能使用。
+
+   Ubuntu/Debian 快速取得：
+   sudo apt-get update
+   sudo apt-get install -y build-essential python3 tcpdump iproute2 binutils procps git
+   git clone https://github.com/mimimaomao1117/forksysinfo.git
+   cd forksysinfo
+   make DEBUG=1
+   make DEBUG=0
+
+   一般 C client/server 可由普通使用者執行。完整測試需要 tcpdump 擷取權限：
+   sudo bash scripts/run_all.sh
+   此命令會更新專案的 evidence/；欲保留參考證據可先另存專案。
+
+三 使用桌面完整離線套件
+   若資料夾含 portable-linux/，可在 Windows 雙擊 START_DEMO.cmd。
+   工具會啟動隨附 Linux、更新原始碼、重新建置並驗證，新證據匯出至 runs/時間戳記/。
+   開機約 1 至 3 分鐘，預留約 2 GB 記憶體；不需 Docker 或修改 BIOS。
 
 四 課堂手動展示
-   開啟兩個 LINUX_SHELL.cmd。
+   桌面完整套件：開啟兩個 LINUX_SHELL.cmd。
+   原生 Linux：開啟兩個終端機並進入同一個專案根目錄。
    第一個視窗：sh scripts/demo.sh --server
    第二個視窗：sh scripts/demo.sh
-   完成後執行 STOP_LINUX.cmd 關閉背景 Linux。
+   桌面離線展示完成後，執行 STOP_LINUX.cmd 關閉背景 Linux。
+   Docker 的兩個終端機操作方式見 README.md。
 
-五 繳交內容
-   src/ 與 include/  完整可編輯 C 原始碼
-   Makefile          兩種版本與共享動態函式庫的建置規則
-   build/            Linux debug 及 release 執行檔與 libnetsys.so
-   tests/ scripts/   自動驗證與現場示範腳本
-   evidence/         報告引用的第一次原始實測紀錄及 loopback.pcap
-   evidence-recheck/ 安裝後 Linux 的第二次完整實測
-   runs/             Windows 啟動工具實際執行產生的新證據
-   docs/             可編輯報告與影片腳本
-   media/            真實執行畫面、120 秒影片、字幕與逐字稿
-   portable-linux/   離線示範用 QEMU 及 Linux 磁碟
+五 參考實測與內容位置
+   既有實測 11/11 組驗證通過，12 個 C client 同時對應 12 個工作子行程。
+   SLEEP 2000 的總耗時為 2.141 秒；24 秒是循序等待的理論下限。
+   PCAP 含 4 條連線、40 個封包及 8 個含資料的 TCP segment。
 
-原生 Linux、Ubuntu/Debian 及 Docker 的其他操作方式請見 README.md。
+   src/ include/     完整可編輯 C 原始碼
+   Makefile          debug/release 與 libnetsys.so 建置規則
+   tests/ scripts/   自動驗證與現場示範工具
+   evidence/         報告引用的第一次實測，Linux 6.12.51-0-virt
+   evidence-recheck/ 安裝後第二次完整驗證，Linux 6.12.117-0-virt
+   docs/ report/     可編輯文件及 PDF 報告
+   media/            執行截圖、120 秒影片、字幕與逐字稿
+   build/            桌面套件的 Linux 建置產物，可由 Makefile 重建
+   runs/             桌面啟動工具匯出的新證據，僅存於本機
+   portable-linux/   桌面套件的離線 QEMU 與 Linux 磁碟
+
+重新執行的 PID、記憶體與耗時會改變，應以當次結果為準。

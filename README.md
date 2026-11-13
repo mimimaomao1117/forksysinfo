@@ -1,41 +1,50 @@
-# ForkSysInfo C 語言行程式 TCP 用戶端與伺服器
+# ForkSysInfo C 語言 TCP 用戶端與伺服器
 
-GitHub 版本收錄完整 C 原始碼、測試、報告 PDF、120 秒影片、執行畫面及原始封包證據。大型 `portable-linux/` 離線環境與建置產物不納入 Git；從 GitHub 下載後，請依下方原生 Linux 或 Docker 步驟執行。Windows 的三個 `.cmd` 入口需要桌面完整套件中的 `portable-linux/` 才能使用。
+公開儲存庫：[mimimaomao1117/forksysinfo](https://github.com/mimimaomao1117/forksysinfo)。文件更新日期為 2026 年 11 月 13 日。
 
-本專案提供以 `fork()` 為每條連線建立子行程的 TCP 伺服器、C 語言用戶端，以及雙方共同動態連結的 `libnetsys.so`。功能包含系統資訊查詢、連線檢查、字串回傳及延遲工作。`--unsafe` 是課堂比較用的模式，會關閉三項健全性機制，以便在相同程式中重現差異。
+本專案以 C 語言實作 TCP 系統資訊服務。伺服器透過 `fork()` 為每條連線建立獨立子行程，不使用執行緒；client 與 server 共同動態連結 `libnetsys.so`。功能包含 SYSINFO、PING、ECHO、SLEEP 與 QUIT，並提供編譯時和執行時 debug 控制，以及三組健全性機制比較。
 
-程式必須在 Linux 執行。Windows 上可使用可攜式 QEMU Linux 虛擬機，或已能啟動 Linux backend 的 Docker Desktop；MinGW 的 Windows 執行環境無法直接提供本作業要求的 `fork()` 與 Linux `.so`。SYSINFO 回傳的是 Linux 執行環境所見的系統資訊。
+先查看 [PDF 報告](report/ForkSysInfo_Report.pdf)、[120 秒中文解說影片](media/ForkSysInfo_2min.mp4) 和 [原始 loopback PCAP](evidence/loopback.pcap)。[技術報告文字版](docs/REPORT.md) 與 [展示講稿](docs/DEMO_SCRIPT.md) 可直接在 GitHub 閱讀。
 
-## 本次驗證環境
+## 選擇執行方式
 
-本機的 Docker backend 受硬體虛擬化可用性限制，因此本次使用 QEMU 軟體模擬的 Linux 環境執行實測。核心為 `6.12.51-0-virt`，GCC 14.2.0，GNU Make 4.4.1，Python 3.12.16，tcpdump 4.99.5。Docker 指令是另一種重現途徑，不能視為本次已成功執行 Docker 的證據。
+| 取得方式 | 包含內容 | 如何執行 |
+|---|---|---|
+| 公開 GitHub 儲存庫或原始碼 ZIP | C 原始碼、測試、文件、PDF、影片、截圖及參考封包證據 | 在原生 Linux 編譯，或使用 Docker 的 Linux 容器 |
+| 桌面完整套件 | GitHub 內容，加上 Linux 建置產物、`portable-linux/` 離線環境與本機 `runs/` | Windows 雙擊 `START_DEMO.cmd`，或進入 Linux 終端機手動展示 |
 
-本次 11 項整合驗證全部通過。12 個 C client 的 SLEEP 2000 請求同時對應 12 個子行程，總耗時 2.141 秒；若依序等待，僅 SLEEP 就需 24 秒。封包擷取保留 4 條 TCP 連線、40 個封包與 8 個資料封包。三組健全性比較及 debug 四種組合均有原始 log。
+`build/`、`portable-linux/` 與 `runs/` 不納入 Git。從 GitHub clone 或下載 ZIP 後，三個 Windows `.cmd` 入口需要另有完整的 `portable-linux/` 才能使用。程式的 `fork()`、`.so` 與 tcpdump 必須在 Linux 環境執行；SYSINFO 回傳該 Linux 環境所見的資訊。
 
-## Windows 可攜式 Linux 啟動
+## 參考實測結果
 
-將整個專案資料夾保留在同一處，不要單獨移動啟動檔或 `portable-linux/`。
+既有參考實測共 11 組整合驗證，全部通過。12 個 C client 各發出 SLEEP 2000 請求，同一快照觀察到 12 個子行程，全部成功完成，總耗時 2.141 秒。24 秒是 12 次各等待 2 秒的循序理論下限，並非另測的循序版本時間。
 
-1. 雙擊根目錄的 `START_DEMO.cmd`，啟動隨附 QEMU Linux 環境並執行完整測試。
-2. 等待畫面顯示測試結果，再檢查 `runs/時間戳記/` 中新產生的 JSON、log 與 pcap。`evidence/` 保留報告所引用的第一次實測。
-3. 要手動操作 Linux，執行根目錄的 `LINUX_SHELL.cmd`。它會自動切換到 `/root/ForkSysInfo`，可直接使用本文件的 server 與 client 指令。可同時開啟兩個視窗。
-4. 完成後執行 `STOP_LINUX.cmd`，正常關閉背景 Linux 虛擬機。
+pcap 保留 4 條 TCP 連線、40 個封包及 8 個含應用資料的 TCP segment。三組健全性差異與 debug 四種組合均有原始 log。以下資料分開保留：
 
-`START_DEMO.cmd` 會先把 Windows 資料夾中的原始碼更新到 Linux 環境，再測試。此方式使用軟體模擬，不依賴 Docker backend，也不需要為本作業修改 BIOS 的硬體虛擬化設定。首次開機仍需要等待 Linux 啟動；影片及報告中的 PID 是本次實測值，重新執行時會改變。
+| 目錄 | 對應環境與用途 |
+|---|---|
+| `evidence/` | 報告引用的第一次實測，Linux `6.12.51-0-virt` |
+| `evidence-recheck/` | 安裝後離線環境的第二次完整驗證，Linux `6.12.117-0-virt` |
+| `runs/時間戳記/` | 桌面啟動工具每次執行匯出的新證據，僅存在於本機完整套件 |
 
-隨附磁碟安裝後的 Linux 核心為 `6.12.117-0-virt`，也已再次通過全部測試，結果另存於 `evidence-recheck/`。啟動時不需要下載套件；請預留約 2 GB 記憶體與 1 至 3 分鐘開機時間。
+第一次環境使用 QEMU 軟體模擬、GCC 14.2.0、GNU Make 4.4.1、Python 3.12.16 與 tcpdump 4.99.5。原本電腦的 Docker backend 未能啟動，因此下列 Docker 指令是重現方式；參考數值來自實際 QEMU Linux 執行。本次文件更新沿用這些既有證據。
 
-## Linux 快速執行
+## 原生 Linux 快速執行
 
-Ubuntu 或 Debian 安裝工具：
+在 Ubuntu 或 Debian 安裝工具並取得公開專案：
 
 ```bash
 sudo apt-get update
-sudo apt-get install -y build-essential python3 tcpdump iproute2 binutils
+sudo apt-get install -y build-essential python3 tcpdump iproute2 binutils procps git
+git clone https://github.com/mimimaomao1117/forksysinfo.git
+cd forksysinfo
 make DEBUG=1
+make DEBUG=0
 ```
 
-在第一個終端機啟動伺服器：
+若已下載原始碼 ZIP，先解壓縮並切換到包含 Makefile 的專案根目錄，再執行兩個 make 命令。
+
+一般 client 與 server 可由普通使用者執行。在第一個終端機啟動 server：
 
 ```bash
 ./build/debug/server --host 127.0.0.1 --port 9090 --debug
@@ -50,56 +59,58 @@ make DEBUG=1
 ./build/debug/client --host 127.0.0.1 --port 9090 SLEEP 1000
 ```
 
-按 `Ctrl+C` 關閉伺服器。程式會清理子行程。預設綁定 loopback，其他電腦不會直接連入。
+伺服器預設綁定 loopback。按 `Ctrl+C` 結束時，父行程會清理工作子行程。server 支援同一條 TCP 連線處理多個 frame；命令列 client 每次執行只完成一次請求與回應。
 
-## Windows Docker 快速執行
+完整驗證需要擷取封包的權限。原生 Linux 可在專案根目錄執行：
 
-先啟動 Docker Desktop，確認使用 Linux containers。用 PowerShell 切換到本資料夾：
+```bash
+sudo bash scripts/run_all.sh
+```
+
+腳本會重新建置兩種版本、執行 11 組測試，並更新 `evidence/` 中的結果、log 與 pcap。需要保留報告引用的原始證據時，請先另存一份專案。測試會使用固定測試埠號；失敗原因可由 `results.json` 與各 server log 查看。
+
+## Windows Docker 執行
+
+取得公開專案後，先啟動可運作的 Docker Desktop Linux backend，再用 PowerShell 切換到專案根目錄：
 
 ```powershell
 docker build -t forksysinfo .
 docker run --rm --cap-add NET_RAW --cap-add NET_ADMIN -v "${PWD}:/project" forksysinfo bash scripts/run_all.sh
 ```
 
-這會在自己的電腦內以 Linux 執行，並將重新產生的測試證據寫回本資料夾。抓取 loopback 封包所需的 capability 只加給此次容器。正式用戶端與伺服器不需要這些 capability。
+容器以 root 執行驗證，capability 供 tcpdump 擷取 loopback 流量使用，結果會寫回本機專案的 `evidence/`。一般 C client 與 server 本身不需要這些擷取權限。
 
-若要手動展示，請保持容器開啟：
+要開兩個終端機手動展示，可先建立互動容器：
 
 ```powershell
 docker run --rm -it --name forksysinfo-demo --cap-add NET_RAW --cap-add NET_ADMIN -v "${PWD}:/project" forksysinfo bash
 ```
 
-在容器終端機內執行 `make DEBUG=1` 及伺服器。再從另一個 PowerShell 終端機進入同一個容器：
+在容器內執行 `sh scripts/demo.sh --server`；另一個 PowerShell 視窗執行 `docker exec -it forksysinfo-demo bash`，再於同一容器內執行 `sh scripts/demo.sh`。兩端必須位於同一個容器，才能共用該 Linux 主機的 `127.0.0.1`。
 
-```powershell
-docker exec -it forksysinfo-demo bash
-```
+## Windows 桌面離線套件
 
-此時可執行前述 client 指令。同一個容器中的 `127.0.0.1` 才是本專案伺服器使用的 loopback。
+此方式限包含 `portable-linux/` 的桌面完整套件。請保留專案與離線環境的相對位置，預留約 2 GB 記憶體及 1 至 3 分鐘開機時間。
 
-## 全部驗證
+1. 雙擊 `START_DEMO.cmd`。工具啟動 QEMU Linux，把本機原始碼更新至 Linux，重新建置並執行完整驗證。
+2. 查看 `runs/時間戳記/` 的當次結果；報告引用的 `evidence/` 保留在本機。
+3. 手動展示可開啟兩個 `LINUX_SHELL.cmd`。兩者會自動切換到 `/root/ForkSysInfo`；第一個執行 `sh scripts/demo.sh --server`，第二個執行 `sh scripts/demo.sh`。
+4. 完成後執行 `STOP_LINUX.cmd`，正常關閉背景虛擬機。
 
-```bash
-bash scripts/run_all.sh
-```
+離線磁碟已安裝所需工具，執行時不需下載套件，也不需修改 BIOS 的硬體虛擬化設定。PID、可用記憶體及耗時會隨每次執行而改變，應以當次證據為準。
 
-需要有權限執行 `tcpdump`；Docker 方式已設定 capability。測試涵蓋至少 12 個同時連線的 C client、三組健全性比較、協定與異常輸入、debug 控制及動態連結。真實結果、行程快照與原始封包存於 `evidence/`。請保留原始 `.pcap`，可用 Wireshark 開啟。
+## Debug 與共享函式庫
 
-測試時會短暫使用指定的測試埠號；若測試失敗，先讀取 `evidence/` 中的 log，確認埠號未被其他程式占用。
+`make DEBUG=1` 建立 `build/debug/`，`make DEBUG=0` 建立 `build/release/`。編譯時保留 debug 程式碼，且執行時加入 `--debug`，才會輸出 debug 訊息。參考測試的四種組合如下：
 
-## 編譯與執行時 debug
+| 編譯旗標 | 執行旗標 | 參考 debug 行數 |
+|---|---|---:|
+| `DEBUG=1` | 無 `--debug` | 0 |
+| `DEBUG=1` | 有 `--debug` | 8 |
+| `DEBUG=0` | 無 `--debug` | 0 |
+| `DEBUG=0` | 有 `--debug` | 0 |
 
-```bash
-make DEBUG=1
-./build/debug/server --debug
-
-make DEBUG=0
-./build/release/server --debug
-```
-
-編譯時 `DEBUG=1` 才保留 debug 程式碼；執行時還要指定 `--debug` 才會輸出。`DEBUG=0` 即使加上 `--debug`，也不會重新開啟已被編譯移除的 debug 訊息。一般錯誤與生命週期 log 仍保留。debug 與 release 存於不同目錄，避免舊物件檔混用。
-
-## 共享函式庫
+一般錯誤與生命週期 log 仍保留。不同版本使用不同輸出目錄，避免舊物件檔混用。兩側都動態連結 `libnetsys.so`，可檢查：
 
 ```bash
 ldd build/debug/server
@@ -108,26 +119,25 @@ readelf -d build/debug/server
 readelf -d build/debug/client
 ```
 
-雙方都需要 `libnetsys.so`。執行檔使用相對自身位置的 `$ORIGIN` 搜尋函式庫，所以應保留相同 build 目錄中的檔案，不要只複製單獨的執行檔。
+RUNPATH 使用 `$ORIGIN` 尋找執行檔同目錄中的 `.so`；複製執行檔時應一併保留該函式庫。
 
-## 健全性比較模式
+## 健全性比較與封包分析
+
+正常模式處理 partial I/O、接收期限、錯誤輸入、斷線、連線上限及子行程回收。`--unsafe` 教學模式關閉完整接收迴圈、閒置期限及執行中的子行程回收，供相同測試比較；固定緩衝區界限仍保留。
+
+三組參考結果為：分段 PING 正常模式成功、比較模式斷線；閒置期限後保留的子行程為 0 與 1；完成後的 zombie 數量也是 0 與 1。完整自動比較由 `scripts/run_all.sh` 執行並清理。
 
 ```bash
-./build/debug/server --port 9090 --timeout-ms 1000
-./build/debug/server --port 9091 --timeout-ms 1000 --unsafe
+tcpdump -nn -tttt -r evidence/loopback.pcap
+tcpdump -nn -X -r evidence/loopback.pcap
 ```
 
-`--unsafe` 關閉完整讀取迴圈、接收逾時與執行中的子行程回收，分別用來觀察分段資料失敗、閒置連線占住子行程與 zombie 累積。固定緩衝區界限仍保留，避免將作業示範變成記憶體破壞程式。完整比較由測試自動執行並清理。
+也可用 Wireshark 開啟 pcap。應用層 frame 使用 4-byte network-order 長度，後接 1 至 4096 bytes 文字；TCP segment 與應用 frame 不一定一對一，解讀時須依串流重組。
 
-## 繳交內容與現場展示
+## 繳交與課堂展示
 
-* `src/`、`include/`、`Makefile`：完整 C 原始碼與建置規則。
-* `tests/`、`scripts/`：可重新執行的驗證與展示工具。
-* `evidence/`：測試結果、真實 log、行程快照與 loopback pcap。
-* `docs/REPORT.md`：系統設計與技術報告文字版。
-* `docs/DEMO_SCRIPT.md`：兩分鐘影片與現場展示的講稿。
-* 報告、截圖及影片：請見本專案隨附的對應檔案。執行截圖是實際原始 log 檢視器的畫面擷取；影片是有旁白的證據講解，並非未剪輯的全程桌面錄影。
+完整 C 原始碼位於 `src/` 與 `include/`，建置規則為 Makefile，驗證工具位於 `tests/` 與 `scripts/`。報告包含系統設計、關鍵函式、執行畫面、測試分析及完整 C 原始碼與 Makefile；影片有繁體中文旁白及字幕。
 
-上課前請在自己的電腦重新執行一次測試，確認選用的 Linux 虛擬機已可啟動；若使用 Docker，請先建立映像檔。現場依序展示 SYSINFO、12 個同時連線、三組健全性差異及 pcap，不需要連上其他電腦。
+參考畫面包含原始 log 檢視器截圖與 Linux 主控台直接執行截圖。兩分鐘影片是實測證據解說；原始 log 與 PCAP 可交叉核對。現場請在自己的 Linux 環境依序展示 SYSINFO、12 個同時工作子行程、三組健全性差異及封包內容。
 
-本專案以教學為目的，未加入 TLS、使用者認證或網際網路部署防護。維持預設 loopback 即可完成作業要求。
+本專案以 loopback 教學展示為範圍，未加入 TLS 或使用者認證。
